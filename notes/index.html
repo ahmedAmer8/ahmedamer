@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notes — Ahmed Amer</title>
+<meta name="description" content="Longer pieces on building and measuring production AI systems.">
+<link rel="canonical" href="https://ahmedamer8.github.io/ahmedamer/notes/">
+<meta property="og:site_name" content="Ahmed Amer">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Notes — Ahmed Amer">
+<meta property="og:description" content="Longer pieces on building and measuring production AI systems.">
+<meta property="og:url" content="https://ahmedamer8.github.io/ahmedamer/notes/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#e8ebe4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161c1b" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/ahmedamer/static/fonts/newsreader-normal-300_700-1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/ahmedamer/static/fonts/plexmono-normal-400-0.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/ahmedamer/static/css/site.css">
+<link rel="icon" href="/ahmedamer/static/img/mark.svg" type="image/svg+xml">
+<script>
+  document.documentElement.classList.remove('no-js');
+  try {
+    var t = localStorage.getItem('theme');
+    if (t) document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" id="progress" hidden></div>
+
+<header class="masthead">
+  <div class="shell masthead__in">
+    <a class="wordmark" href="/ahmedamer/">AHMED AMER</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/ahmedamer/work/"
+>Work</a>
+      <a href="/ahmedamer/lessons/"
+>Lessons</a>
+      <a href="/ahmedamer/notes/"
+aria-current="page">Notes</a>
+      <a href="/ahmedamer/map/"
+>Map</a>
+      <a href="/ahmedamer/experience/"
+>Experience</a>
+      <a href="/ahmedamer/about/"
+>About</a>
+    </nav>
+    <button class="searchbtn" id="searchbtn" aria-haspopup="dialog">Search <kbd>/</kbd></button>
+    <button class="themebtn" id="themebtn" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
+  </div>
+</header>
+
+<main id="main" class="shell page">
+<header class="page-head">
+  <h1>Notes</h1>
+  <p class="dek">Longer pieces — usually written because a problem turned out to be
+    more general than the incident that produced it.</p>
+</header>
+<div class="index">
+<article class="entry" data-status="shipped" data-category="methodology"
+         data-tags="mysql django python sentry docker instrument-error measurement observability baselines">
+  <div class="entry__n">
+    <span>001</span>
+    <span class="spanbar " style="margin-top:.5rem"
+          role="img" aria-label="relative weight 8 of 10"><i style="width:80%"></i></span>
+  </div>
+  <div>
+    <h2 class="entry__title"><a href="/ahmedamer/notes/the-instrument-is-usually-the-bug/">The instrument is usually the bug</a></h2>
+    <p class="entry__sum">A collection of cases where the measurement was wrong and the system was fine. If a number surprises you, the first hypothesis should be that the number is wrong.</p>
+    <p class="entry__principle">When a metric is surprising, verify the metric before investigating the system. A number you cannot falsify is not a measurement.</p>
+    <div class="entry__meta">
+      <span class="status status--shipped">shipped</span>
+<span>methodology</span><time datetime="2026-09-14">September 2026</time>      <span>4 min</span>
+    </div>
+  </div>
+</article>
+<article class="entry" data-status="shipped" data-category="methodology"
+         data-tags="python django gemini fail-open guardrails silent-failure observability">
+  <div class="entry__n">
+    <span>002</span>
+    <span class="spanbar " style="margin-top:.5rem"
+          role="img" aria-label="relative weight 9 of 10"><i style="width:90%"></i></span>
+  </div>
+  <div>
+    <h2 class="entry__title"><a href="/ahmedamer/notes/which-direction-does-your-guard-fail/">Which direction does your guard fail?</a></h2>
+    <p class="entry__sum">The single most consistent principle I have arrived at: things on the customer&#39;s path fail open, things that verify correctness fail closed. Nearly every serious incident I have worked on is that rule applied backwards.</p>
+    <p class="entry__principle">Never block a customer; always break a build. Decide a guard&#39;s failure direction before you write it, and put the reason in the code.</p>
+    <div class="entry__meta">
+      <span class="status status--shipped">shipped</span>
+<span>methodology</span><time datetime="2026-09-12">September 2026</time>      <span>5 min</span>
+    </div>
+  </div>
+</article>
+</div>
+</main>
+
+<footer class="shell foot">
+  <span>Ahmed Amer — AI Engineer, Cairo, Egypt</span>
+  <span class="foot__right">
+    <a href="https://github.com/ahmedAmer8">GitHub</a>
+    <a href="https://www.linkedin.com/in/Ahmad-Amer">LinkedIn</a>
+    <a href="mailto:ahmed.m.amer821@gmail.com">Email</a>
+    <a href="/ahmedamer/colophon/">Colophon</a>
+  </span>
+</footer>
+
+<div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search__panel">
+    <label class="visually-hidden" for="q">Search projects, lessons, notes and topics</label>
+    <input class="search__input" id="q" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Search lessons, projects, topics…">
+    <ul class="search__results" id="results" role="listbox" aria-label="Results"></ul>
+    <div class="search__foot">
+      <span>↑↓ move</span><span>↵ open</span><span>esc close</span>
+    </div>
+  </div>
+</div>
+
+<script src="/ahmedamer/static/js/site.js" defer></script>
+</body>
+</html>

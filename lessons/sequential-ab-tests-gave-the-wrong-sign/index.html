@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The same change measured as a 6.8-second win and a 1.2-second loss — Ahmed Amer</title>
+<meta name="description" content="Benchmarking against a remote model by running one arm then the other lets the provider&#39;s own load drift decide the result. Twice it decided wrongly, in opposite directions.">
+<link rel="canonical" href="https://ahmedamer8.github.io/ahmedamer/lessons/sequential-ab-tests-gave-the-wrong-sign/">
+<meta property="og:site_name" content="Ahmed Amer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The same change measured as a 6.8-second win and a 1.2-second loss — Ahmed Amer">
+<meta property="og:description" content="Benchmarking against a remote model by running one arm then the other lets the provider&#39;s own load drift decide the result. Twice it decided wrongly, in opposite directions.">
+<meta property="og:url" content="https://ahmedamer8.github.io/ahmedamer/lessons/sequential-ab-tests-gave-the-wrong-sign/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#e8ebe4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161c1b" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/ahmedamer/static/fonts/newsreader-normal-300_700-1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/ahmedamer/static/fonts/plexmono-normal-400-0.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/ahmedamer/static/css/site.css">
+<link rel="icon" href="/ahmedamer/static/img/mark.svg" type="image/svg+xml">
+<script>
+  document.documentElement.classList.remove('no-js');
+  try {
+    var t = localStorage.getItem('theme');
+    if (t) document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Person", "name": "Ahmed Amer"}, "datePublished": "2026-08-21", "description": "Benchmarking against a remote model by running one arm then the other lets the provider\u0027s own load drift decide the result. Twice it decided wrongly, in opposite directions.", "headline": "The same change measured as a 6.8-second win and a 1.2-second loss", "url": "https://ahmedamer8.github.io/ahmedamer/lessons/sequential-ab-tests-gave-the-wrong-sign/"}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" id="progress" hidden></div>
+
+<header class="masthead">
+  <div class="shell masthead__in">
+    <a class="wordmark" href="/ahmedamer/">AHMED AMER</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/ahmedamer/work/"
+>Work</a>
+      <a href="/ahmedamer/lessons/"
+aria-current="page">Lessons</a>
+      <a href="/ahmedamer/notes/"
+>Notes</a>
+      <a href="/ahmedamer/map/"
+>Map</a>
+      <a href="/ahmedamer/experience/"
+>Experience</a>
+      <a href="/ahmedamer/about/"
+>About</a>
+    </nav>
+    <button class="searchbtn" id="searchbtn" aria-haspopup="dialog">Search <kbd>/</kbd></button>
+    <button class="themebtn" id="themebtn" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
+  </div>
+</header>
+
+<main id="main" class="shell page">
+<article class="article">
+  <div class="article__rail">
+    <nav class="rail-axis" aria-label="On this page" data-rail></nav>
+  </div>
+
+  <div class="article__body">
+    <header class="article-head">
+      <h1>The same change measured as a 6.8-second win and a 1.2-second loss</h1>
+      <p class="dek">Benchmarking against a remote model by running one arm then the other lets the provider&#39;s own load drift decide the result. Twice it decided wrongly, in opposite directions.</p>
+      <div class="article-head__meta">
+        <span class="status status--fixed">fixed</span>
+<span>methodology</span><time datetime="2026-08-21">21 August 2026</time>        <span>2 min</span>
+      </div>
+    </header>
+
+    
+
+    <div class="prose" data-prose><h2>The numbers</h2>
+<p>One code change. Three ways of measuring it:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Before</th>
+<th>After</th>
+<th>Conclusion it supports</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sequential, n=4, quiet API</td>
+<td>11.52 s</td>
+<td>4.74 s</td>
+<td>ship it, huge win</td>
+</tr>
+<tr>
+<td>sequential, n=6, congested API</td>
+<td>13.06 s</td>
+<td>14.21 s</td>
+<td>revert it, regression</td>
+</tr>
+<tr>
+<td>interleaved, n=8 per arm</td>
+<td>8.38 s</td>
+<td>5.81 s</td>
+<td>ship it, −2.57 s</td>
+</tr>
+</tbody>
+</table>
+<p>The first two are the same experiment run at different times of day. They disagree
+about the sign.</p>
+<h2>Why sequential designs fail here</h2>
+<p>A remote model’s latency is not a property of your request. It is a property of your
+request <em>and</em> everyone else’s, at that moment, on that provider’s hardware. That
+component drifts on a timescale of minutes to hours — and for most changes worth
+making, it drifts by more than the change is worth.</p>
+<p>Run all of arm A and then all of arm B, and every bit of that drift lands in the
+difference between them. You are not measuring your change; you are measuring your
+change plus whatever happened to the provider in between, with no way to separate the
+two.</p>
+<p>Interleaving does not remove the drift. It distributes it across both arms, so it
+shows up as variance rather than as bias.</p>
+<h2>The part that makes it trustworthy</h2>
+<p>Interleaving alone would still have left me with two numbers and a hope. What settled
+it was finding a quantity that measures the same change and cannot be contaminated by
+network conditions.</p>
+<p>At temperature zero, the model’s thinking-token counts were perfectly stable: 851 on
+every call in one arm, 367 on every call in the other. Not an average — the same value
+each time. Against a separately measured rate of 4.44 seconds per thousand thinking
+tokens, that delta predicts 2.15 seconds. The interleaved wall clock said 2.57.</p>
+<p>Two independent measurements agreeing within half a second is evidence. One
+measurement, however carefully taken, is a hope.</p>
+<aside class="callout callout--principle"><p>Report a network-independent corroborating quantity alongside every remote latency
+result. Tokens, query counts, bytes, iterations — anything computed locally. If you
+cannot name one, you have a single-source number and should say so.</p>
+</aside>
+<h2>Where this applies beyond models</h2>
+<p>The same failure appears wherever a benchmark crosses a boundary you do not own:
+a shared CI runner, a database someone else is also querying, an object store, a
+cloud instance whose neighbours change. In all of those cases the honest design is the
+same — alternate the arms, and find something to count that does not travel.</p>
+</div>
+
+    <aside class="callout callout--principle">
+      <p class="callout-title">The principle</p>
+      <p>Any A/B against a service you do not control must interleave its arms and report a second quantity that does not depend on the network.</p>
+    </aside>
+
+      <section class="related">
+    <div class="rule-measured"><h2 class="rule-measured__label">Lessons</h2>
+      <span class="rule-measured__bar"></span></div>
+    <ul>
+      <li><a href="/ahmedamer/lessons/the-slowest-call-was-the-guard/">The slowest thing in the system was the thing protecting it</a><span class="meta">The order validator took 10.38 seconds on average — more than twice the agent turn it guards. The cause was not the model. It was reasoning nobody had capped, and measuring it correctly required interleaving the two arms.</span></li>
+    </ul>
+  </section>
+
+
+    <section class="related">
+      <div class="rule-measured"><span class="rule-measured__label">See also</span>
+        <span class="rule-measured__bar"></span></div>
+      <ul>
+          <li><a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><span class="meta">Project</span></li>
+          <li><a href="/ahmedamer/lessons/the-slowest-call-was-the-guard/">The slowest thing in the system was the thing protecting it</a><span class="meta">Lesson</span></li>
+      </ul>
+    </section>
+  </div>
+
+  <aside class="article__margin">
+    <div class="mnote">
+  <b>Tagged</b>
+  <div class="chips">
+      <a href="/ahmedamer/map/#tech-gemini">Google Gemini</a>
+      <a href="/ahmedamer/map/#tech-python">Python</a>
+      <a href="/ahmedamer/map/#topic-measurement">Measurement</a>
+      <a href="/ahmedamer/map/#topic-baselines">Baselines</a>
+      <a href="/ahmedamer/map/#topic-latency">Latency</a>
+  </div>
+</div>
+
+  </aside>
+</article>
+</main>
+
+<footer class="shell foot">
+  <span>Ahmed Amer — AI Engineer, Cairo, Egypt</span>
+  <span class="foot__right">
+    <a href="https://github.com/ahmedAmer8">GitHub</a>
+    <a href="https://www.linkedin.com/in/Ahmad-Amer">LinkedIn</a>
+    <a href="mailto:ahmed.m.amer821@gmail.com">Email</a>
+    <a href="/ahmedamer/colophon/">Colophon</a>
+  </span>
+</footer>
+
+<div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search__panel">
+    <label class="visually-hidden" for="q">Search projects, lessons, notes and topics</label>
+    <input class="search__input" id="q" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Search lessons, projects, topics…">
+    <ul class="search__results" id="results" role="listbox" aria-label="Results"></ul>
+    <div class="search__foot">
+      <span>↑↓ move</span><span>↵ open</span><span>esc close</span>
+    </div>
+  </div>
+</div>
+
+<script src="/ahmedamer/static/js/site.js" defer></script>
+</body>
+</html>

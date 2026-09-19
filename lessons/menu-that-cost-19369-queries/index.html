@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A menu that cost 19,369 queries — Ahmed Amer</title>
+<meta name="description" content="The single largest latency problem in the product was not in the latency document, because nobody had measured it. One translated label, one query — repeated across the whole catalogue, on every turn.">
+<link rel="canonical" href="https://ahmedamer8.github.io/ahmedamer/lessons/menu-that-cost-19369-queries/">
+<meta property="og:site_name" content="Ahmed Amer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A menu that cost 19,369 queries — Ahmed Amer">
+<meta property="og:description" content="The single largest latency problem in the product was not in the latency document, because nobody had measured it. One translated label, one query — repeated across the whole catalogue, on every turn.">
+<meta property="og:url" content="https://ahmedamer8.github.io/ahmedamer/lessons/menu-that-cost-19369-queries/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#e8ebe4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161c1b" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/ahmedamer/static/fonts/newsreader-normal-300_700-1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/ahmedamer/static/fonts/plexmono-normal-400-0.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/ahmedamer/static/css/site.css">
+<link rel="icon" href="/ahmedamer/static/img/mark.svg" type="image/svg+xml">
+<script>
+  document.documentElement.classList.remove('no-js');
+  try {
+    var t = localStorage.getItem('theme');
+    if (t) document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Person", "name": "Ahmed Amer"}, "datePublished": "2026-08-25", "description": "The single largest latency problem in the product was not in the latency document, because nobody had measured it. One translated label, one query \u2014 repeated across the whole catalogue, on every turn.", "headline": "A menu that cost 19,369 queries", "url": "https://ahmedamer8.github.io/ahmedamer/lessons/menu-that-cost-19369-queries/"}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" id="progress" hidden></div>
+
+<header class="masthead">
+  <div class="shell masthead__in">
+    <a class="wordmark" href="/ahmedamer/">AHMED AMER</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/ahmedamer/work/"
+>Work</a>
+      <a href="/ahmedamer/lessons/"
+aria-current="page">Lessons</a>
+      <a href="/ahmedamer/notes/"
+>Notes</a>
+      <a href="/ahmedamer/map/"
+>Map</a>
+      <a href="/ahmedamer/experience/"
+>Experience</a>
+      <a href="/ahmedamer/about/"
+>About</a>
+    </nav>
+    <button class="searchbtn" id="searchbtn" aria-haspopup="dialog">Search <kbd>/</kbd></button>
+    <button class="themebtn" id="themebtn" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
+  </div>
+</header>
+
+<main id="main" class="shell page">
+<article class="article">
+  <div class="article__rail">
+    <nav class="rail-axis" aria-label="On this page" data-rail></nav>
+  </div>
+
+  <div class="article__body">
+    <header class="article-head">
+      <h1>A menu that cost 19,369 queries</h1>
+      <p class="dek">The single largest latency problem in the product was not in the latency document, because nobody had measured it. One translated label, one query — repeated across the whole catalogue, on every turn.</p>
+      <div class="article-head__meta">
+        <span class="status status--fixed">fixed</span>
+<span>latency</span><time datetime="2026-08-25">25 August 2026</time>        <span>2 min</span>
+      </div>
+    </header>
+
+    
+
+    <div class="prose" data-prose><h2>The number</h2>
+<p>One call to render a menu: <strong>19,369 database queries, about 30 seconds.</strong></p>
+<p>After the fix, the same call, producing byte-identical output: <strong>12 queries.</strong></p>
+<h2>Why nobody had noticed</h2>
+<p>Translatable text — product names, category names, descriptions — lives in separate
+per-language tables. Resolving one label means one lookup. The renderer did that
+lookup per label, unprefetched, in a loop.</p>
+<p>On a development database with a dozen products this is imperceptible. On a real
+catalogue it is linear in the number of labels, and a bilingual menu has a great many
+labels. The cost only exists at production scale, which is exactly where nobody was
+running a query counter.</p>
+<p>It got worse than a single render. A tool whose entire job was to return the details
+of <em>one</em> item built the whole bilingual menu and then scanned it for the identifier it
+wanted. One call: 19,369 queries and 7.66 seconds, to look up one product. A six-item
+bundle did it six times — <strong>116,214 queries, 52.7 seconds.</strong></p>
+<h2>The part that was not a performance bug</h2>
+<p>While fixing this I found something worse in the same code path, and it had nothing to
+do with speed.</p>
+<p>One prompt built its menu without the tenant scope and in a language string that
+matched no stored row. So every label resolution failed and fell back to a placeholder.
+All 165 modifier groups and 2,720 options reached the model as <code>ModifierGroup #&lt;id&gt;</code> —
+nameless.</p>
+<p>That prompt’s job was repairing incorrect modifier identifiers. It was being asked to
+correct identifiers while being shown nothing but identifiers.</p>
+<p>Fixing the scope took the prompt from 344,551 characters to 47,566 — roughly 86,000
+tokens down to 12,000 — and from 20,403 queries to 44.</p>
+<aside class="callout callout--principle"><p>A silent fallback in a translation layer does not look like an outage. It looks like
+data. The prompt was well-formed, the call succeeded, the model answered, and the
+answer was built on nothing.</p>
+</aside>
+<h2>Why it was not in the latency analysis</h2>
+<p>I had written a considered document about where turn time was going. It contained six
+prioritised recommendations. It did not contain this, because it was reconstructed from
+timestamps in token logs — which can tell you how long a model call took, and cannot
+tell you anything about what happened before the call was made.</p>
+<p>This one item was worth roughly a third of all turn time. It was larger than everything
+in the document put together.</p>
+<p>That is the argument for instrumenting the boring parts. The model call is the
+expensive, interesting, obviously-worth-measuring thing, so it gets measured. Prompt
+construction is plumbing, so it does not — and the plumbing was the problem.</p>
+<h2>What I check now</h2>
+<p>When a system assembles a prompt from a database, I count the queries that assembly
+costs before I look at anything else. It is one counter and it has never once told me
+what I expected.</p>
+</div>
+
+    <aside class="callout callout--principle">
+      <p class="callout-title">The principle</p>
+      <p>An N+1 is invisible on a development dataset and linear in production data. Profile against a realistic catalogue, not a seeded one.</p>
+    </aside>
+
+      <section class="related">
+    <div class="rule-measured"><h2 class="rule-measured__label">Lessons</h2>
+      <span class="rule-measured__bar"></span></div>
+    <ul>
+      <li><a href="/ahmedamer/lessons/measurement-inverted-my-own-conclusions/">I wrote a careful latency analysis, then measured it and two conclusions flipped</a><span class="meta">Six prioritised recommendations, reconstructed from log timestamps. When the tracing arrived, one was inverted, one was overstated by 3x, and the largest problem in the system was not in the document at all.</span></li>
+    </ul>
+  </section>
+  <section class="related">
+    <div class="rule-measured"><h2 class="rule-measured__label">Projects</h2>
+      <span class="rule-measured__bar"></span></div>
+    <ul>
+      <li><a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><span class="meta">A multi-tenant system where customers order food by chatting on WhatsApp, an LLM agent builds the cart and takes payment, and the order lands in the restaurant&#39;s point-of-sale. Several established food and beverage brands run on it.</span></li>
+    </ul>
+  </section>
+
+
+    <section class="related">
+      <div class="rule-measured"><span class="rule-measured__label">See also</span>
+        <span class="rule-measured__bar"></span></div>
+      <ul>
+          <li><a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><span class="meta">Project</span></li>
+          <li><a href="/ahmedamer/lessons/measurement-inverted-my-own-conclusions/">I wrote a careful latency analysis, then measured it and two conclusions flipped</a><span class="meta">Lesson</span></li>
+      </ul>
+    </section>
+  </div>
+
+  <aside class="article__margin">
+    <div class="mnote">
+  <b>Tagged</b>
+  <div class="chips">
+      <a href="/ahmedamer/map/#tech-django">Django</a>
+      <a href="/ahmedamer/map/#tech-mysql">MySQL</a>
+      <a href="/ahmedamer/map/#tech-python">Python</a>
+      <a href="/ahmedamer/map/#topic-latency">Latency</a>
+      <a href="/ahmedamer/map/#topic-measurement">Measurement</a>
+      <a href="/ahmedamer/map/#topic-observability">Observability</a>
+  </div>
+</div>
+
+  </aside>
+</article>
+</main>
+
+<footer class="shell foot">
+  <span>Ahmed Amer — AI Engineer, Cairo, Egypt</span>
+  <span class="foot__right">
+    <a href="https://github.com/ahmedAmer8">GitHub</a>
+    <a href="https://www.linkedin.com/in/Ahmad-Amer">LinkedIn</a>
+    <a href="mailto:ahmed.m.amer821@gmail.com">Email</a>
+    <a href="/ahmedamer/colophon/">Colophon</a>
+  </span>
+</footer>
+
+<div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search__panel">
+    <label class="visually-hidden" for="q">Search projects, lessons, notes and topics</label>
+    <input class="search__input" id="q" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Search lessons, projects, topics…">
+    <ul class="search__results" id="results" role="listbox" aria-label="Results"></ul>
+    <div class="search__foot">
+      <span>↑↓ move</span><span>↵ open</span><span>esc close</span>
+    </div>
+  </div>
+</div>
+
+<script src="/ahmedamer/static/js/site.js" defer></script>
+</body>
+</html>

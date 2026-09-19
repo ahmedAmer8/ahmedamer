@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>I was wrong three times before I asked the right question — Ahmed Amer</title>
+<meta name="description" content="Messages were disappearing. Three careful hypotheses, all disproven, before a single query settled it. The generalisable move is asking what the earliest thing you write down is, before your own logic can discard anything.">
+<link rel="canonical" href="https://ahmedamer8.github.io/ahmedamer/lessons/check-the-earliest-artifact-you-persist/">
+<meta property="og:site_name" content="Ahmed Amer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="I was wrong three times before I asked the right question — Ahmed Amer">
+<meta property="og:description" content="Messages were disappearing. Three careful hypotheses, all disproven, before a single query settled it. The generalisable move is asking what the earliest thing you write down is, before your own logic can discard anything.">
+<meta property="og:url" content="https://ahmedamer8.github.io/ahmedamer/lessons/check-the-earliest-artifact-you-persist/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#e8ebe4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161c1b" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/ahmedamer/static/fonts/newsreader-normal-300_700-1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/ahmedamer/static/fonts/plexmono-normal-400-0.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/ahmedamer/static/css/site.css">
+<link rel="icon" href="/ahmedamer/static/img/mark.svg" type="image/svg+xml">
+<script>
+  document.documentElement.classList.remove('no-js');
+  try {
+    var t = localStorage.getItem('theme');
+    if (t) document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Person", "name": "Ahmed Amer"}, "datePublished": "2026-08-14", "description": "Messages were disappearing. Three careful hypotheses, all disproven, before a single query settled it. The generalisable move is asking what the earliest thing you write down is, before your own logic can discard anything.", "headline": "I was wrong three times before I asked the right question", "url": "https://ahmedamer8.github.io/ahmedamer/lessons/check-the-earliest-artifact-you-persist/"}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" id="progress" hidden></div>
+
+<header class="masthead">
+  <div class="shell masthead__in">
+    <a class="wordmark" href="/ahmedamer/">AHMED AMER</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/ahmedamer/work/"
+>Work</a>
+      <a href="/ahmedamer/lessons/"
+aria-current="page">Lessons</a>
+      <a href="/ahmedamer/notes/"
+>Notes</a>
+      <a href="/ahmedamer/map/"
+>Map</a>
+      <a href="/ahmedamer/experience/"
+>Experience</a>
+      <a href="/ahmedamer/about/"
+>About</a>
+    </nav>
+    <button class="searchbtn" id="searchbtn" aria-haspopup="dialog">Search <kbd>/</kbd></button>
+    <button class="themebtn" id="themebtn" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
+  </div>
+</header>
+
+<main id="main" class="shell page">
+<article class="article">
+  <div class="article__rail">
+    <nav class="rail-axis" aria-label="On this page" data-rail></nav>
+  </div>
+
+  <div class="article__body">
+    <header class="article-head">
+      <h1>I was wrong three times before I asked the right question</h1>
+      <p class="dek">Messages were disappearing. Three careful hypotheses, all disproven, before a single query settled it. The generalisable move is asking what the earliest thing you write down is, before your own logic can discard anything.</p>
+      <div class="article-head__meta">
+        <span class="status status--fixed">fixed</span>
+<span>methodology</span><time datetime="2026-08-14">14 August 2026</time>        <span>3 min</span>
+      </div>
+    </header>
+
+    
+
+    <div class="prose" data-prose><h2>Three wrong answers</h2>
+<p>Messages were not being replied to. I had three hypotheses, in order, each reasonable
+and each supported by something:</p>
+<ol>
+<li><strong>The queue is losing them.</strong> Plausible — there had been a redelivery incident
+before. Disproven by the queue metrics.</li>
+<li><strong>The platform is not calling us.</strong> Plausible — configuration drifts, tokens
+expire, apps sit in development mode. Disproven, eventually, but it took longest
+because our own runbook recommends it.</li>
+<li><strong>A worker is crashing mid-turn.</strong> Plausible — an out-of-memory kill would produce
+exactly this shape, with the message redelivered and lost again. Disproven by the
+absence of restarts.</li>
+</ol>
+<p>All three were careful. All three were wrong. The fourth thing I did took one query.</p>
+<h2>What the queue metrics said</h2>
+<p>This is the part worth keeping, because the metrics were not broken. They were
+accurate and they were irrelevant.</p>
+<pre class="code"><code>sent      32
+received  32
+deleted   32
+dead-letter queue  empty
+</code></pre>
+<p>Thirty-two in, thirty-two out, nothing parked. A perfect record — of the messages that
+made it as far as the queue. The discard was happening <em>inside</em> the consuming process,
+after the message had been received and before anything was written down. From the
+queue’s point of view that is indistinguishable from successful processing, because
+the process did acknowledge it. It just did not do anything first.</p>
+<aside class="callout callout--principle"><p>“Received and deleted” means a process took responsibility for a message. It does not
+mean the message produced an effect. Those are different claims, and only the second
+one is what you care about.</p>
+</aside>
+<h2>The question that worked</h2>
+<p>Eventually I asked something different from “where is it going.” I asked:</p>
+<blockquote>
+<p>What is the earliest thing we write down, before any of our own logic could throw
+it away?</p>
+</blockquote>
+<p>For us that is a deduplication row, written on receipt of the webhook and before
+routing. It exists specifically so a redelivered message is not processed twice, which
+means it is written unconditionally and early — which in turn makes it, accidentally,
+the best diagnostic surface in the system.</p>
+<p>The rows were there. With an empty sender field. That single result eliminated all
+three hypotheses at once and pointed straight at
+<a href="/ahmedamer/lessons/meta-stopped-sending-the-phone-number/">a bare <code>continue</code> in our own parser</a>.</p>
+<h2>Why I had not asked it sooner</h2>
+<p>Because the shape of the problem suggested the boundaries. When input goes missing,
+attention goes to the edges — the network, the platform, the queue — and not to the
+code that runs after the input has safely arrived. The mental model was “something
+between them and us.” The reality was “something in us, immediately.”</p>
+<p>An early unconditional write breaks that framing, because it is <em>inside</em> our system
+but <em>before</em> our interpretation. It answers “did it reach us” without depending on
+anything that could have discarded it.</p>
+<h2>The number that reframed the priority</h2>
+<p>The loss was about 0.06% of traffic.</p>
+<p>That is below every alarm threshold we had, and it would have stayed below them
+indefinitely. It was also, for the roughly twenty people a day it affected, a total
+failure — they messaged a restaurant and got nothing. A rate that rounds to zero
+globally is not a small problem for anyone inside it.</p>
+<aside class="callout callout--principle"><p>A percentage is the wrong unit for a failure that is total for the affected user.
+Count the people, not the ratio.</p>
+</aside>
+<h2>What I do now</h2>
+<p>When something is missing, before forming hypotheses, I ask what the earliest
+persisted artifact is and whether it exists for the case in question. It is one query
+and it partitions the entire problem space in half: if the row is there, the fault is
+ours and downstream; if it is not, the fault is upstream.</p>
+<p>Three careful hypotheses cost a day. That question costs a minute, and I should have
+spent the minute first.</p>
+</div>
+
+    <aside class="callout callout--principle">
+      <p class="callout-title">The principle</p>
+      <p>When input goes missing, query the earliest artifact you persist before business logic runs. Everything downstream cannot distinguish &#34;never arrived&#34; from &#34;arrived and was discarded.&#34;</p>
+    </aside>
+
+      <section class="related">
+    <div class="rule-measured"><h2 class="rule-measured__label">Lessons</h2>
+      <span class="rule-measured__bar"></span></div>
+    <ul>
+      <li><a href="/ahmedamer/lessons/meta-stopped-sending-the-phone-number/">Meta stopped sending the phone number, and we dropped the message silently</a><span class="meta">WhatsApp began rolling out usernames. Senders who adopted one arrived with no phone number in the payload, our ingest discarded them with a bare continue, and nobody found out from an alert.</span></li>
+    </ul>
+  </section>
+  <section class="related">
+    <div class="rule-measured"><h2 class="rule-measured__label">Notes</h2>
+      <span class="rule-measured__bar"></span></div>
+    <ul>
+      <li><a href="/ahmedamer/notes/the-instrument-is-usually-the-bug/">The instrument is usually the bug</a><span class="meta">A collection of cases where the measurement was wrong and the system was fine. If a number surprises you, the first hypothesis should be that the number is wrong.</span></li>
+    </ul>
+  </section>
+
+
+    <section class="related">
+      <div class="rule-measured"><span class="rule-measured__label">See also</span>
+        <span class="rule-measured__bar"></span></div>
+      <ul>
+          <li><a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><span class="meta">Project</span></li>
+          <li><a href="/ahmedamer/lessons/meta-stopped-sending-the-phone-number/">Meta stopped sending the phone number, and we dropped the message silently</a><span class="meta">Lesson</span></li>
+      </ul>
+    </section>
+  </div>
+
+  <aside class="article__margin">
+    <div class="mnote">
+  <b>Tagged</b>
+  <div class="chips">
+      <a href="/ahmedamer/map/#tech-sqs">AWS SQS</a>
+      <a href="/ahmedamer/map/#tech-python">Python</a>
+      <a href="/ahmedamer/map/#tech-django">Django</a>
+      <a href="/ahmedamer/map/#topic-silent-failure">Silent failure</a>
+      <a href="/ahmedamer/map/#topic-instrument-error">The instrument lied</a>
+      <a href="/ahmedamer/map/#topic-observability">Observability</a>
+  </div>
+</div>
+
+  </aside>
+</article>
+</main>
+
+<footer class="shell foot">
+  <span>Ahmed Amer — AI Engineer, Cairo, Egypt</span>
+  <span class="foot__right">
+    <a href="https://github.com/ahmedAmer8">GitHub</a>
+    <a href="https://www.linkedin.com/in/Ahmad-Amer">LinkedIn</a>
+    <a href="mailto:ahmed.m.amer821@gmail.com">Email</a>
+    <a href="/ahmedamer/colophon/">Colophon</a>
+  </span>
+</footer>
+
+<div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search__panel">
+    <label class="visually-hidden" for="q">Search projects, lessons, notes and topics</label>
+    <input class="search__input" id="q" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Search lessons, projects, topics…">
+    <ul class="search__results" id="results" role="listbox" aria-label="Results"></ul>
+    <div class="search__foot">
+      <span>↑↓ move</span><span>↵ open</span><span>esc close</span>
+    </div>
+  </div>
+</div>
+
+<script src="/ahmedamer/static/js/site.js" defer></script>
+</body>
+</html>

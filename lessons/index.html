@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lessons — Ahmed Amer</title>
+<meta name="description" content="Production incidents, wrong assumptions, and the principles left over.">
+<link rel="canonical" href="https://ahmedamer8.github.io/ahmedamer/lessons/">
+<meta property="og:site_name" content="Ahmed Amer">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Lessons — Ahmed Amer">
+<meta property="og:description" content="Production incidents, wrong assumptions, and the principles left over.">
+<meta property="og:url" content="https://ahmedamer8.github.io/ahmedamer/lessons/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#e8ebe4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161c1b" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/ahmedamer/static/fonts/newsreader-normal-300_700-1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/ahmedamer/static/fonts/plexmono-normal-400-0.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/ahmedamer/static/css/site.css">
+<link rel="icon" href="/ahmedamer/static/img/mark.svg" type="image/svg+xml">
+<script>
+  document.documentElement.classList.remove('no-js');
+  try {
+    var t = localStorage.getItem('theme');
+    if (t) document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" id="progress" hidden></div>
+
+<header class="masthead">
+  <div class="shell masthead__in">
+    <a class="wordmark" href="/ahmedamer/">AHMED AMER</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/ahmedamer/work/"
+>Work</a>
+      <a href="/ahmedamer/lessons/"
+aria-current="page">Lessons</a>
+      <a href="/ahmedamer/notes/"
+>Notes</a>
+      <a href="/ahmedamer/map/"
+>Map</a>
+      <a href="/ahmedamer/experience/"
+>Experience</a>
+      <a href="/ahmedamer/about/"
+>About</a>
+    </nav>
+    <button class="searchbtn" id="searchbtn" aria-haspopup="dialog">Search <kbd>/</kbd></button>
+    <button class="themebtn" id="themebtn" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
+  </div>
+</header>
+
+<main id="main" class="shell page">
+<header class="page-head">
+  <h1>Lessons</h1>
+  <p class="dek">Each entry is one thing I got wrong in production and what proving it
+    taught me. Filter by state or kind. Unresolved entries are marked; they stay here
+    until I can close them honestly.</p>
+</header>
+
+<div class="filters" data-filters role="group" aria-label="Filter lessons">
+  <button aria-pressed="true" data-filter="all">all</button>
+  <button aria-pressed="false" data-filter="status:unfixed">unfixed</button>
+  <button aria-pressed="false" data-filter="status:unresolved">unresolved</button>
+  <button aria-pressed="false" data-filter="category:incident">incident</button>
+  <button aria-pressed="false" data-filter="category:methodology">methodology</button>
+  <button aria-pressed="false" data-filter="category:discovery">discovery</button>
+  <button aria-pressed="false" data-filter="category:failed-experiment">failed experiment</button>
+  <span class="filters__count" data-count>16 entries</span>
+</div>
+
+<div class="index" data-list>
+<article class="entry" data-status="unfixed" data-category="infrastructure"
+         data-tags="ec2 django mysql concurrency idempotency deployment-drift two-sources">
+  <div class="entry__n">
+    <span>001</span>
+    <span class="spanbar spanbar--open" style="margin-top:.5rem"
+          role="img" aria-label="relative weight 6 of 10"><i style="width:60%"></i></span>
+  </div>
+  <div>
+    <h2 class="entry__title"><a href="/ahmedamer/lessons/two-schedulers-ran-the-same-job/">Two machines were running the same scheduler, and customers got everything twice</a></h2>
+    <p class="entry__sum">The scheduling tool writes per-host entries, so every instance that boots installs its own copy. Two boxes meant two of every sweep — including the ones that message customers.</p>
+    <p class="entry__principle">A scheduler that installs itself at boot has no concept of a fleet. Exactly-one has to be enforced by a lease, not by the number of machines you believe you have.</p>
+    <div class="entry__meta">
+      <span class="status status--unfixed">unfixed</span>
+<span>infrastructure</span><time datetime="2026-09-10">September 2026</time>      <span>2 min</span>
+    </div>
+  </div>
+</article>
+<article class="entry" data-status="fixed" data-category="cost"
+         data-tags="python django gemini cost caching silent-failure">
+  <div class="entry__n">
+    <span>002</span>
+    <span class="spanbar " style="margin-top:.5rem"
+          role="img" aria-label="relative weight 5 of 10"><i style="width:50%"></i></span>
+  </div>
+  <div>
+    <h2 class="entry__title"><a href="/ahmedamer/lessons/a-cron-expression-that-meant-something-else/">The schedule fired twice an hour, not every fifty-five minutes</a></h2>
+    <p class="entry__sum">`*/55 * * * *` does not mean &#34;every 55 minutes.&#34; It means minute 0 and minute 55. The job it scheduled rewrote a 30,000-token cache each time, for months.</p>
+    <p class="entry__principle">A step value in a cron field steps within that field&#39;s range and resets at its boundary. Any interval that does not divide its unit evenly does not mean what it reads like.</p>
+    <div class="entry__meta">
+      <span class="status status--fixed">fixed</span>
+<span>cost</span><time datetime="2026-09-08">September 2026</time>      <span>2 min</span>
+    </div>
+  </div>
+</article>
+<article class="entry" data-status="unfixed" data-category="ai-agent-behavior"
+         data-tags="gemini mysql django llm-behaviour two-sources data-hygiene multi-tenancy">
+  <div class="entry__n">
+    <span>003</span>
+    <span class="spanbar spanbar--open" style="margin-top:.5rem"
+          role="img" aria-label="relative weight 8 of 10"><i style="width:80%"></i></span>
+  </div>
+  <div>
+    <h2 class="entry__title"><a href="/ahmedamer/lessons/told-the-agent-to-sell-something-that-did-not-exist/">We told the agent to sell something that did not exist</a></h2>
+    <p class="entry__sum">A cluster of conversations where the agent invented offers had a single, entirely non-AI cause: a configuration field instructing it to reference a promotion that only existed on a different tenant&#39;s menu.</p>
+    <p class="entry__principle">When a model hallucinates consistently in one domain, audit what its configuration promises against what its data contains. Instructing a model to cite a nonexistent thing while forbidding invention leaves it one option.</p>
+    <div class="entry__meta">
+      <span class="status status--unfixed">unfixed</span>
+<span>ai agent behavior</span><time datetime="2026-09-05">September 2026</time>      <span>3 min</span>
+    </div>
+  </div>
+</article>
+<article class="entry" data-status="fixed" data-category="methodology"
+         data-tags="gemini python django measurement baselines latency instrument-error observability">
+  <div class="entry__n">
+    <span>004</span>
+    <span class="spanbar " style="margin-top:.5rem"
+          role="img" aria-label="relative weight 9 of 10"><i style="width:90%"></i></span>
+  </div>
+  <div>
+    <h2 class="entry__title"><a href="/ahmedamer/lessons/measurement-inverted-my-own-conclusions/">I wrote a careful latency analysis, then measured it and two conclusions flipped</a></h2>
+    <p class="entry__sum">Six prioritised recommendations, reconstructed from log timestamps. When the tracing arrived, one was inverted, one was overstated by 3x, and the largest problem in the system was not in the document at all.</p>
+    <p class="entry__principle">An estimate reconstructed from adjacent data is a hypothesis. Label it as one, and keep it visible after the measurement so the correction is legible.</p>
+    <div class="entry__meta">
+      <span class="status status--fixed">fixed</span>
+<span>methodology</span><time datetime="2026-09-01">September 2026</time>      <span>2 min</span>
+    </div>
+  </div>
+</article>
+<article class="entry" data-status="unresolved" data-category="discovery"
+         data-tags="gemini python prompt-injection instrument-error observability silent-failure llm-behaviour">
+  <div class="entry__n">
+    <span>005</span>
+    <span class="spanbar spanbar--open" style="margin-top:.5rem"
+          role="img" aria-label="relative weight 8 of 10"><i style="width:80%"></i></span>
+  </div>
+  <div>
+    <h2 class="entry__title"><a href="/ahmedamer/lessons/injection-deflections-stopped-and-i-cannot-explain-it/">The security signal went to zero and both explanations are bad</a></h2>
+    <p class="entry__sum">A steady 3.4% prompt-injection deflection rate fell to zero over two days. No deploy, no model change, no errors. Either detection went dark, or we had been turning away real customers for weeks. I still do not know which.</p>
+    <p class="entry__principle">A monitored rate falling to zero is an event. Design the alert for &#34;this signal stopped&#34; as carefully as the one for &#34;this signal spiked.&#34;</p>
+    <div class="entry__meta">
+      <span class="status status--unresolved">unresolved</span>
+<span>discovery</span><time datetime="2026-08-31">August 2026</time>      <span>3 min</span>
+    </div>
+  </div>
+</article>
+<article class="entry" data-status="fixed" data-category="incident"
+         data-tags="gemini python prompt-injection false-positives guardrails llm-behaviour">
+  <div class="entry__n">
+    <span>006</span>
+    <span class="spanbar " style="margin-top:.5rem"
+          role="img" aria-label="relative weight 7 of 10"><i style="width:70%"></i></span>
+  </div>
+  <div>
+    <h2 class="entry__title"><a href="/ahmedamer/lessons/classifier-that-deflected-paying-customers/">The security guard was turning away customers, nondeterministically</a></h2>
+    <p class="entry__sum">A printed QR code produced a prefilled message that asserted a role. The prompt-injection classifier read it as an attack and deflected 132 of 730 arrivals in a month — on byte-identical input, inconsistently.</p>
+    <p class="entry__principle">Before a classifier can block anything, enumerate the legitimate inputs that structurally resemble an attack. Your own system generates some of them.</p>
+    <div class="entry__meta">
+      <span class="status status--fixed">fixed</span>
+<span>incident</span><time datetime="2026-08-30">August 2026</time>      <span>2 min</span>
+    </div>
+  </div>
+</article>
+<article class="entry" data-status="fixed" data-category="cost"
+         data-tags="gemini python mysql django cost instrument-error measurement observability">
+  <div class="entry__n">
+    <span>007</span>
+    <span class="spanbar " style="margin-top:.5rem"
+          role="img" aria-label="relative weight 8 of 10"><i style="width:80%"></i></span>
+  </div>
+  <div>
+    <h2 class="entry__title"><a href="/ahmedamer/lessons/cost-dashboard-overstated-by-3.8x/">The cost dashboard was wrong by 3.8x, confidently</a></h2>
+    <p class="entry__sum">We were reporting $6,712 of model spend against $1,767 of actual spend, because the pricing treated cached input tokens as an addition to input tokens rather than a discounted subset of them.</p>
+    <p class="entry__principle">Derive a billing model from the provider&#39;s own usage rows, not from the shape the API response suggests. A plausible reading of a field is not a measurement of it.</p>
+    <div class="entry__meta">
+      <span class="status status--fixed">fixed</span>
+<span>cost</span><time datetime="2026-08-28">August 2026</time>      <span>2 min</span>
+    </div>
+  </div>
+</article>
+<article class="entry" data-status="fixed" data-category="latency"
+         data-tags="django mysql python latency measurement observability">
+  <div class="entry__n">
+    <span>008</span>
+    <span class="spanbar " style="margin-top:.5rem"
+          role="img" aria-label="relative weight 9 of 10"><i style="width:90%"></i></span>
+  </div>
+  <div>
+    <h2 class="entry__title"><a href="/ahmedamer/lessons/menu-that-cost-19369-queries/">A menu that cost 19,369 queries</a></h2>
+    <p class="entry__sum">The single largest latency problem in the product was not in the latency document, because nobody had measured it. One translated label, one query — repeated across the whole catalogue, on every turn.</p>
+    <p class="entry__principle">An N+1 is invisible on a development dataset and linear in production data. Profile against a realistic catalogue, not a seeded one.</p>
+    <div class="entry__meta">
+      <span class="status status--fixed">fixed</span>
+<span>latency</span><time datetime="2026-08-25">August 2026</time>      <span>2 min</span>
+    </div>
+  </div>
+</article>
+<article class="entry" data-status="fixed" data-category="methodology"
+         data-tags="gemini python measurement baselines latency">
+  <div class="entry__n">
+    <span>009</span>
+    <span class="spanbar " style="margin-top:.5rem"
+          role="img" aria-label="relative weight 6 of 10"><i style="width:60%"></i></span>
+  </div>
+  <div>
+    <h2 class="entry__title"><a href="/ahmedamer/lessons/sequential-ab-tests-gave-the-wrong-sign/">The same change measured as a 6.8-second win and a 1.2-second loss</a></h2>
+    <p class="entry__sum">Benchmarking against a remote model by running one arm then the other lets the provider&#39;s own load drift decide the result. Twice it decided wrongly, in opposite directions.</p>
+    <p class="entry__principle">Any A/B against a service you do not control must interleave its arms and report a second quantity that does not depend on the network.</p>
+    <div class="entry__meta">
+      <span class="status status--fixed">fixed</span>
+<span>methodology</span><time datetime="2026-08-21">August 2026</time>      <span>2 min</span>
+    </div>
+  </div>
+</article>
+<article class="entry" data-status="fixed" data-category="latency"
+         data-tags="gemini python latency measurement baselines guardrails llm-behaviour">
+  <div class="entry__n">
+    <span>010</span>
+    <span class="spanbar " style="margin-top:.5rem"
+          role="img" aria-label="relative weight 8 of 10"><i style="width:80%"></i></span>
+  </div>
+  <div>
+    <h2 class="entry__title"><a href="/ahmedamer/lessons/the-slowest-call-was-the-guard/">The slowest thing in the system was the thing protecting it</a></h2>
+    <p class="entry__sum">The order validator took 10.38 seconds on average — more than twice the agent turn it guards. The cause was not the model. It was reasoning nobody had capped, and measuring it correctly required interleaving the two arms.</p>
+    <p class="entry__principle">When a model call is slow, measure its thinking tokens before you change the model. The budget is usually the variable, and it is the one you control.</p>
+    <div class="entry__meta">
+      <span class="status status--fixed">fixed</span>
+<span>latency</span><time datetime="2026-08-20">August 2026</time>      <span>2 min</span>
+    </div>
+  </div>
+</article>
+<article class="entry" data-status="fixed" data-category="ai-agent-behavior"
+         data-tags="gemini langchain python llm-behaviour silent-failure">
+  <div class="entry__n">
+    <span>011</span>
+    <span class="spanbar " style="margin-top:.5rem"
+          role="img" aria-label="relative weight 6 of 10"><i style="width:60%"></i></span>
+  </div>
+  <div>
+    <h2 class="entry__title"><a href="/ahmedamer/lessons/a-tools-return-value-is-conversation-history/">A tool&#39;s return value is conversation history, forever</a></h2>
+    <p class="entry__sum">An instruction written into a tool&#39;s return string — &#34;do not call this again&#34; — was replayed into every subsequent turn, so the agent obeyed a months-old prohibition and silently sent nothing.</p>
+    <p class="entry__principle">Turn-local state belongs in process state, policy belongs in the system prompt, and neither belongs in a tool&#39;s return value. Whatever a tool returns is replayed as history for the life of the conversation.</p>
+    <div class="entry__meta">
+      <span class="status status--fixed">fixed</span>
+<span>ai agent behavior</span><time datetime="2026-08-18">August 2026</time>      <span>2 min</span>
+    </div>
+  </div>
+</article>
+<article class="entry" data-status="fixed" data-category="methodology"
+         data-tags="sqs python django silent-failure instrument-error observability">
+  <div class="entry__n">
+    <span>012</span>
+    <span class="spanbar " style="margin-top:.5rem"
+          role="img" aria-label="relative weight 7 of 10"><i style="width:70%"></i></span>
+  </div>
+  <div>
+    <h2 class="entry__title"><a href="/ahmedamer/lessons/check-the-earliest-artifact-you-persist/">I was wrong three times before I asked the right question</a></h2>
+    <p class="entry__sum">Messages were disappearing. Three careful hypotheses, all disproven, before a single query settled it. The generalisable move is asking what the earliest thing you write down is, before your own logic can discard anything.</p>
+    <p class="entry__principle">When input goes missing, query the earliest artifact you persist before business logic runs. Everything downstream cannot distinguish &#34;never arrived&#34; from &#34;arrived and was discarded.&#34;</p>
+    <div class="entry__meta">
+      <span class="status status--fixed">fixed</span>
+<span>methodology</span><time datetime="2026-08-14">August 2026</time>      <span>3 min</span>
+    </div>
+  </div>
+</article>
+<article class="entry" data-status="fixed" data-category="discovery"
+         data-tags="whatsapp python django mysql silent-failure api-contracts data-hygiene multi-tenancy">
+  <div class="entry__n">
+    <span>013</span>
+    <span class="spanbar " style="margin-top:.5rem"
+          role="img" aria-label="relative weight 9 of 10"><i style="width:90%"></i></span>
+  </div>
+  <div>
+    <h2 class="entry__title"><a href="/ahmedamer/lessons/meta-stopped-sending-the-phone-number/">Meta stopped sending the phone number, and we dropped the message silently</a></h2>
+    <p class="entry__sum">WhatsApp began rolling out usernames. Senders who adopted one arrived with no phone number in the payload, our ingest discarded them with a bare continue, and nobody found out from an alert.</p>
+    <p class="entry__principle">A guard that discards input must log what it discarded. Silence is indistinguishable from the case never occurring, and platform contracts change without asking you.</p>
+    <div class="entry__meta">
+      <span class="status status--fixed">fixed</span>
+<span>discovery</span><time datetime="2026-08-13">August 2026</time>      <span>3 min</span>
+    </div>
+  </div>
+</article>
+<article class="entry" data-status="fixed" data-category="incident"
+         data-tags="django mysql python qdrant silent-failure data-integrity">
+  <div class="entry__n">
+    <span>014</span>
+    <span class="spanbar " style="margin-top:.5rem"
+          role="img" aria-label="relative weight 6 of 10"><i style="width:60%"></i></span>
+  </div>
+  <div>
+    <h2 class="entry__title"><a href="/ahmedamer/lessons/catching-an-exception-does-not-contain-it/">Catching an exception does not contain it</a></h2>
+    <p class="entry__sum">A best-effort helper that swallowed its own errors still broke the caller&#39;s next query, because the failed statement had already marked the transaction for rollback. It never reproduced locally, for an instructive reason.</p>
+    <p class="entry__principle">A caught database exception still poisons the surrounding transaction. Only a savepoint contains it — try/except contains the control flow, not the connection state.</p>
+    <div class="entry__meta">
+      <span class="status status--fixed">fixed</span>
+<span>incident</span><time datetime="2026-08-05">August 2026</time>      <span>2 min</span>
+    </div>
+  </div>
+</article>
+<article class="entry" data-status="fixed" data-category="deployment"
+         data-tags="docker python instrument-error deployment-drift cost">
+  <div class="entry__n">
+    <span>015</span>
+    <span class="spanbar " style="margin-top:.5rem"
+          role="img" aria-label="relative weight 5 of 10"><i style="width:50%"></i></span>
+  </div>
+  <div>
+    <h2 class="entry__title"><a href="/ahmedamer/lessons/du-lies-about-sparse-files/">The 466 MB directory that reports as 296 KB</a></h2>
+    <p class="entry__sum">A container image was heavy because of a directory the usual size command says is tiny. Sparse files have an apparent size and an allocated size, and a build context archives the apparent one.</p>
+    <p class="entry__principle">Measure the thing the consumer measures. A build context archives apparent size; the tool you reach for reports allocated size. They are different numbers for the same directory.</p>
+    <div class="entry__meta">
+      <span class="status status--fixed">fixed</span>
+<span>deployment</span><time datetime="2026-07-22">July 2026</time>      <span>2 min</span>
+    </div>
+  </div>
+</article>
+<article class="entry" data-status="fixed" data-category="incident"
+         data-tags="gemini python django mysql guardrails false-positives measurement baselines llm-behaviour">
+  <div class="entry__n">
+    <span>016</span>
+    <span class="spanbar " style="margin-top:.5rem"
+          role="img" aria-label="relative weight 10 of 10"><i style="width:100%"></i></span>
+  </div>
+  <div>
+    <h2 class="entry__title"><a href="/ahmedamer/lessons/validator-blocked-more-orders-than-the-bug/">The guard blocked more orders than the bug it was built to stop</a></h2>
+    <p class="entry__sum">A safety stage added to stop the agent from confirming orders it had never placed turned out to be rejecting two-thirds of legitimate orders. Its unit tests passed because they stubbed the exact component that was broken.</p>
+    <p class="entry__principle">A stage whose verdict nothing can corroborate is the stage that will produce your false positives, however carefully its prompt is written.</p>
+    <div class="entry__meta">
+      <span class="status status--fixed">fixed</span>
+<span>incident</span><time datetime="2026-07-14">July 2026</time>      <span>4 min</span>
+    </div>
+  </div>
+</article>
+</div>
+</main>
+
+<footer class="shell foot">
+  <span>Ahmed Amer — AI Engineer, Cairo, Egypt</span>
+  <span class="foot__right">
+    <a href="https://github.com/ahmedAmer8">GitHub</a>
+    <a href="https://www.linkedin.com/in/Ahmad-Amer">LinkedIn</a>
+    <a href="mailto:ahmed.m.amer821@gmail.com">Email</a>
+    <a href="/ahmedamer/colophon/">Colophon</a>
+  </span>
+</footer>
+
+<div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search__panel">
+    <label class="visually-hidden" for="q">Search projects, lessons, notes and topics</label>
+    <input class="search__input" id="q" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Search lessons, projects, topics…">
+    <ul class="search__results" id="results" role="listbox" aria-label="Results"></ul>
+    <div class="search__foot">
+      <span>↑↓ move</span><span>↵ open</span><span>esc close</span>
+    </div>
+  </div>
+</div>
+
+<script src="/ahmedamer/static/js/site.js" defer></script>
+</body>
+</html>

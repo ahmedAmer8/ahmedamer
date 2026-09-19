@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Colophon — Ahmed Amer</title>
+<meta name="description" content="How this site is built, and why it is built that way.">
+<link rel="canonical" href="https://ahmedamer8.github.io/ahmedamer/colophon/">
+<meta property="og:site_name" content="Ahmed Amer">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Colophon — Ahmed Amer">
+<meta property="og:description" content="How this site is built, and why it is built that way.">
+<meta property="og:url" content="https://ahmedamer8.github.io/ahmedamer/colophon/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#e8ebe4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161c1b" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/ahmedamer/static/fonts/newsreader-normal-300_700-1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/ahmedamer/static/fonts/plexmono-normal-400-0.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/ahmedamer/static/css/site.css">
+<link rel="icon" href="/ahmedamer/static/img/mark.svg" type="image/svg+xml">
+<script>
+  document.documentElement.classList.remove('no-js');
+  try {
+    var t = localStorage.getItem('theme');
+    if (t) document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" id="progress" hidden></div>
+
+<header class="masthead">
+  <div class="shell masthead__in">
+    <a class="wordmark" href="/ahmedamer/">AHMED AMER</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/ahmedamer/work/"
+>Work</a>
+      <a href="/ahmedamer/lessons/"
+>Lessons</a>
+      <a href="/ahmedamer/notes/"
+>Notes</a>
+      <a href="/ahmedamer/map/"
+>Map</a>
+      <a href="/ahmedamer/experience/"
+>Experience</a>
+      <a href="/ahmedamer/about/"
+>About</a>
+    </nav>
+    <button class="searchbtn" id="searchbtn" aria-haspopup="dialog">Search <kbd>/</kbd></button>
+    <button class="themebtn" id="themebtn" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
+  </div>
+</header>
+
+<main id="main" class="shell page">
+<article class="article">
+  <div class="article__rail"><nav class="rail-axis" aria-label="On this page" data-rail></nav></div>
+  <div class="article__body">
+    <header class="article-head">
+      <h1>Colophon</h1>
+      <p class="dek">A site about measuring things should be willing to state its own
+        numbers.</p>
+    </header>
+    <div class="prose" data-prose>
+      <h2>Build</h2>
+      <p>Markdown with YAML frontmatter, rendered through Jinja2 by a single
+        <code>build.py</code> of about 500 lines. No framework, no bundler, no Node. The
+        machine I wrote it on has no package manager for JavaScript, which turned out to
+        be a useful constraint rather than an obstacle — for a text site with one custom
+        interaction, a template renderer is the right size of tool.</p>
+
+      <h2>Relationships are derived, not maintained</h2>
+      <p>Each entry declares what it relates to by slug. The graph, the search index, the
+        "see also" blocks and the tag pages are all computed from those declarations at
+        build time. <code>build.py --check</code> fails if any reference points at
+        something that does not exist, so an internal link cannot rot silently — which is
+        the failure mode <a href="/ahmedamer/lessons/">several entries here</a> are about.</p>
+
+      <h2>JavaScript</h2>
+      <p>Hand-written, no dependencies. Four behaviours: search, the trace interaction, the
+        relationship graph, and the section rail. Every one degrades — the trace renders
+        fully expanded without JavaScript, the graph has a complete written index below it,
+        and search is the only thing that genuinely needs it.</p>
+
+      <h2>Type</h2>
+      <p>Newsreader for prose, IBM Plex Mono for every number and label, IBM Plex Sans
+        Arabic for Arabic text. Self-hosted subsets, six faces, 252&nbsp;KB total. In an
+        instrument the numerals are the content, so they get their own face.</p>
+
+      <h2>The bars</h2>
+      <p>Every horizontal bar on this site encodes a real number. The homepage waterfall is
+        actual mean durations per call type from the tracer I built. The bars in an
+        investigation are relative weights of each stage. None of them are decoration, which
+        is the one rule the design has.</p>
+
+      <h2>Keyboard</h2>
+      <table>
+        <tr><th><code>/</code></th><td>search</td></tr>
+        <tr><th><code>Esc</code></th><td>close search</td></tr>
+        <tr><th><code>↑ ↓</code></th><td>move through results</td></tr>
+        <tr><th><code>← →</code></th><td>step through an investigation</td></tr>
+      </table>
+
+      <h2>Hosting</h2>
+      <p>GitHub Pages. GitHub Actions runs the Python build on push and deploys the output.
+        No analytics, no cookies, no third-party requests — the fonts are served from the
+        same origin as everything else.</p>
+
+      <h2>Accuracy</h2>
+      <p>Every figure quoted on this site comes from a measurement I can point at: a trace
+        table, a query against a production dump, a commit. Client names, account
+        identifiers, customer data and revenue figures are deliberately absent. Where I am
+        uncertain, the text says so rather than rounding the uncertainty away.</p>
+    </div>
+  </div>
+  <aside class="article__margin">
+    <div class="mnote"><b>Source</b><p>The generator and content are in a public repository.
+      <a href="https://github.com/ahmedAmer8/ahmedamer">View source</a>.</p></div>
+  </aside>
+</article>
+</main>
+
+<footer class="shell foot">
+  <span>Ahmed Amer — AI Engineer, Cairo, Egypt</span>
+  <span class="foot__right">
+    <a href="https://github.com/ahmedAmer8">GitHub</a>
+    <a href="https://www.linkedin.com/in/Ahmad-Amer">LinkedIn</a>
+    <a href="mailto:ahmed.m.amer821@gmail.com">Email</a>
+    <a href="/ahmedamer/colophon/">Colophon</a>
+  </span>
+</footer>
+
+<div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search__panel">
+    <label class="visually-hidden" for="q">Search projects, lessons, notes and topics</label>
+    <input class="search__input" id="q" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Search lessons, projects, topics…">
+    <ul class="search__results" id="results" role="listbox" aria-label="Results"></ul>
+    <div class="search__foot">
+      <span>↑↓ move</span><span>↵ open</span><span>esc close</span>
+    </div>
+  </div>
+</div>
+
+<script src="/ahmedamer/static/js/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The guard blocked more orders than the bug it was built to stop — Ahmed Amer</title>
+<meta name="description" content="A safety stage added to stop the agent from confirming orders it had never placed turned out to be rejecting two-thirds of legitimate orders. Its unit tests passed because they stubbed the exact component that was broken.">
+<link rel="canonical" href="https://ahmedamer8.github.io/ahmedamer/lessons/validator-blocked-more-orders-than-the-bug/">
+<meta property="og:site_name" content="Ahmed Amer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The guard blocked more orders than the bug it was built to stop — Ahmed Amer">
+<meta property="og:description" content="A safety stage added to stop the agent from confirming orders it had never placed turned out to be rejecting two-thirds of legitimate orders. Its unit tests passed because they stubbed the exact component that was broken.">
+<meta property="og:url" content="https://ahmedamer8.github.io/ahmedamer/lessons/validator-blocked-more-orders-than-the-bug/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#e8ebe4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161c1b" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/ahmedamer/static/fonts/newsreader-normal-300_700-1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/ahmedamer/static/fonts/plexmono-normal-400-0.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/ahmedamer/static/css/site.css">
+<link rel="icon" href="/ahmedamer/static/img/mark.svg" type="image/svg+xml">
+<script>
+  document.documentElement.classList.remove('no-js');
+  try {
+    var t = localStorage.getItem('theme');
+    if (t) document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Person", "name": "Ahmed Amer"}, "datePublished": "2026-07-14", "description": "A safety stage added to stop the agent from confirming orders it had never placed turned out to be rejecting two-thirds of legitimate orders. Its unit tests passed because they stubbed the exact component that was broken.", "headline": "The guard blocked more orders than the bug it was built to stop", "url": "https://ahmedamer8.github.io/ahmedamer/lessons/validator-blocked-more-orders-than-the-bug/"}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" id="progress" hidden></div>
+
+<header class="masthead">
+  <div class="shell masthead__in">
+    <a class="wordmark" href="/ahmedamer/">AHMED AMER</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/ahmedamer/work/"
+>Work</a>
+      <a href="/ahmedamer/lessons/"
+aria-current="page">Lessons</a>
+      <a href="/ahmedamer/notes/"
+>Notes</a>
+      <a href="/ahmedamer/map/"
+>Map</a>
+      <a href="/ahmedamer/experience/"
+>Experience</a>
+      <a href="/ahmedamer/about/"
+>About</a>
+    </nav>
+    <button class="searchbtn" id="searchbtn" aria-haspopup="dialog">Search <kbd>/</kbd></button>
+    <button class="themebtn" id="themebtn" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
+  </div>
+</header>
+
+<main id="main" class="shell page">
+<article class="article">
+  <div class="article__rail">
+    <nav class="rail-axis" aria-label="On this page" data-rail></nav>
+  </div>
+
+  <div class="article__body">
+    <header class="article-head">
+      <h1>The guard blocked more orders than the bug it was built to stop</h1>
+      <p class="dek">A safety stage added to stop the agent from confirming orders it had never placed turned out to be rejecting two-thirds of legitimate orders. Its unit tests passed because they stubbed the exact component that was broken.</p>
+      <div class="article-head__meta">
+        <span class="status status--fixed">fixed</span>
+<span>incident</span><time datetime="2026-07-14">14 July 2026</time>        <span>4 min</span>
+      </div>
+    </header>
+
+    <section class="trace" id="trace" data-trace>
+  <div class="trace__head">
+    <h2 class="trace__legend">The investigation</h2>
+    <span class="trace__hint" aria-hidden="true">← → to step through</span>
+  </div>
+  <h3 class="visually-hidden">observation — Orders that should have gone through were ending in human handoff.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="true" aria-controls="tp-1">
+    <span class="trace__stage">observation</span>
+    <span class="trace__track"><i style="width:66.7%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-1" >
+    <p><strong>Orders that should have gone through were ending in human handoff.</strong></p>
+    <p>The validator sits between the agent deciding to place an order and the order actually being created. It was blocking, and the blocks were reaching customers as “let me get someone to help you with that” — at the exact moment they had agreed to pay.</p>
+
+<div class="trace__evidence"><p>Terminal outcomes across the audited window:</p>
+<pre class="code"><code>placed         30 %
+human handoff  64 %
+</code></pre>
+<p>Two thirds of conversations that reached a placement attempt ended with a person
+having to intervene.</p>
+</div>  </div>
+  <h3 class="visually-hidden">assumption — We assumed the validator was catching real defects, and the agent was the problem.</h3>
+  <button class="trace__step" type="button" data-wrong="true"
+          aria-expanded="false" aria-controls="tp-2">
+    <span class="trace__stage">assumption</span>
+    <span class="trace__track"><i style="width:33.3%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-2" hidden>
+    <p><strong>We assumed the validator was catching real defects, and the agent was the problem.</strong></p>
+    <p>This was the comfortable reading, and it had supporting evidence. The validator <em>did</em> catch real defects — hallucinated payment methods, modifier identifiers belonging to the wrong product. It had 143 passing unit tests and a backtest across 31 recorded conversations. Everything said it was working.</p>
+
+  </div>
+  <h3 class="visually-hidden">probe — Replay every recorded placement through the real validator, not a stub.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="false" aria-controls="tp-3">
+    <span class="trace__stage">probe</span>
+    <span class="trace__track"><i style="width:100.0%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-3" hidden>
+    <p><strong>Replay every recorded placement through the real validator, not a stub.</strong></p>
+    <p>The decisive move was refusing to trust the tests. Instead of asserting on the validator’s routing given a fixed model verdict, replay each real payload and its real transcript through the live model and compare against a fact that needs no judgement: did the backend actually accept this order?</p>
+
+<div class="trace__evidence"><p>616 validator runs across 425 conversations, producing 626 placement attempts.
+For 358 of those, the order creation path had <strong>demonstrably accepted</strong> the
+payload — the order row exists.</p>
+<p>Of those 358, the validator would have blocked <strong>235 (65.6%)</strong>.</p>
+</div>  </div>
+  <h3 class="visually-hidden">root cause — One stage judged whether the customer had confirmed, using nothing but its own reading.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="false" aria-controls="tp-4">
+    <span class="trace__stage">root cause</span>
+    <span class="trace__track"><i style="width:100.0%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-4" hidden>
+    <p><strong>One stage judged whether the customer had confirmed, using nothing but its own reading.</strong></p>
+    <p>A first stage asked the model whether the assistant’s last message had restated the whole order and whether the customer’s reply accepted it. Every other check compared the payload against the database. This one compared a transcript against an opinion — and it was the only stage whose verdict could act with no corroboration at all.</p>
+
+<div class="trace__evidence"><p>Its <code>confirmation_shown = false</code> verdict was wrong in <strong>178 of 180</strong> cases where
+it could be adjudicated. The total <em>was</em> in the assistant’s recent messages, every
+time.</p>
+<p>The dominant failure shape, 164 of 228 blocks:</p>
+<pre class="code"><code>confirmation_shown = false   ← the model&#x27;s claim
+backend_accepted   = true    ← the fact
+</code></pre>
+</div>  </div>
+  <h3 class="visually-hidden">dead end — Trying to fix the prompt.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="false" aria-controls="tp-5">
+    <span class="trace__stage">dead end</span>
+    <span class="trace__track"><i style="width:33.3%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-5" hidden>
+    <p><strong>Trying to fix the prompt.</strong></p>
+    <p>The first instinct was to rewrite the stage’s instructions — be more explicit about what counts as a confirmation, give it examples, widen the window of messages it reads. This is the reflex that wastes the most time in LLM work. The stage was not misreading its instructions. It was being asked to make a judgement call, at scale, with no ground truth available to check itself against, and then being allowed to act on it.</p>
+
+  </div>
+  <h3 class="visually-hidden">fix — Delete the stage. Gate every remaining model claim on database evidence.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="false" aria-controls="tp-6">
+    <span class="trace__stage">fix</span>
+    <span class="trace__track"><i style="width:66.7%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-6" hidden>
+    <p><strong>Delete the stage. Gate every remaining model claim on database evidence.</strong></p>
+    <p>Removing it loses nothing: a genuinely cancelled order is still caught by the argument review, which reads the same transcript but whose claims must survive corroboration. Around that, a set of drop rules — each traceable to a specific production incident — discard any model claim the database cannot confirm. Dropped claims are logged rather than silently ignored, because that is also the only way a genuine catch could disappear.</p>
+
+<div class="trace__evidence"><p>Claims the model is no longer permitted to make:</p>
+<pre class="code" data-lang="python"><span class="code-lang">python</span><code><span class="n">_MODEL_FORBIDDEN_FIELDS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"total"</span><span class="p">,</span> <span class="s2">"order_total"</span><span class="p">,</span> <span class="s2">"price"</span><span class="p">,</span> <span class="s2">"prices"</span><span class="p">,</span>
+    <span class="s2">"fee"</span><span class="p">,</span> <span class="s2">"fees"</span><span class="p">,</span> <span class="s2">"subtotal"</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre>
+<p>Money is computed in Python by the same function that creates the order. In one
+conversation the model had insisted a stale figure was authoritative and blocked
+the correct one <strong>eight times</strong>.</p>
+</div>  </div>
+  <h3 class="visually-hidden">verification — Block rate 68.4% to 3.9%, with zero new blocks.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="false" aria-controls="tp-7">
+    <span class="trace__stage">verification</span>
+    <span class="trace__track"><i style="width:66.7%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-7" hidden>
+    <p><strong>Block rate 68.4% to 3.9%, with zero new blocks.</strong></p>
+    <p>Measured the same way as the diagnosis — replaying real payloads against the real model — so the before and after numbers are comparable.</p>
+
+<div class="trace__evidence"><table>
+<thead>
+<tr>
+<th></th>
+<th>Before</th>
+<th>After</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Blocked, of 408 accepted attempts</td>
+<td>279 (68.4%)</td>
+<td><strong>16 (3.9%)</strong></td>
+</tr>
+<tr>
+<td>Newly blocked (regressions)</td>
+<td>—</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Recovered</td>
+<td>—</td>
+<td><strong>263</strong></td>
+</tr>
+<tr>
+<td>Terminal outcome: placed</td>
+<td>30%</td>
+<td><strong>86%</strong></td>
+</tr>
+<tr>
+<td>Terminal outcome: human handoff</td>
+<td>64%</td>
+<td><strong>1%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Authoritative total matched the amount charged in 258 of 258 cases, before
+and after.</p>
+</div>  </div>
+</section>
+
+
+    <div class="prose" data-prose><h2>The comfortable version of this story</h2>
+<p>An AI agent sometimes confirmed orders it had not actually placed. We built a guard.
+The guard worked.</p>
+<p>Both sentences are true. The guard did catch hallucinated payment methods and modifier
+identifiers belonging to other products. It is still in the system. What is missing is
+that while it was catching those, it was also destroying about two-thirds of the
+legitimate orders that reached it, and we did not know for months.</p>
+<h2>Why the tests did not catch it</h2>
+<p>This is the part I think generalises furthest.</p>
+<p>There were 143 unit tests over the validator and they all passed. There was a backtest
+across 31 real conversations and it passed too. Both of them <strong>stubbed the model call</strong>.</p>
+<p>That is a reasonable thing to do. Model calls are slow, expensive and
+non-deterministic, and a test suite that hits a live API is a test suite nobody runs.
+So the tests supplied a fixed verdict and asserted that the validator routed it
+correctly. Which it did, perfectly, every time.</p>
+<aside class="callout callout--principle"><p>A test that stubs the model tests your routing. It cannot tell you anything about
+detection. If the component under test contains a model, the only measurement that
+means anything is a replay against the real one.</p>
+</aside>
+<p>The backtest was worse, and more subtly so. It injected the model’s claims and checked
+what the validator did with them — so it was measuring the same thing the unit tests
+measured, with more ceremony. It looked like an end-to-end validation and was not one.</p>
+<h2>Finding a ground truth that needed no judgement</h2>
+<p>The thing that unlocked this was realising there was an oracle available that involved
+no opinion at all.</p>
+<p>The order creation path either accepts a payload or it does not. If it accepted one,
+then by definition that payload was well-formed enough to become a real order that a
+real kitchen cooked. So: take every recorded placement attempt, find the ones the
+backend accepted, and ask what the validator <em>would have done</em> to them.</p>
+<p>That question has an unambiguous answer, and the answer was 65.6%.</p>
+<p>I want to be precise about why this worked, because “find a ground truth” is easy
+advice and usually unavailable. It worked because the system already contained a
+component that made the same decision by different means, deterministically, and
+recorded its result. The validator and the order creation path both answer “is this
+payload acceptable.” One of them writes a row when it says yes.</p>
+<h2>What the fix actually was</h2>
+<p>Not a better prompt. A structural rule about which claims are allowed to act.</p>
+<p>Every check now falls into one of two categories. <strong>Deterministic checks</strong> compare the
+payload against the database — does this identifier exist, does this modifier belong
+to a group of its own product, does this delivery zone contain these coordinates. These
+run before the model is consulted and they cannot produce a false positive, because
+they are not opinions.</p>
+<p><strong>Model claims</strong> may only act if Python can corroborate them. Each drop rule came from
+a specific incident:</p>
+<ul>
+<li>A claim about money is discarded outright. Totals are computed in code.</li>
+<li>A claim about a missing branch on a <em>delivery</em> order is discarded, because branches
+only apply to pickup.</li>
+<li>A claim that a field is missing when the payload visibly populates it is discarded —
+this one had produced an infinite loop, because nothing the agent re-sent could ever
+satisfy it.</li>
+<li>A claim that the correct value is X, where X resolves to the identifier the payload
+already contains, is discarded. This is the catalogue-misspelling case: the customer
+spelled a place name correctly, our catalogue spelled it wrong, and the model
+faithfully reported a mismatch between two spellings of the same thing.</li>
+<li>Every claim about a delivery zone is discarded, always. The customer never names a
+zone. A map pin does, through a geofence.</li>
+</ul>
+<p>And there is no permanent block. Four terminal states, and the worst of them hands off
+to a human with the order intact rather than looping.</p>
+<h2>The general shape</h2>
+<p>I have come to think of this as the defining question for any guard with a model in
+it. Not “is the prompt good” but: <strong>if this stage is wrong, what stops it?</strong></p>
+<p>For the deterministic checks, the database stops them. For the argument review, the
+corroboration rules stop it. For the confirmation gate, nothing stopped it — which is
+precisely why it, alone among the stages, went wrong at scale and stayed wrong.</p>
+<p>The prompt was not the variable. The absence of a check on the prompt’s output was.</p>
+</div>
+
+    <aside class="callout callout--principle">
+      <p class="callout-title">The principle</p>
+      <p>A stage whose verdict nothing can corroborate is the stage that will produce your false positives, however carefully its prompt is written.</p>
+    </aside>
+
+      <section class="related">
+    <div class="rule-measured"><h2 class="rule-measured__label">Lessons</h2>
+      <span class="rule-measured__bar"></span></div>
+    <ul>
+      <li><a href="/ahmedamer/lessons/the-slowest-call-was-the-guard/">The slowest thing in the system was the thing protecting it</a><span class="meta">The order validator took 10.38 seconds on average — more than twice the agent turn it guards. The cause was not the model. It was reasoning nobody had capped, and measuring it correctly required interleaving the two arms.</span></li>
+    </ul>
+  </section>
+  <section class="related">
+    <div class="rule-measured"><h2 class="rule-measured__label">Notes</h2>
+      <span class="rule-measured__bar"></span></div>
+    <ul>
+      <li><a href="/ahmedamer/notes/which-direction-does-your-guard-fail/">Which direction does your guard fail?</a><span class="meta">The single most consistent principle I have arrived at: things on the customer&#39;s path fail open, things that verify correctness fail closed. Nearly every serious incident I have worked on is that rule applied backwards.</span></li>
+    </ul>
+  </section>
+  <section class="related">
+    <div class="rule-measured"><h2 class="rule-measured__label">Projects</h2>
+      <span class="rule-measured__bar"></span></div>
+    <ul>
+      <li><a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><span class="meta">A multi-tenant system where customers order food by chatting on WhatsApp, an LLM agent builds the cart and takes payment, and the order lands in the restaurant&#39;s point-of-sale. Several established food and beverage brands run on it.</span></li>
+    </ul>
+  </section>
+
+
+    <section class="related">
+      <div class="rule-measured"><span class="rule-measured__label">See also</span>
+        <span class="rule-measured__bar"></span></div>
+      <ul>
+          <li><a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><span class="meta">Project</span></li>
+          <li><a href="/ahmedamer/lessons/the-slowest-call-was-the-guard/">The slowest thing in the system was the thing protecting it</a><span class="meta">Lesson</span></li>
+      </ul>
+    </section>
+  </div>
+
+  <aside class="article__margin">
+    <div class="mnote">
+  <b>Tagged</b>
+  <div class="chips">
+      <a href="/ahmedamer/map/#tech-gemini">Google Gemini</a>
+      <a href="/ahmedamer/map/#tech-python">Python</a>
+      <a href="/ahmedamer/map/#tech-django">Django</a>
+      <a href="/ahmedamer/map/#tech-mysql">MySQL</a>
+      <a href="/ahmedamer/map/#topic-guardrails">Guardrails</a>
+      <a href="/ahmedamer/map/#topic-false-positives">False positives</a>
+      <a href="/ahmedamer/map/#topic-measurement">Measurement</a>
+      <a href="/ahmedamer/map/#topic-baselines">Baselines</a>
+      <a href="/ahmedamer/map/#topic-llm-behaviour">LLM behaviour</a>
+  </div>
+</div>
+
+    <div class="mnote"><b>Precision, audited</b><p>A separate audit of 616 production runs scored the validator’s claims by type.
+Two categories scored <strong>0%</strong>: disputed order totals, and zone-name mismatches.
+Both were claims about things the model could not see.</p>
+</div>
+    <div class="mnote"><b>Enforcement multiplies</b><p>The same claim, made advisory, had a 28.8% false-positive rate. Enforced, 61.4%.
+Enforcement creates retry loops, and each retry generates another wrong claim.</p>
+</div>
+  </aside>
+</article>
+</main>
+
+<footer class="shell foot">
+  <span>Ahmed Amer — AI Engineer, Cairo, Egypt</span>
+  <span class="foot__right">
+    <a href="https://github.com/ahmedAmer8">GitHub</a>
+    <a href="https://www.linkedin.com/in/Ahmad-Amer">LinkedIn</a>
+    <a href="mailto:ahmed.m.amer821@gmail.com">Email</a>
+    <a href="/ahmedamer/colophon/">Colophon</a>
+  </span>
+</footer>
+
+<div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search__panel">
+    <label class="visually-hidden" for="q">Search projects, lessons, notes and topics</label>
+    <input class="search__input" id="q" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Search lessons, projects, topics…">
+    <ul class="search__results" id="results" role="listbox" aria-label="Results"></ul>
+    <div class="search__foot">
+      <span>↑↓ move</span><span>↵ open</span><span>esc close</span>
+    </div>
+  </div>
+</div>
+
+<script src="/ahmedamer/static/js/site.js" defer></script>
+</body>
+</html>

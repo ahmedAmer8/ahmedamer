@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Which direction does your guard fail? — Ahmed Amer</title>
+<meta name="description" content="The single most consistent principle I have arrived at: things on the customer&#39;s path fail open, things that verify correctness fail closed. Nearly every serious incident I have worked on is that rule applied backwards.">
+<link rel="canonical" href="https://ahmedamer8.github.io/ahmedamer/notes/which-direction-does-your-guard-fail/">
+<meta property="og:site_name" content="Ahmed Amer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Which direction does your guard fail? — Ahmed Amer">
+<meta property="og:description" content="The single most consistent principle I have arrived at: things on the customer&#39;s path fail open, things that verify correctness fail closed. Nearly every serious incident I have worked on is that rule applied backwards.">
+<meta property="og:url" content="https://ahmedamer8.github.io/ahmedamer/notes/which-direction-does-your-guard-fail/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#e8ebe4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161c1b" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/ahmedamer/static/fonts/newsreader-normal-300_700-1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/ahmedamer/static/fonts/plexmono-normal-400-0.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/ahmedamer/static/css/site.css">
+<link rel="icon" href="/ahmedamer/static/img/mark.svg" type="image/svg+xml">
+<script>
+  document.documentElement.classList.remove('no-js');
+  try {
+    var t = localStorage.getItem('theme');
+    if (t) document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "author": {"@type": "Person", "name": "Ahmed Amer"}, "datePublished": "2026-09-12", "description": "The single most consistent principle I have arrived at: things on the customer\u0027s path fail open, things that verify correctness fail closed. Nearly every serious incident I have worked on is that rule applied backwards.", "headline": "Which direction does your guard fail?", "url": "https://ahmedamer8.github.io/ahmedamer/notes/which-direction-does-your-guard-fail/"}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" id="progress" hidden></div>
+
+<header class="masthead">
+  <div class="shell masthead__in">
+    <a class="wordmark" href="/ahmedamer/">AHMED AMER</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/ahmedamer/work/"
+>Work</a>
+      <a href="/ahmedamer/lessons/"
+>Lessons</a>
+      <a href="/ahmedamer/notes/"
+aria-current="page">Notes</a>
+      <a href="/ahmedamer/map/"
+>Map</a>
+      <a href="/ahmedamer/experience/"
+>Experience</a>
+      <a href="/ahmedamer/about/"
+>About</a>
+    </nav>
+    <button class="searchbtn" id="searchbtn" aria-haspopup="dialog">Search <kbd>/</kbd></button>
+    <button class="themebtn" id="themebtn" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
+  </div>
+</header>
+
+<main id="main" class="shell page">
+<article class="article">
+  <div class="article__rail">
+    <nav class="rail-axis" aria-label="On this page" data-rail></nav>
+  </div>
+
+  <div class="article__body">
+    <header class="article-head">
+      <h1>Which direction does your guard fail?</h1>
+      <p class="dek">The single most consistent principle I have arrived at: things on the customer&#39;s path fail open, things that verify correctness fail closed. Nearly every serious incident I have worked on is that rule applied backwards.</p>
+      <div class="article-head__meta">
+        <span class="status status--shipped">shipped</span>
+<span>methodology</span><time datetime="2026-09-12">12 September 2026</time>        <span>5 min</span>
+      </div>
+    </header>
+
+    
+
+    <div class="prose" data-prose><p>Every guard fails. That is not a criticism of guards — it is a property of software
+that runs long enough. The question that turns out to matter is not whether it fails
+but <strong>which way</strong>, and that is a decision somebody makes, or fails to make, at the
+moment the guard is written.</p>
+<p>I did not start with a rule. I arrived at one after enough incidents shared a shape.</p>
+<h2>The rule</h2>
+<blockquote>
+<p>Things on the customer’s path fail <strong>open</strong>. Things that verify correctness fail
+<strong>closed</strong>, loudly, with a non-zero exit.</p>
+<p>Never block a customer. Always break a build.</p>
+</blockquote>
+<p>Everything below is why, and where it gets uncomfortable.</p>
+<h2>Failing open, on the path</h2>
+<p>A customer is in a conversation, waiting. Every component between their message and
+the reply has the same obligation: if you break, get out of the way.</p>
+<p>So the prompt-injection classifier, if it errors, lets the message through. The message
+ordering gate, if its store is unreachable, stops gating. The order validator, if it
+cannot run, allows placement and sends an alert. The cost accounting, if its schema is
+behind the code, swallows the failure rather than taking down the turn. Model
+resolution, if the database is unreachable, falls back to a default rather than
+refusing to pick.</p>
+<p>Each of those is a decision to accept a small, bounded risk — an injection gets
+through, an order goes unvalidated — rather than a certain, total failure, which is a
+customer who gets nothing.</p>
+<p>The uncomfortable part is that this is genuinely a security trade-off, and I want to
+be honest about it rather than present it as free. A fail-open injection guard means a
+broken guard is indistinguishable from a quiet day. That is not hypothetical: our
+deflection rate
+<a href="/ahmedamer/lessons/injection-deflections-stopped-and-i-cannot-explain-it/">went to zero and I still cannot say whether detection went dark or the guard had been
+wrong all along</a>.
+Fail-open is the right default here because the asymmetry of costs is real, but it
+buys reliability with observability, and the bill comes due.</p>
+<h2>Failing closed, off the path</h2>
+<p>The same system is uncompromising about anything that checks whether it is telling the
+truth.</p>
+<p>The command that verifies AI cost recomputes spend from raw usage rows and exits
+non-zero if it disagrees with the rollup by more than a cent. The command that checks
+model registration exits non-zero when a use case resolves to an unpriced model — or,
+in the other direction, when production has run a model the code does not know about.
+The command that verifies latency instrumentation checks that accounted time never
+exceeds measured duration, that every child span lies inside its parent, that every
+model span reconciles with an independently recorded token row. There is an
+import-time assertion that every tool advertised to the model has a dispatch entry,
+because two production bugs came from that going out of sync.</p>
+<p>All of these break a build. None of them can affect a customer, because none of them
+run anywhere near one.</p>
+<aside class="callout callout--principle"><p>The same system can hold both stances without contradiction, because they apply to
+different populations. A customer experiences unavailability. A developer experiences
+a failed command. Only one of those is expensive.</p>
+</aside>
+<h2>Where it gets hard: the guard that fails the wrong way</h2>
+<p>The clean version above is what the system looks like now. Most of the incidents that
+produced it were the rule applied backwards.</p>
+<p>The order validator is the clearest case. It was built to fail closed — to block an
+order it was unsure about — on the entirely reasonable grounds that a wrong order is
+worse than a delayed one. In practice it
+<a href="/ahmedamer/lessons/validator-blocked-more-orders-than-the-bug/">blocked 66% of orders the backend had demonstrably accepted</a>,
+and every one of those blocks reached a customer as a refusal at the moment they had
+agreed to pay.</p>
+<p>The injection classifier is the same story in miniature:
+<a href="/ahmedamer/lessons/classifier-that-deflected-paying-customers/">132 people scanned a QR code and were told the assistant could not help
+them</a>.</p>
+<p>Both were guards protecting real risks. Both were pointed the wrong way, and in both
+cases the damage was larger than the risk they were built to mitigate — and much
+harder to see, because a blocked customer produces no error, just a slightly worse
+number somewhere nobody was looking.</p>
+<h2>What a fail-closed guard needs before it can exist</h2>
+<p>I have ended up with three requirements before I will point a guard at a customer.</p>
+<p><strong>A quantified false-positive surface.</strong> Not an argument that it should not fire
+wrongly — a count against production data of how many existing records it would reject.
+Before adding a hard block on customers with no phone number, we checked: zero of
+46,166. That number is what made it safe, and it is a sentence rather than a hope.</p>
+<p><strong>A terminal state that is not a loop.</strong> Every ask-the-customer-again path needs a hard
+cap and a defined ending. An unbounded retry is a stuck order dressed up as caution.
+The validator now has four terminal states and none of them is a permanent block — the
+worst case hands off to a person with the order intact.</p>
+<p><strong>Corroboration, if a model is involved.</strong> A model’s claim may only act if code can
+confirm it against the database. This is the structural version of the rule: rather
+than trusting the guard to be right, make it impossible for an uncorroborated claim to
+reach a customer. Money in particular is never a model’s to judge.</p>
+<h2>Say it in the code</h2>
+<p>The direction is not self-evident to the next reader, and a guard that looks like a
+bug is a guard somebody will “fix.”</p>
+<p>Our message-ordering gate does not gate when its store is unreachable, when no ledger
+row exists, or when an earlier message has been pending too long. Every one of those
+looks like a missing check. The comment says, in effect: this fails open by design,
+do not turn it into a block. Without that line, somebody reasonable would eventually
+tighten it, and conversations would stall.</p>
+<aside class="callout callout--principle"><p>A deliberate fail-open is indistinguishable from a missing guard unless you say so.
+The comment is not documentation — it is the thing that stops the next person undoing
+the decision.</p>
+</aside>
+<h2>The test I actually use</h2>
+<p>When I write anything that can reject, I ask three questions in order:</p>
+<ol>
+<li><strong>If this is wrong, who pays?</strong> If the answer is “a customer,” it fails open.</li>
+<li><strong>If it fails open, how would I know?</strong> If the answer is “I would not,” that is a
+monitoring gap to fix now, not later — see the deflection rate that went silently
+to zero.</li>
+<li><strong>What is the terminal state?</strong> If I cannot name one, I am not describing a guard,
+I am describing a loop.</li>
+</ol>
+<p>Most of what I know about this came from getting question one wrong, repeatedly, in
+production, with real orders attached.</p>
+</div>
+
+    <aside class="callout callout--principle">
+      <p class="callout-title">The principle</p>
+      <p>Never block a customer; always break a build. Decide a guard&#39;s failure direction before you write it, and put the reason in the code.</p>
+    </aside>
+
+    
+
+    <section class="related">
+      <div class="rule-measured"><span class="rule-measured__label">See also</span>
+        <span class="rule-measured__bar"></span></div>
+      <ul>
+          <li><a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><span class="meta">Project</span></li>
+          <li><a href="/ahmedamer/lessons/validator-blocked-more-orders-than-the-bug/">The guard blocked more orders than the bug it was built to stop</a><span class="meta">Lesson</span></li>
+          <li><a href="/ahmedamer/lessons/classifier-that-deflected-paying-customers/">The security guard was turning away customers, nondeterministically</a><span class="meta">Lesson</span></li>
+          <li><a href="/ahmedamer/lessons/injection-deflections-stopped-and-i-cannot-explain-it/">The security signal went to zero and both explanations are bad</a><span class="meta">Lesson</span></li>
+          <li><a href="/ahmedamer/lessons/cost-dashboard-overstated-by-3.8x/">The cost dashboard was wrong by 3.8x, confidently</a><span class="meta">Lesson</span></li>
+      </ul>
+    </section>
+  </div>
+
+  <aside class="article__margin">
+    <div class="mnote">
+  <b>Tagged</b>
+  <div class="chips">
+      <a href="/ahmedamer/map/#tech-python">Python</a>
+      <a href="/ahmedamer/map/#tech-django">Django</a>
+      <a href="/ahmedamer/map/#tech-gemini">Google Gemini</a>
+      <a href="/ahmedamer/map/#topic-fail-open">Failing open</a>
+      <a href="/ahmedamer/map/#topic-guardrails">Guardrails</a>
+      <a href="/ahmedamer/map/#topic-silent-failure">Silent failure</a>
+      <a href="/ahmedamer/map/#topic-observability">Observability</a>
+  </div>
+</div>
+
+  </aside>
+</article>
+</main>
+
+<footer class="shell foot">
+  <span>Ahmed Amer — AI Engineer, Cairo, Egypt</span>
+  <span class="foot__right">
+    <a href="https://github.com/ahmedAmer8">GitHub</a>
+    <a href="https://www.linkedin.com/in/Ahmad-Amer">LinkedIn</a>
+    <a href="mailto:ahmed.m.amer821@gmail.com">Email</a>
+    <a href="/ahmedamer/colophon/">Colophon</a>
+  </span>
+</footer>
+
+<div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search__panel">
+    <label class="visually-hidden" for="q">Search projects, lessons, notes and topics</label>
+    <input class="search__input" id="q" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Search lessons, projects, topics…">
+    <ul class="search__results" id="results" role="listbox" aria-label="Results"></ul>
+    <div class="search__foot">
+      <span>↑↓ move</span><span>↵ open</span><span>esc close</span>
+    </div>
+  </div>
+</div>
+
+<script src="/ahmedamer/static/js/site.js" defer></script>
+</body>
+</html>

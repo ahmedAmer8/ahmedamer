@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Map — Ahmed Amer</title>
+<meta name="description" content="How the projects, lessons, technologies and topics on this site connect.">
+<link rel="canonical" href="https://ahmedamer8.github.io/ahmedamer/map/">
+<meta property="og:site_name" content="Ahmed Amer">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Map — Ahmed Amer">
+<meta property="og:description" content="How the projects, lessons, technologies and topics on this site connect.">
+<meta property="og:url" content="https://ahmedamer8.github.io/ahmedamer/map/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#e8ebe4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161c1b" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/ahmedamer/static/fonts/newsreader-normal-300_700-1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/ahmedamer/static/fonts/plexmono-normal-400-0.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/ahmedamer/static/css/site.css">
+<link rel="icon" href="/ahmedamer/static/img/mark.svg" type="image/svg+xml">
+<script>
+  document.documentElement.classList.remove('no-js');
+  try {
+    var t = localStorage.getItem('theme');
+    if (t) document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" id="progress" hidden></div>
+
+<header class="masthead">
+  <div class="shell masthead__in">
+    <a class="wordmark" href="/ahmedamer/">AHMED AMER</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/ahmedamer/work/"
+>Work</a>
+      <a href="/ahmedamer/lessons/"
+>Lessons</a>
+      <a href="/ahmedamer/notes/"
+>Notes</a>
+      <a href="/ahmedamer/map/"
+aria-current="page">Map</a>
+      <a href="/ahmedamer/experience/"
+>Experience</a>
+      <a href="/ahmedamer/about/"
+>About</a>
+    </nav>
+    <button class="searchbtn" id="searchbtn" aria-haspopup="dialog">Search <kbd>/</kbd></button>
+    <button class="themebtn" id="themebtn" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
+  </div>
+</header>
+
+<main id="main" class="shell page">
+<header class="page-head">
+  <h1>Map</h1>
+  <p class="dek">Every entry declares what it relates to, so this graph is derived from
+    the content rather than drawn by hand. Drag to explore; click a node to open it.
+    The written index below carries the same relationships.</p>
+</header>
+
+<div class="map">
+  <canvas class="map__canvas" id="graph" data-graph
+          aria-label="Relationship graph. The same relationships are listed below in text."></canvas>
+  <p class="map__legend">
+    <span class="lg-project">project</span>
+    <span class="lg-lesson">lesson</span>
+    <span class="lg-note">note</span>
+    <span>technology / topic</span>
+  </p>
+  <p class="map__tip">Drag the background to pan, scroll to zoom, drag a node to pin it.</p>
+</div>
+
+<div class="map__fallback">
+  <div class="rule-measured"><h2 class="rule-measured__label">Index</h2>
+    <span class="rule-measured__bar"></span></div>
+
+  <h2>Topics</h2>
+  <div class="entry" id="topic-api-contracts">
+    <div class="entry__n">1</div>
+    <div>
+      <h3 class="entry__title">API contracts</h3>
+      <p class="entry__sum">Not what the documentation says.</p>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/lessons/meta-stopped-sending-the-phone-number/">Meta stopped sending the phone number, and we dropped the message silently</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-baselines">
+    <div class="entry__n">5</div>
+    <div>
+      <h3 class="entry__title">Baselines</h3>
+      <p class="entry__sum">Or you have measured nothing.</p>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/lessons/measurement-inverted-my-own-conclusions/">I wrote a careful latency analysis, then measured it and two conclusions flipped</a><a href="/ahmedamer/lessons/sequential-ab-tests-gave-the-wrong-sign/">The same change measured as a 6.8-second win and a 1.2-second loss</a><a href="/ahmedamer/lessons/the-slowest-call-was-the-guard/">The slowest thing in the system was the thing protecting it</a><a href="/ahmedamer/lessons/validator-blocked-more-orders-than-the-bug/">The guard blocked more orders than the bug it was built to stop</a><a href="/ahmedamer/notes/the-instrument-is-usually-the-bug/">The instrument is usually the bug</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-bilingual">
+    <div class="entry__n">2</div>
+    <div>
+      <h3 class="entry__title">Arabic and English</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-caching">
+    <div class="entry__n">1</div>
+    <div>
+      <h3 class="entry__title">Caching</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/lessons/a-cron-expression-that-meant-something-else/">The schedule fired twice an hour, not every fifty-five minutes</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-concurrency">
+    <div class="entry__n">1</div>
+    <div>
+      <h3 class="entry__title">Concurrency</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/lessons/two-schedulers-ran-the-same-job/">Two machines were running the same scheduler, and customers got everything twice</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-cost">
+    <div class="entry__n">5</div>
+    <div>
+      <h3 class="entry__title">Cost</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/lessons/a-cron-expression-that-meant-something-else/">The schedule fired twice an hour, not every fifty-five minutes</a><a href="/ahmedamer/lessons/cost-dashboard-overstated-by-3.8x/">The cost dashboard was wrong by 3.8x, confidently</a><a href="/ahmedamer/lessons/du-lies-about-sparse-files/">The 466 MB directory that reports as 296 KB</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-data-hygiene">
+    <div class="entry__n">2</div>
+    <div>
+      <h3 class="entry__title">Production data</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/lessons/meta-stopped-sending-the-phone-number/">Meta stopped sending the phone number, and we dropped the message silently</a><a href="/ahmedamer/lessons/told-the-agent-to-sell-something-that-did-not-exist/">We told the agent to sell something that did not exist</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-data-integrity">
+    <div class="entry__n">1</div>
+    <div>
+      <h3 class="entry__title">Data integrity</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/lessons/catching-an-exception-does-not-contain-it/">Catching an exception does not contain it</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-deployment-drift">
+    <div class="entry__n">2</div>
+    <div>
+      <h3 class="entry__title">Deployment drift</h3>
+      <p class="entry__sum">The deployed thing is not the thing you deployed.</p>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/lessons/du-lies-about-sparse-files/">The 466 MB directory that reports as 296 KB</a><a href="/ahmedamer/lessons/two-schedulers-ran-the-same-job/">Two machines were running the same scheduler, and customers got everything twice</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-evaluation">
+    <div class="entry__n">3</div>
+    <div>
+      <h3 class="entry__title">Evaluation</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/applied-ml-side-projects/">Side projects, honestly scoped</a><a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-fail-open">
+    <div class="entry__n">1</div>
+    <div>
+      <h3 class="entry__title">Failing open</h3>
+      <p class="entry__sum">Who a failure is open for.</p>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/notes/which-direction-does-your-guard-fail/">Which direction does your guard fail?</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-false-positives">
+    <div class="entry__n">2</div>
+    <div>
+      <h3 class="entry__title">False positives</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/lessons/classifier-that-deflected-paying-customers/">The security guard was turning away customers, nondeterministically</a><a href="/ahmedamer/lessons/validator-blocked-more-orders-than-the-bug/">The guard blocked more orders than the bug it was built to stop</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-guardrails">
+    <div class="entry__n">6</div>
+    <div>
+      <h3 class="entry__title">Guardrails</h3>
+      <p class="entry__sum">When the safety mechanism is the failure mode.</p>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/lessons/classifier-that-deflected-paying-customers/">The security guard was turning away customers, nondeterministically</a><a href="/ahmedamer/lessons/the-slowest-call-was-the-guard/">The slowest thing in the system was the thing protecting it</a><a href="/ahmedamer/lessons/validator-blocked-more-orders-than-the-bug/">The guard blocked more orders than the bug it was built to stop</a><a href="/ahmedamer/notes/which-direction-does-your-guard-fail/">Which direction does your guard fail?</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-idempotency">
+    <div class="entry__n">1</div>
+    <div>
+      <h3 class="entry__title">Idempotency</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/lessons/two-schedulers-ran-the-same-job/">Two machines were running the same scheduler, and customers got everything twice</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-instrument-error">
+    <div class="entry__n">6</div>
+    <div>
+      <h3 class="entry__title">The instrument lied</h3>
+      <p class="entry__sum">When the measurement is the bug.</p>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/lessons/check-the-earliest-artifact-you-persist/">I was wrong three times before I asked the right question</a><a href="/ahmedamer/lessons/cost-dashboard-overstated-by-3.8x/">The cost dashboard was wrong by 3.8x, confidently</a><a href="/ahmedamer/lessons/du-lies-about-sparse-files/">The 466 MB directory that reports as 296 KB</a><a href="/ahmedamer/lessons/injection-deflections-stopped-and-i-cannot-explain-it/">The security signal went to zero and both explanations are bad</a><a href="/ahmedamer/lessons/measurement-inverted-my-own-conclusions/">I wrote a careful latency analysis, then measured it and two conclusions flipped</a><a href="/ahmedamer/notes/the-instrument-is-usually-the-bug/">The instrument is usually the bug</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-latency">
+    <div class="entry__n">6</div>
+    <div>
+      <h3 class="entry__title">Latency</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/lessons/measurement-inverted-my-own-conclusions/">I wrote a careful latency analysis, then measured it and two conclusions flipped</a><a href="/ahmedamer/lessons/menu-that-cost-19369-queries/">A menu that cost 19,369 queries</a><a href="/ahmedamer/lessons/sequential-ab-tests-gave-the-wrong-sign/">The same change measured as a 6.8-second win and a 1.2-second loss</a><a href="/ahmedamer/lessons/the-slowest-call-was-the-guard/">The slowest thing in the system was the thing protecting it</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-llm-behaviour">
+    <div class="entry__n">7</div>
+    <div>
+      <h3 class="entry__title">LLM behaviour</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/applied-ml-side-projects/">Side projects, honestly scoped</a><a href="/ahmedamer/lessons/a-tools-return-value-is-conversation-history/">A tool&#39;s return value is conversation history, forever</a><a href="/ahmedamer/lessons/classifier-that-deflected-paying-customers/">The security guard was turning away customers, nondeterministically</a><a href="/ahmedamer/lessons/injection-deflections-stopped-and-i-cannot-explain-it/">The security signal went to zero and both explanations are bad</a><a href="/ahmedamer/lessons/the-slowest-call-was-the-guard/">The slowest thing in the system was the thing protecting it</a><a href="/ahmedamer/lessons/told-the-agent-to-sell-something-that-did-not-exist/">We told the agent to sell something that did not exist</a><a href="/ahmedamer/lessons/validator-blocked-more-orders-than-the-bug/">The guard blocked more orders than the bug it was built to stop</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-measurement">
+    <div class="entry__n">7</div>
+    <div>
+      <h3 class="entry__title">Measurement</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/lessons/cost-dashboard-overstated-by-3.8x/">The cost dashboard was wrong by 3.8x, confidently</a><a href="/ahmedamer/lessons/measurement-inverted-my-own-conclusions/">I wrote a careful latency analysis, then measured it and two conclusions flipped</a><a href="/ahmedamer/lessons/menu-that-cost-19369-queries/">A menu that cost 19,369 queries</a><a href="/ahmedamer/lessons/sequential-ab-tests-gave-the-wrong-sign/">The same change measured as a 6.8-second win and a 1.2-second loss</a><a href="/ahmedamer/lessons/the-slowest-call-was-the-guard/">The slowest thing in the system was the thing protecting it</a><a href="/ahmedamer/lessons/validator-blocked-more-orders-than-the-bug/">The guard blocked more orders than the bug it was built to stop</a><a href="/ahmedamer/notes/the-instrument-is-usually-the-bug/">The instrument is usually the bug</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-multi-tenancy">
+    <div class="entry__n">4</div>
+    <div>
+      <h3 class="entry__title">Multi-tenancy</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/lessons/meta-stopped-sending-the-phone-number/">Meta stopped sending the phone number, and we dropped the message silently</a><a href="/ahmedamer/lessons/told-the-agent-to-sell-something-that-did-not-exist/">We told the agent to sell something that did not exist</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-observability">
+    <div class="entry__n">9</div>
+    <div>
+      <h3 class="entry__title">Observability</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/lessons/check-the-earliest-artifact-you-persist/">I was wrong three times before I asked the right question</a><a href="/ahmedamer/lessons/cost-dashboard-overstated-by-3.8x/">The cost dashboard was wrong by 3.8x, confidently</a><a href="/ahmedamer/lessons/injection-deflections-stopped-and-i-cannot-explain-it/">The security signal went to zero and both explanations are bad</a><a href="/ahmedamer/lessons/measurement-inverted-my-own-conclusions/">I wrote a careful latency analysis, then measured it and two conclusions flipped</a><a href="/ahmedamer/lessons/menu-that-cost-19369-queries/">A menu that cost 19,369 queries</a><a href="/ahmedamer/notes/the-instrument-is-usually-the-bug/">The instrument is usually the bug</a><a href="/ahmedamer/notes/which-direction-does-your-guard-fail/">Which direction does your guard fail?</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-prompt-injection">
+    <div class="entry__n">2</div>
+    <div>
+      <h3 class="entry__title">Prompt injection</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/lessons/classifier-that-deflected-paying-customers/">The security guard was turning away customers, nondeterministically</a><a href="/ahmedamer/lessons/injection-deflections-stopped-and-i-cannot-explain-it/">The security signal went to zero and both explanations are bad</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-queueing">
+    <div class="entry__n">1</div>
+    <div>
+      <h3 class="entry__title">Queueing</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-silent-failure">
+    <div class="entry__n">7</div>
+    <div>
+      <h3 class="entry__title">Silent failure</h3>
+      <p class="entry__sum">Work that never happens and raises nothing.</p>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/lessons/a-cron-expression-that-meant-something-else/">The schedule fired twice an hour, not every fifty-five minutes</a><a href="/ahmedamer/lessons/a-tools-return-value-is-conversation-history/">A tool&#39;s return value is conversation history, forever</a><a href="/ahmedamer/lessons/catching-an-exception-does-not-contain-it/">Catching an exception does not contain it</a><a href="/ahmedamer/lessons/check-the-earliest-artifact-you-persist/">I was wrong three times before I asked the right question</a><a href="/ahmedamer/lessons/injection-deflections-stopped-and-i-cannot-explain-it/">The security signal went to zero and both explanations are bad</a><a href="/ahmedamer/lessons/meta-stopped-sending-the-phone-number/">Meta stopped sending the phone number, and we dropped the message silently</a><a href="/ahmedamer/notes/which-direction-does-your-guard-fail/">Which direction does your guard fail?</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="topic-two-sources">
+    <div class="entry__n">2</div>
+    <div>
+      <h3 class="entry__title">Two sources of truth</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/lessons/told-the-agent-to-sell-something-that-did-not-exist/">We told the agent to sell something that did not exist</a><a href="/ahmedamer/lessons/two-schedulers-ran-the-same-job/">Two machines were running the same scheduler, and customers got everything twice</a>      </div>
+    </div>
+  </div>
+
+  <h2>Technologies</h2>
+  <div class="entry" id="tech-batch">
+    <div class="entry__n">2</div>
+    <div>
+      <h3 class="entry__title">AWS Batch</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-cdk">
+    <div class="entry__n">2</div>
+    <div>
+      <h3 class="entry__title">AWS CDK</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-celery">
+    <div class="entry__n">2</div>
+    <div>
+      <h3 class="entry__title">Celery</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-crewai">
+    <div class="entry__n">1</div>
+    <div>
+      <h3 class="entry__title">CrewAI</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/applied-ml-side-projects/">Side projects, honestly scoped</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-django">
+    <div class="entry__n">14</div>
+    <div>
+      <h3 class="entry__title">Django</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/lessons/a-cron-expression-that-meant-something-else/">The schedule fired twice an hour, not every fifty-five minutes</a><a href="/ahmedamer/lessons/catching-an-exception-does-not-contain-it/">Catching an exception does not contain it</a><a href="/ahmedamer/lessons/check-the-earliest-artifact-you-persist/">I was wrong three times before I asked the right question</a><a href="/ahmedamer/lessons/cost-dashboard-overstated-by-3.8x/">The cost dashboard was wrong by 3.8x, confidently</a><a href="/ahmedamer/lessons/measurement-inverted-my-own-conclusions/">I wrote a careful latency analysis, then measured it and two conclusions flipped</a><a href="/ahmedamer/lessons/menu-that-cost-19369-queries/">A menu that cost 19,369 queries</a><a href="/ahmedamer/lessons/meta-stopped-sending-the-phone-number/">Meta stopped sending the phone number, and we dropped the message silently</a><a href="/ahmedamer/lessons/told-the-agent-to-sell-something-that-did-not-exist/">We told the agent to sell something that did not exist</a><a href="/ahmedamer/lessons/two-schedulers-ran-the-same-job/">Two machines were running the same scheduler, and customers got everything twice</a><a href="/ahmedamer/lessons/validator-blocked-more-orders-than-the-bug/">The guard blocked more orders than the bug it was built to stop</a><a href="/ahmedamer/notes/the-instrument-is-usually-the-bug/">The instrument is usually the bug</a><a href="/ahmedamer/notes/which-direction-does-your-guard-fail/">Which direction does your guard fail?</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-docker">
+    <div class="entry__n">5</div>
+    <div>
+      <h3 class="entry__title">Docker</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/applied-ml-side-projects/">Side projects, honestly scoped</a><a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/lessons/du-lies-about-sparse-files/">The 466 MB directory that reports as 296 KB</a><a href="/ahmedamer/notes/the-instrument-is-usually-the-bug/">The instrument is usually the bug</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-dynamodb">
+    <div class="entry__n">1</div>
+    <div>
+      <h3 class="entry__title">DynamoDB</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-ec2">
+    <div class="entry__n">3</div>
+    <div>
+      <h3 class="entry__title">EC2</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/lessons/two-schedulers-ran-the-same-job/">Two machines were running the same scheduler, and customers got everything twice</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-faiss">
+    <div class="entry__n">1</div>
+    <div>
+      <h3 class="entry__title">FAISS</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/applied-ml-side-projects/">Side projects, honestly scoped</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-fastapi">
+    <div class="entry__n">1</div>
+    <div>
+      <h3 class="entry__title">FastAPI</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/applied-ml-side-projects/">Side projects, honestly scoped</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-gemini">
+    <div class="entry__n">13</div>
+    <div>
+      <h3 class="entry__title">Google Gemini</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/lessons/a-cron-expression-that-meant-something-else/">The schedule fired twice an hour, not every fifty-five minutes</a><a href="/ahmedamer/lessons/a-tools-return-value-is-conversation-history/">A tool&#39;s return value is conversation history, forever</a><a href="/ahmedamer/lessons/classifier-that-deflected-paying-customers/">The security guard was turning away customers, nondeterministically</a><a href="/ahmedamer/lessons/cost-dashboard-overstated-by-3.8x/">The cost dashboard was wrong by 3.8x, confidently</a><a href="/ahmedamer/lessons/injection-deflections-stopped-and-i-cannot-explain-it/">The security signal went to zero and both explanations are bad</a><a href="/ahmedamer/lessons/measurement-inverted-my-own-conclusions/">I wrote a careful latency analysis, then measured it and two conclusions flipped</a><a href="/ahmedamer/lessons/sequential-ab-tests-gave-the-wrong-sign/">The same change measured as a 6.8-second win and a 1.2-second loss</a><a href="/ahmedamer/lessons/the-slowest-call-was-the-guard/">The slowest thing in the system was the thing protecting it</a><a href="/ahmedamer/lessons/told-the-agent-to-sell-something-that-did-not-exist/">We told the agent to sell something that did not exist</a><a href="/ahmedamer/lessons/validator-blocked-more-orders-than-the-bug/">The guard blocked more orders than the bug it was built to stop</a><a href="/ahmedamer/notes/which-direction-does-your-guard-fail/">Which direction does your guard fail?</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-gradio">
+    <div class="entry__n">1</div>
+    <div>
+      <h3 class="entry__title">Gradio</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/applied-ml-side-projects/">Side projects, honestly scoped</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-groq">
+    <div class="entry__n">1</div>
+    <div>
+      <h3 class="entry__title">Groq</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/applied-ml-side-projects/">Side projects, honestly scoped</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-lambda">
+    <div class="entry__n">2</div>
+    <div>
+      <h3 class="entry__title">AWS Lambda</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-langchain">
+    <div class="entry__n">3</div>
+    <div>
+      <h3 class="entry__title">LangChain</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/lessons/a-tools-return-value-is-conversation-history/">A tool&#39;s return value is conversation history, forever</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-mysql">
+    <div class="entry__n">10</div>
+    <div>
+      <h3 class="entry__title">MySQL</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/lessons/catching-an-exception-does-not-contain-it/">Catching an exception does not contain it</a><a href="/ahmedamer/lessons/cost-dashboard-overstated-by-3.8x/">The cost dashboard was wrong by 3.8x, confidently</a><a href="/ahmedamer/lessons/menu-that-cost-19369-queries/">A menu that cost 19,369 queries</a><a href="/ahmedamer/lessons/meta-stopped-sending-the-phone-number/">Meta stopped sending the phone number, and we dropped the message silently</a><a href="/ahmedamer/lessons/told-the-agent-to-sell-something-that-did-not-exist/">We told the agent to sell something that did not exist</a><a href="/ahmedamer/lessons/two-schedulers-ran-the-same-job/">Two machines were running the same scheduler, and customers got everything twice</a><a href="/ahmedamer/lessons/validator-blocked-more-orders-than-the-bug/">The guard blocked more orders than the bug it was built to stop</a><a href="/ahmedamer/notes/the-instrument-is-usually-the-bug/">The instrument is usually the bug</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-openai">
+    <div class="entry__n">1</div>
+    <div>
+      <h3 class="entry__title">OpenAI</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/applied-ml-side-projects/">Side projects, honestly scoped</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-python">
+    <div class="entry__n">19</div>
+    <div>
+      <h3 class="entry__title">Python</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/applied-ml-side-projects/">Side projects, honestly scoped</a><a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/lessons/a-cron-expression-that-meant-something-else/">The schedule fired twice an hour, not every fifty-five minutes</a><a href="/ahmedamer/lessons/a-tools-return-value-is-conversation-history/">A tool&#39;s return value is conversation history, forever</a><a href="/ahmedamer/lessons/catching-an-exception-does-not-contain-it/">Catching an exception does not contain it</a><a href="/ahmedamer/lessons/check-the-earliest-artifact-you-persist/">I was wrong three times before I asked the right question</a><a href="/ahmedamer/lessons/classifier-that-deflected-paying-customers/">The security guard was turning away customers, nondeterministically</a><a href="/ahmedamer/lessons/cost-dashboard-overstated-by-3.8x/">The cost dashboard was wrong by 3.8x, confidently</a><a href="/ahmedamer/lessons/du-lies-about-sparse-files/">The 466 MB directory that reports as 296 KB</a><a href="/ahmedamer/lessons/injection-deflections-stopped-and-i-cannot-explain-it/">The security signal went to zero and both explanations are bad</a><a href="/ahmedamer/lessons/measurement-inverted-my-own-conclusions/">I wrote a careful latency analysis, then measured it and two conclusions flipped</a><a href="/ahmedamer/lessons/menu-that-cost-19369-queries/">A menu that cost 19,369 queries</a><a href="/ahmedamer/lessons/meta-stopped-sending-the-phone-number/">Meta stopped sending the phone number, and we dropped the message silently</a><a href="/ahmedamer/lessons/sequential-ab-tests-gave-the-wrong-sign/">The same change measured as a 6.8-second win and a 1.2-second loss</a><a href="/ahmedamer/lessons/the-slowest-call-was-the-guard/">The slowest thing in the system was the thing protecting it</a><a href="/ahmedamer/lessons/validator-blocked-more-orders-than-the-bug/">The guard blocked more orders than the bug it was built to stop</a><a href="/ahmedamer/notes/the-instrument-is-usually-the-bug/">The instrument is usually the bug</a><a href="/ahmedamer/notes/which-direction-does-your-guard-fail/">Which direction does your guard fail?</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-pytorch">
+    <div class="entry__n">1</div>
+    <div>
+      <h3 class="entry__title">PyTorch</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/applied-ml-side-projects/">Side projects, honestly scoped</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-qdrant">
+    <div class="entry__n">2</div>
+    <div>
+      <h3 class="entry__title">Qdrant</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/lessons/catching-an-exception-does-not-contain-it/">Catching an exception does not contain it</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-redis">
+    <div class="entry__n">1</div>
+    <div>
+      <h3 class="entry__title">Redis</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-sentry">
+    <div class="entry__n">1</div>
+    <div>
+      <h3 class="entry__title">Sentry</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/notes/the-instrument-is-usually-the-bug/">The instrument is usually the bug</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-sqs">
+    <div class="entry__n">3</div>
+    <div>
+      <h3 class="entry__title">AWS SQS</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/lessons/check-the-earliest-artifact-you-persist/">I was wrong three times before I asked the right question</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-streamlit">
+    <div class="entry__n">1</div>
+    <div>
+      <h3 class="entry__title">Streamlit</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/applied-ml-side-projects/">Side projects, honestly scoped</a>      </div>
+    </div>
+  </div>
+  <div class="entry" id="tech-whatsapp">
+    <div class="entry__n">3</div>
+    <div>
+      <h3 class="entry__title">WhatsApp Cloud API</h3>
+      <div class="chips" style="margin-top:.5rem">
+<a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><a href="/ahmedamer/lessons/meta-stopped-sending-the-phone-number/">Meta stopped sending the phone number, and we dropped the message silently</a><a href="/ahmedamer/experience/robusta/">Robusta Technology Group</a>      </div>
+    </div>
+  </div>
+</div>
+</main>
+
+<footer class="shell foot">
+  <span>Ahmed Amer — AI Engineer, Cairo, Egypt</span>
+  <span class="foot__right">
+    <a href="https://github.com/ahmedAmer8">GitHub</a>
+    <a href="https://www.linkedin.com/in/Ahmad-Amer">LinkedIn</a>
+    <a href="mailto:ahmed.m.amer821@gmail.com">Email</a>
+    <a href="/ahmedamer/colophon/">Colophon</a>
+  </span>
+</footer>
+
+<div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search__panel">
+    <label class="visually-hidden" for="q">Search projects, lessons, notes and topics</label>
+    <input class="search__input" id="q" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Search lessons, projects, topics…">
+    <ul class="search__results" id="results" role="listbox" aria-label="Results"></ul>
+    <div class="search__foot">
+      <span>↑↓ move</span><span>↵ open</span><span>esc close</span>
+    </div>
+  </div>
+</div>
+
+<script src="/ahmedamer/static/js/site.js" defer></script>
+<script src="/ahmedamer/static/js/graph.js" defer></script></body>
+</html>

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Résumé — Ahmed Amer</title>
+<meta name="description" content="Experience, education, technologies and certifications.">
+<link rel="canonical" href="https://ahmedamer8.github.io/ahmedamer/resume/">
+<meta property="og:site_name" content="Ahmed Amer">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Résumé — Ahmed Amer">
+<meta property="og:description" content="Experience, education, technologies and certifications.">
+<meta property="og:url" content="https://ahmedamer8.github.io/ahmedamer/resume/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#e8ebe4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161c1b" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/ahmedamer/static/fonts/newsreader-normal-300_700-1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/ahmedamer/static/fonts/plexmono-normal-400-0.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/ahmedamer/static/css/site.css">
+<link rel="icon" href="/ahmedamer/static/img/mark.svg" type="image/svg+xml">
+<script>
+  document.documentElement.classList.remove('no-js');
+  try {
+    var t = localStorage.getItem('theme');
+    if (t) document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" id="progress" hidden></div>
+
+<header class="masthead">
+  <div class="shell masthead__in">
+    <a class="wordmark" href="/ahmedamer/">AHMED AMER</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/ahmedamer/work/"
+>Work</a>
+      <a href="/ahmedamer/lessons/"
+>Lessons</a>
+      <a href="/ahmedamer/notes/"
+>Notes</a>
+      <a href="/ahmedamer/map/"
+>Map</a>
+      <a href="/ahmedamer/experience/"
+>Experience</a>
+      <a href="/ahmedamer/about/"
+>About</a>
+    </nav>
+    <button class="searchbtn" id="searchbtn" aria-haspopup="dialog">Search <kbd>/</kbd></button>
+    <button class="themebtn" id="themebtn" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
+  </div>
+</header>
+
+<main id="main" class="shell page">
+<article class="article">
+  <div class="article__rail"><nav class="rail-axis" aria-label="On this page" data-rail></nav></div>
+  <div class="article__body">
+    <header class="article-head">
+      <h1>Résumé</h1>
+      <p class="dek">The compressed version. The rest of this site is the part a résumé
+        cannot carry — start with <a href="/ahmedamer/lessons/">the lessons</a> if you want
+        to know how I think rather than what I have touched.</p>
+    </header>
+
+    <div class="prose" data-prose>
+      <h2>Experience</h2>
+      <h3>Robusta Technology Group — AI Engineer</h3>
+      <p class="meta">July 2025 — present · Cairo, Egypt · joined as an AI intern</p>
+      <p>Applied AI engineering on a multi-tenant conversational commerce platform:
+        customers order over WhatsApp through an LLM agent that builds the cart, takes
+        payment and pushes the order into each restaurant's point-of-sale system.</p>
+      <ul>
+        <li>Built and hardened the pre-placement validation layer that checks an agent's
+          order arguments against the database before an order is created.</li>
+        <li>Identified an undocumented WhatsApp platform change that was silently dropping
+          inbound messages from a growing share of senders, and built the identity
+          resolution path for it.</li>
+        <li>Built the latency instrumentation — per-segment tracing of every LLM call,
+          tool, and outbound request — and the dashboard and verification command that
+          make its numbers falsifiable.</li>
+        <li>Built the AI cost model: effective-dated rates, quantities-only rollups, and
+          two guardrail commands that fail a build when a model is unpriced or a rollup
+          disagrees with the raw rows.</li>
+        <li>Contributed to the platform's move from a single shared worker to a tiered
+          architecture (thin ingress Lambda, an isolated queue for the customer path,
+          Lambda and Batch for everything else).</li>
+        <li>Investigated and documented production incidents across queueing, deployment,
+          caching, agent behaviour and data integrity.</li>
+      </ul>
+
+      <h3>IEEE — Machine Learning volunteer</h3>
+      <p class="meta">September 2023 — September 2024 · Cairo, Egypt</p>
+      <p>Designed and delivered machine learning sessions for computer science and
+        computer engineering students.</p>
+
+      <h2>Education</h2>
+      <h3>Cairo University — BSc Computer Science</h3>
+      <p class="meta">September 2021 — July 2025 · Cairo, Egypt</p>
+      <p>Coursework in algorithms, databases, object-oriented programming, data analytics
+        and artificial intelligence.</p>
+
+      <h2>Technologies</h2>
+      <table>
+        <tr><th>Languages</th><td>Python, SQL, C++</td></tr>
+        <tr><th>Backend</th><td>Django, Django REST Framework, Celery, FastAPI</td></tr>
+        <tr><th>AI</th><td>Google Gemini, LangChain, OpenAI, PyTorch, Qdrant, prompt caching,
+          LLM evaluation, prompt-injection defence</td></tr>
+        <tr><th>Infrastructure</th><td>AWS (Lambda, SQS, Batch, ECS, EC2, DynamoDB, S3, CDK),
+          Docker, Terraform, GitHub Actions</td></tr>
+        <tr><th>Data</th><td>MySQL, Redis, GeoDjango / spatial queries</td></tr>
+        <tr><th>Practice</th><td>pytest, distributed tracing, cost modelling, incident analysis</td></tr>
+      </table>
+
+      <h2>Certifications</h2>
+      <ul>
+        <li>AWS Certified Cloud Practitioner</li>
+        <li>Deep Learning Specialization — Stanford / DeepLearning.AI</li>
+        <li>Professional Data Scientist — DataCamp</li>
+        <li>Top 10% worldwide in LeetCode contests</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="article__margin">
+    <div class="mnote"><b>Download</b><ul>
+      <li><a href="/ahmedamer/static/Ahmed-Amer.pdf" download>Ahmed-Amer.pdf</a></li>
+    </ul><p>The PDF is the short form and lags this page.</p></div>
+    <div class="mnote"><b>Depth</b><ul>
+      <li><a href="/ahmedamer/work/">Work</a></li>
+      <li><a href="/ahmedamer/lessons/">Lessons</a></li>
+      <li><a href="/ahmedamer/experience/">Experience in full</a></li>
+    </ul></div>
+  </aside>
+</article>
+</main>
+
+<footer class="shell foot">
+  <span>Ahmed Amer — AI Engineer, Cairo, Egypt</span>
+  <span class="foot__right">
+    <a href="https://github.com/ahmedAmer8">GitHub</a>
+    <a href="https://www.linkedin.com/in/Ahmad-Amer">LinkedIn</a>
+    <a href="mailto:ahmed.m.amer821@gmail.com">Email</a>
+    <a href="/ahmedamer/colophon/">Colophon</a>
+  </span>
+</footer>
+
+<div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search__panel">
+    <label class="visually-hidden" for="q">Search projects, lessons, notes and topics</label>
+    <input class="search__input" id="q" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Search lessons, projects, topics…">
+    <ul class="search__results" id="results" role="listbox" aria-label="Results"></ul>
+    <div class="search__foot">
+      <span>↑↓ move</span><span>↵ open</span><span>esc close</span>
+    </div>
+  </div>
+</div>
+
+<script src="/ahmedamer/static/js/site.js" defer></script>
+</body>
+</html>

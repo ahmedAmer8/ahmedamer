@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The slowest thing in the system was the thing protecting it — Ahmed Amer</title>
+<meta name="description" content="The order validator took 10.38 seconds on average — more than twice the agent turn it guards. The cause was not the model. It was reasoning nobody had capped, and measuring it correctly required interleaving the two arms.">
+<link rel="canonical" href="https://ahmedamer8.github.io/ahmedamer/lessons/the-slowest-call-was-the-guard/">
+<meta property="og:site_name" content="Ahmed Amer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The slowest thing in the system was the thing protecting it — Ahmed Amer">
+<meta property="og:description" content="The order validator took 10.38 seconds on average — more than twice the agent turn it guards. The cause was not the model. It was reasoning nobody had capped, and measuring it correctly required interleaving the two arms.">
+<meta property="og:url" content="https://ahmedamer8.github.io/ahmedamer/lessons/the-slowest-call-was-the-guard/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#e8ebe4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161c1b" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/ahmedamer/static/fonts/newsreader-normal-300_700-1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/ahmedamer/static/fonts/plexmono-normal-400-0.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/ahmedamer/static/css/site.css">
+<link rel="icon" href="/ahmedamer/static/img/mark.svg" type="image/svg+xml">
+<script>
+  document.documentElement.classList.remove('no-js');
+  try {
+    var t = localStorage.getItem('theme');
+    if (t) document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Person", "name": "Ahmed Amer"}, "datePublished": "2026-08-20", "description": "The order validator took 10.38 seconds on average \u2014 more than twice the agent turn it guards. The cause was not the model. It was reasoning nobody had capped, and measuring it correctly required interleaving the two arms.", "headline": "The slowest thing in the system was the thing protecting it", "url": "https://ahmedamer8.github.io/ahmedamer/lessons/the-slowest-call-was-the-guard/"}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" id="progress" hidden></div>
+
+<header class="masthead">
+  <div class="shell masthead__in">
+    <a class="wordmark" href="/ahmedamer/">AHMED AMER</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/ahmedamer/work/"
+>Work</a>
+      <a href="/ahmedamer/lessons/"
+aria-current="page">Lessons</a>
+      <a href="/ahmedamer/notes/"
+>Notes</a>
+      <a href="/ahmedamer/map/"
+>Map</a>
+      <a href="/ahmedamer/experience/"
+>Experience</a>
+      <a href="/ahmedamer/about/"
+>About</a>
+    </nav>
+    <button class="searchbtn" id="searchbtn" aria-haspopup="dialog">Search <kbd>/</kbd></button>
+    <button class="themebtn" id="themebtn" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
+  </div>
+</header>
+
+<main id="main" class="shell page">
+<article class="article">
+  <div class="article__rail">
+    <nav class="rail-axis" aria-label="On this page" data-rail></nav>
+  </div>
+
+  <div class="article__body">
+    <header class="article-head">
+      <h1>The slowest thing in the system was the thing protecting it</h1>
+      <p class="dek">The order validator took 10.38 seconds on average — more than twice the agent turn it guards. The cause was not the model. It was reasoning nobody had capped, and measuring it correctly required interleaving the two arms.</p>
+      <div class="article-head__meta">
+        <span class="status status--fixed">fixed</span>
+<span>latency</span><time datetime="2026-08-20">20 August 2026</time>        <span>2 min</span>
+      </div>
+    </header>
+
+    <section class="trace" id="trace" data-trace>
+  <div class="trace__head">
+    <h2 class="trace__legend">The investigation</h2>
+    <span class="trace__hint" aria-hidden="true">← → to step through</span>
+  </div>
+  <h3 class="visually-hidden">observation — One call type dominated the span table.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="true" aria-controls="tp-1">
+    <span class="trace__stage">observation</span>
+    <span class="trace__track"><i style="width:66.7%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-1" >
+    <p><strong>One call type dominated the span table.</strong></p>
+    <p>With per-call tracing in place, the mean duration of every model call became a column you could sort. Sorting it put the order validator at the top by a distance.</p>
+
+<div class="trace__evidence"><table>
+<thead>
+<tr>
+<th>call</th>
+<th>n</th>
+<th>mean</th>
+<th>max</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prompt_injection</code></td>
+<td>20,628</td>
+<td>0.58 s</td>
+<td>46.6 s</td>
+</tr>
+<tr>
+<td><code>main</code></td>
+<td>20,528</td>
+<td>4.61 s</td>
+<td>70.3 s</td>
+</tr>
+<tr>
+<td><code>tool_response</code></td>
+<td>7,021</td>
+<td>4.52 s</td>
+<td>67.6 s</td>
+</tr>
+<tr>
+<td><strong><code>order_validation</code></strong></td>
+<td>519</td>
+<td><strong>10.38 s</strong></td>
+<td><strong>61.4 s</strong></td>
+</tr>
+</tbody>
+</table>
+<p>2.3× the main agent call, on a call whose entire job is to check work that has
+already been done.</p>
+</div>  </div>
+  <h3 class="visually-hidden">assumption — We assumed the model was too large for the job.</h3>
+  <button class="trace__step" type="button" data-wrong="true"
+          aria-expanded="false" aria-controls="tp-2">
+    <span class="trace__stage">assumption</span>
+    <span class="trace__track"><i style="width:33.3%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-2" hidden>
+    <p><strong>We assumed the model was too large for the job.</strong></p>
+    <p>The validator runs on a stronger model than the agent, deliberately — it is checking the agent’s work and a weaker checker is not much of a check. So the obvious hypothesis was that the model choice was the cost, and the obvious fix was to move down a tier and measure the accuracy loss.</p>
+
+  </div>
+  <h3 class="visually-hidden">probe — Split the call&#39;s wall clock into thinking and everything else.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="false" aria-controls="tp-3">
+    <span class="trace__stage">probe</span>
+    <span class="trace__track"><i style="width:66.7%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-3" hidden>
+    <p><strong>Split the call&#39;s wall clock into thinking and everything else.</strong></p>
+    <p>Before swapping models, attribute the time. The token counts are recorded alongside the span, so the reasoning portion is directly measurable rather than inferred.</p>
+
+<div class="trace__evidence"><p>Against a separately measured rate of <strong>4.44 s per 1,000 thinking tokens</strong>, and
+a production mean of <strong>1,678</strong> thinking tokens per validation:</p>
+<pre class="code"><code>thinking ≈ 7.4 s  of a 10.38 s call   ≈ 70 %
+</code></pre>
+</div>  </div>
+  <h3 class="visually-hidden">root cause — The call had no reasoning budget set at all, so the model used its own default.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="false" aria-controls="tp-4">
+    <span class="trace__stage">root cause</span>
+    <span class="trace__track"><i style="width:66.7%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-4" hidden>
+    <p><strong>The call had no reasoning budget set at all, so the model used its own default.</strong></p>
+    <p>Every other model call in the system passes an explicit thinking budget. This one did not — not by decision, but because it was written later and the omission was invisible. The model applied whatever default it liked, on a 35,000-token prompt, several times per order.</p>
+
+  </div>
+  <h3 class="visually-hidden">fix — Cap the budget.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="false" aria-controls="tp-5">
+    <span class="trace__stage">fix</span>
+    <span class="trace__track"><i style="width:33.3%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-5" hidden>
+    <p><strong>Cap the budget.</strong></p>
+    <p>One configuration value. The judgement call is where to set it: too low and reasoning silently switches off entirely, which on this call would mean a guard that no longer guards.</p>
+
+  </div>
+  <h3 class="visually-hidden">verification — Median 8.38 s to 5.81 s — measured with the arms interleaved.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="false" aria-controls="tp-6">
+    <span class="trace__stage">verification</span>
+    <span class="trace__track"><i style="width:100.0%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-6" hidden>
+    <p><strong>Median 8.38 s to 5.81 s — measured with the arms interleaved.</strong></p>
+    <p>This is the part that nearly went wrong. A first attempt ran all of the control calls, then all of the treatment calls, and reported a 6.8-second improvement. A second sequential run, at a busier time of day, reported the change made things <strong>1.2 seconds worse</strong>. Same code, opposite conclusions.</p>
+
+<div class="trace__evidence"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Before</th>
+<th>After</th>
+<th>Reads as</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sequential, quiet API</td>
+<td>11.52 s</td>
+<td>4.74 s</td>
+<td>a 6.8 s win</td>
+</tr>
+<tr>
+<td>sequential, congested API</td>
+<td>13.06 s</td>
+<td>14.21 s</td>
+<td>a 1.2 s loss</td>
+</tr>
+<tr>
+<td><strong>interleaved, n=8 per arm</strong></td>
+<td><strong>8.38 s</strong></td>
+<td><strong>5.81 s</strong></td>
+<td><strong>−2.57 s</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Corroborated against a quantity that does not depend on the network: thinking
+tokens fell 851 → 367, and at temperature zero those counts were <em>identical on
+every call</em>. That delta predicts 2.15 s. Observed, 2.57 s.</p>
+</div>  </div>
+</section>
+
+
+    <div class="prose" data-prose><h2>The finding</h2>
+<p>The guard cost more than the thing it guarded. Not marginally: the order validator
+averaged 10.38 seconds against the agent’s 4.61, on a call that runs after the work
+is already done, while a customer waits.</p>
+<h2>Why the obvious fix was the wrong first move</h2>
+<p>The validator runs on a stronger model than the agent does, and that is a defensible
+choice — a checker weaker than the thing it checks is decorative. So “the model is too
+big” is the natural hypothesis, and it leads directly to an expensive experiment:
+swap the model, build an evaluation harness, measure how much accuracy you lose, argue
+about whether the trade is worth it.</p>
+<p>Attributing the time first took an afternoon and made that experiment unnecessary.
+Seventy per cent of the call was reasoning tokens, and the reasoning budget had never
+been set. Every other model call in the system passed one explicitly. This one was
+written later and simply did not, so the provider’s default applied — on a very large
+prompt, several times per order.</p>
+<aside class="callout callout--principle"><p>Before changing which model runs a slow call, find out what fraction of it is
+reasoning. The budget is a parameter you control; the model is a decision with
+accuracy consequences. Check the cheap variable first.</p>
+</aside>
+<h2>The measurement nearly lied twice</h2>
+<p>I want to dwell on the verification, because it produced two confident, opposite,
+completely wrong answers before it produced the right one.</p>
+<p>The natural way to A/B a latency change is to run the control arm, then the treatment
+arm, and compare. I did that, at a quiet time, and got a 6.8-second improvement — far
+too large to be real, though it was flattering enough that it took a moment to
+question. Running it again later, when the provider was busier, produced a
+1.2-second <em>regression</em>.</p>
+<p>The provider’s own latency drifts by more than the effect being measured. A sequential
+design attributes all of that drift to the change.</p>
+<p>The fix is to alternate the arms inside a single loop so that both experience the same
+conditions, and then — this is the part that makes it trustworthy — <strong>corroborate the
+result against something that does not travel over the network.</strong> Thinking tokens at
+temperature zero were perfectly stable: 851 on every control call, 367 on every
+treatment call. That is not a latency measurement at all, and it predicts the
+improvement to within half a second.</p>
+<aside class="callout callout--principle"><p>If your wall-clock delta and your token delta disagree, trust the tokens. One of them
+depends on someone else’s traffic.</p>
+</aside>
+<h2>What I would keep</h2>
+<p>Two things carried forward into everything I have measured since.</p>
+<p><strong>Attribute before you substitute.</strong> Slow calls have a composition. Finding out what a
+call is made of is nearly always cheaper than replacing one of its parts, and it
+frequently makes the replacement unnecessary.</p>
+<p><strong>Every A/B against a remote service is interleaved, and reports a second,
+network-independent quantity.</strong> If I cannot name that second quantity, I do not
+believe the result — including, and especially, when it is a result I wanted.</p>
+</div>
+
+    <aside class="callout callout--principle">
+      <p class="callout-title">The principle</p>
+      <p>When a model call is slow, measure its thinking tokens before you change the model. The budget is usually the variable, and it is the one you control.</p>
+    </aside>
+
+      <section class="related">
+    <div class="rule-measured"><h2 class="rule-measured__label">Lessons</h2>
+      <span class="rule-measured__bar"></span></div>
+    <ul>
+      <li><a href="/ahmedamer/lessons/measurement-inverted-my-own-conclusions/">I wrote a careful latency analysis, then measured it and two conclusions flipped</a><span class="meta">Six prioritised recommendations, reconstructed from log timestamps. When the tracing arrived, one was inverted, one was overstated by 3x, and the largest problem in the system was not in the document at all.</span></li>
+      <li><a href="/ahmedamer/lessons/sequential-ab-tests-gave-the-wrong-sign/">The same change measured as a 6.8-second win and a 1.2-second loss</a><span class="meta">Benchmarking against a remote model by running one arm then the other lets the provider&#39;s own load drift decide the result. Twice it decided wrongly, in opposite directions.</span></li>
+      <li><a href="/ahmedamer/lessons/validator-blocked-more-orders-than-the-bug/">The guard blocked more orders than the bug it was built to stop</a><span class="meta">A safety stage added to stop the agent from confirming orders it had never placed turned out to be rejecting two-thirds of legitimate orders. Its unit tests passed because they stubbed the exact component that was broken.</span></li>
+    </ul>
+  </section>
+  <section class="related">
+    <div class="rule-measured"><h2 class="rule-measured__label">Projects</h2>
+      <span class="rule-measured__bar"></span></div>
+    <ul>
+      <li><a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><span class="meta">A multi-tenant system where customers order food by chatting on WhatsApp, an LLM agent builds the cart and takes payment, and the order lands in the restaurant&#39;s point-of-sale. Several established food and beverage brands run on it.</span></li>
+    </ul>
+  </section>
+
+
+    <section class="related">
+      <div class="rule-measured"><span class="rule-measured__label">See also</span>
+        <span class="rule-measured__bar"></span></div>
+      <ul>
+          <li><a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><span class="meta">Project</span></li>
+          <li><a href="/ahmedamer/lessons/validator-blocked-more-orders-than-the-bug/">The guard blocked more orders than the bug it was built to stop</a><span class="meta">Lesson</span></li>
+          <li><a href="/ahmedamer/lessons/sequential-ab-tests-gave-the-wrong-sign/">The same change measured as a 6.8-second win and a 1.2-second loss</a><span class="meta">Lesson</span></li>
+      </ul>
+    </section>
+  </div>
+
+  <aside class="article__margin">
+    <div class="mnote">
+  <b>Tagged</b>
+  <div class="chips">
+      <a href="/ahmedamer/map/#tech-gemini">Google Gemini</a>
+      <a href="/ahmedamer/map/#tech-python">Python</a>
+      <a href="/ahmedamer/map/#topic-latency">Latency</a>
+      <a href="/ahmedamer/map/#topic-measurement">Measurement</a>
+      <a href="/ahmedamer/map/#topic-baselines">Baselines</a>
+      <a href="/ahmedamer/map/#topic-guardrails">Guardrails</a>
+      <a href="/ahmedamer/map/#topic-llm-behaviour">LLM behaviour</a>
+  </div>
+</div>
+
+    <div class="mnote"><b>Why not just skip it</b><p>There is now a mode that runs only the deterministic database checks when the
+transcript has already been reviewed in the same turn. Re-reading the same
+transcript cannot learn anything new about the customer’s intent.</p>
+</div>
+    <div class="mnote"><b>One turn, three validations</b><p>A single production turn spent <strong>53.3 seconds</strong> across three validator calls —
+55% of its total wall clock.</p>
+</div>
+  </aside>
+</article>
+</main>
+
+<footer class="shell foot">
+  <span>Ahmed Amer — AI Engineer, Cairo, Egypt</span>
+  <span class="foot__right">
+    <a href="https://github.com/ahmedAmer8">GitHub</a>
+    <a href="https://www.linkedin.com/in/Ahmad-Amer">LinkedIn</a>
+    <a href="mailto:ahmed.m.amer821@gmail.com">Email</a>
+    <a href="/ahmedamer/colophon/">Colophon</a>
+  </span>
+</footer>
+
+<div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search__panel">
+    <label class="visually-hidden" for="q">Search projects, lessons, notes and topics</label>
+    <input class="search__input" id="q" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Search lessons, projects, topics…">
+    <ul class="search__results" id="results" role="listbox" aria-label="Results"></ul>
+    <div class="search__foot">
+      <span>↑↓ move</span><span>↵ open</span><span>esc close</span>
+    </div>
+  </div>
+</div>
+
+<script src="/ahmedamer/static/js/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A tool&#39;s return value is conversation history, forever — Ahmed Amer</title>
+<meta name="description" content="An instruction written into a tool&#39;s return string — &#34;do not call this again&#34; — was replayed into every subsequent turn, so the agent obeyed a months-old prohibition and silently sent nothing.">
+<link rel="canonical" href="https://ahmedamer8.github.io/ahmedamer/lessons/a-tools-return-value-is-conversation-history/">
+<meta property="og:site_name" content="Ahmed Amer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A tool&#39;s return value is conversation history, forever — Ahmed Amer">
+<meta property="og:description" content="An instruction written into a tool&#39;s return string — &#34;do not call this again&#34; — was replayed into every subsequent turn, so the agent obeyed a months-old prohibition and silently sent nothing.">
+<meta property="og:url" content="https://ahmedamer8.github.io/ahmedamer/lessons/a-tools-return-value-is-conversation-history/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#e8ebe4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161c1b" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/ahmedamer/static/fonts/newsreader-normal-300_700-1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/ahmedamer/static/fonts/plexmono-normal-400-0.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/ahmedamer/static/css/site.css">
+<link rel="icon" href="/ahmedamer/static/img/mark.svg" type="image/svg+xml">
+<script>
+  document.documentElement.classList.remove('no-js');
+  try {
+    var t = localStorage.getItem('theme');
+    if (t) document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Person", "name": "Ahmed Amer"}, "datePublished": "2026-08-18", "description": "An instruction written into a tool\u0027s return string \u2014 \"do not call this again\" \u2014 was replayed into every subsequent turn, so the agent obeyed a months-old prohibition and silently sent nothing.", "headline": "A tool\u0027s return value is conversation history, forever", "url": "https://ahmedamer8.github.io/ahmedamer/lessons/a-tools-return-value-is-conversation-history/"}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" id="progress" hidden></div>
+
+<header class="masthead">
+  <div class="shell masthead__in">
+    <a class="wordmark" href="/ahmedamer/">AHMED AMER</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/ahmedamer/work/"
+>Work</a>
+      <a href="/ahmedamer/lessons/"
+aria-current="page">Lessons</a>
+      <a href="/ahmedamer/notes/"
+>Notes</a>
+      <a href="/ahmedamer/map/"
+>Map</a>
+      <a href="/ahmedamer/experience/"
+>Experience</a>
+      <a href="/ahmedamer/about/"
+>About</a>
+    </nav>
+    <button class="searchbtn" id="searchbtn" aria-haspopup="dialog">Search <kbd>/</kbd></button>
+    <button class="themebtn" id="themebtn" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
+  </div>
+</header>
+
+<main id="main" class="shell page">
+<article class="article">
+  <div class="article__rail">
+    <nav class="rail-axis" aria-label="On this page" data-rail></nav>
+  </div>
+
+  <div class="article__body">
+    <header class="article-head">
+      <h1>A tool&#39;s return value is conversation history, forever</h1>
+      <p class="dek">An instruction written into a tool&#39;s return string — &#34;do not call this again&#34; — was replayed into every subsequent turn, so the agent obeyed a months-old prohibition and silently sent nothing.</p>
+      <div class="article-head__meta">
+        <span class="status status--fixed">fixed</span>
+<span>ai agent behavior</span><time datetime="2026-08-18">18 August 2026</time>        <span>2 min</span>
+      </div>
+    </header>
+
+    
+
+    <div class="prose" data-prose><h2>The bug</h2>
+<p>A tool that sends a product carousel returned a string that ended, roughly:</p>
+<blockquote>
+<p>Carousel sent successfully. Do not call this tool again for this category.</p>
+</blockquote>
+<p>The intent was reasonable: stop the agent from sending the same carousel twice in one
+turn. The instruction worked perfectly for that, and then kept working, for the rest of
+the conversation’s life.</p>
+<h2>Why it persists</h2>
+<p>A tool call and its result are appended to the message history. That history is
+replayed into the model on every subsequent turn. So an instruction placed in a return
+value is not a one-time signal to the current turn — it is a permanent addition to the
+conversation’s context, carrying the same authority as everything else in it.</p>
+<p>Weeks later, a customer asking to see that category again produced an agent that
+consulted its history, found a clear instruction not to call the tool, and complied.</p>
+<h2>The symptom was worse than not sending</h2>
+<p>It did not fail loudly. It did not fail at all, in any sense a monitoring system could
+detect.</p>
+<p>The agent called no tool, so there was no tool error. It produced a reply, so there was
+no empty-response event. The reply was a paraphrase of the example sentence from the
+tool’s own description, because that was the most relevant text about carousels in its
+context.</p>
+<p>So the customer asked to see the menu, and received a sentence about menus, and no
+menu. Nothing was logged, because from the system’s point of view a turn completed
+normally.</p>
+<aside class="callout callout--principle"><p>An agent that decides not to act produces no error. The absence of a tool call is
+indistinguishable from a turn that legitimately needed none, so this class of bug
+cannot be found in error rates — only by reading conversations.</p>
+</aside>
+<h2>Where the three kinds of state belong</h2>
+<p>The fix was less about this one string and more about a rule I did not previously have
+written down:</p>
+<ul>
+<li><strong>Turn-local state</strong> — “already sent in this turn” — belongs in process state for the
+duration of the turn. It should not survive into history at all.</li>
+<li><strong>Policy</strong> — “only offer the full menu once per conversation” — belongs in the system
+prompt, where it is stated once, versioned, reviewable, and applies uniformly.</li>
+<li><strong>Facts</strong> — “the carousel was delivered, here is its identifier” — belong in the
+return value. Facts are what a return value is for.</li>
+</ul>
+<p>The test I apply now: <em>would this sentence still be correct if the model read it in six
+weeks, in a different context?</em> If not, it is not a fact, and it does not go in the
+return value.</p>
+<h2>A related habit</h2>
+<p>The same reasoning applies to error strings handed back to a model. An error that says
+“this failed, do not retry” is a policy statement that will outlive the failure. An
+error that says “this failed because the identifier was not found” is a fact, and it
+stays true.</p>
+</div>
+
+    <aside class="callout callout--principle">
+      <p class="callout-title">The principle</p>
+      <p>Turn-local state belongs in process state, policy belongs in the system prompt, and neither belongs in a tool&#39;s return value. Whatever a tool returns is replayed as history for the life of the conversation.</p>
+    </aside>
+
+    
+
+    <section class="related">
+      <div class="rule-measured"><span class="rule-measured__label">See also</span>
+        <span class="rule-measured__bar"></span></div>
+      <ul>
+          <li><a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><span class="meta">Project</span></li>
+      </ul>
+    </section>
+  </div>
+
+  <aside class="article__margin">
+    <div class="mnote">
+  <b>Tagged</b>
+  <div class="chips">
+      <a href="/ahmedamer/map/#tech-gemini">Google Gemini</a>
+      <a href="/ahmedamer/map/#tech-langchain">LangChain</a>
+      <a href="/ahmedamer/map/#tech-python">Python</a>
+      <a href="/ahmedamer/map/#topic-llm-behaviour">LLM behaviour</a>
+      <a href="/ahmedamer/map/#topic-silent-failure">Silent failure</a>
+  </div>
+</div>
+
+  </aside>
+</article>
+</main>
+
+<footer class="shell foot">
+  <span>Ahmed Amer — AI Engineer, Cairo, Egypt</span>
+  <span class="foot__right">
+    <a href="https://github.com/ahmedAmer8">GitHub</a>
+    <a href="https://www.linkedin.com/in/Ahmad-Amer">LinkedIn</a>
+    <a href="mailto:ahmed.m.amer821@gmail.com">Email</a>
+    <a href="/ahmedamer/colophon/">Colophon</a>
+  </span>
+</footer>
+
+<div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search__panel">
+    <label class="visually-hidden" for="q">Search projects, lessons, notes and topics</label>
+    <input class="search__input" id="q" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Search lessons, projects, topics…">
+    <ul class="search__results" id="results" role="listbox" aria-label="Results"></ul>
+    <div class="search__foot">
+      <span>↑↓ move</span><span>↵ open</span><span>esc close</span>
+    </div>
+  </div>
+</div>
+
+<script src="/ahmedamer/static/js/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The cost dashboard was wrong by 3.8x, confidently — Ahmed Amer</title>
+<meta name="description" content="We were reporting $6,712 of model spend against $1,767 of actual spend, because the pricing treated cached input tokens as an addition to input tokens rather than a discounted subset of them.">
+<link rel="canonical" href="https://ahmedamer8.github.io/ahmedamer/lessons/cost-dashboard-overstated-by-3.8x/">
+<meta property="og:site_name" content="Ahmed Amer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The cost dashboard was wrong by 3.8x, confidently — Ahmed Amer">
+<meta property="og:description" content="We were reporting $6,712 of model spend against $1,767 of actual spend, because the pricing treated cached input tokens as an addition to input tokens rather than a discounted subset of them.">
+<meta property="og:url" content="https://ahmedamer8.github.io/ahmedamer/lessons/cost-dashboard-overstated-by-3.8x/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#e8ebe4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161c1b" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/ahmedamer/static/fonts/newsreader-normal-300_700-1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/ahmedamer/static/fonts/plexmono-normal-400-0.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/ahmedamer/static/css/site.css">
+<link rel="icon" href="/ahmedamer/static/img/mark.svg" type="image/svg+xml">
+<script>
+  document.documentElement.classList.remove('no-js');
+  try {
+    var t = localStorage.getItem('theme');
+    if (t) document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Person", "name": "Ahmed Amer"}, "datePublished": "2026-08-28", "description": "We were reporting $6,712 of model spend against $1,767 of actual spend, because the pricing treated cached input tokens as an addition to input tokens rather than a discounted subset of them.", "headline": "The cost dashboard was wrong by 3.8x, confidently", "url": "https://ahmedamer8.github.io/ahmedamer/lessons/cost-dashboard-overstated-by-3.8x/"}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" id="progress" hidden></div>
+
+<header class="masthead">
+  <div class="shell masthead__in">
+    <a class="wordmark" href="/ahmedamer/">AHMED AMER</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/ahmedamer/work/"
+>Work</a>
+      <a href="/ahmedamer/lessons/"
+aria-current="page">Lessons</a>
+      <a href="/ahmedamer/notes/"
+>Notes</a>
+      <a href="/ahmedamer/map/"
+>Map</a>
+      <a href="/ahmedamer/experience/"
+>Experience</a>
+      <a href="/ahmedamer/about/"
+>About</a>
+    </nav>
+    <button class="searchbtn" id="searchbtn" aria-haspopup="dialog">Search <kbd>/</kbd></button>
+    <button class="themebtn" id="themebtn" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
+  </div>
+</header>
+
+<main id="main" class="shell page">
+<article class="article">
+  <div class="article__rail">
+    <nav class="rail-axis" aria-label="On this page" data-rail></nav>
+  </div>
+
+  <div class="article__body">
+    <header class="article-head">
+      <h1>The cost dashboard was wrong by 3.8x, confidently</h1>
+      <p class="dek">We were reporting $6,712 of model spend against $1,767 of actual spend, because the pricing treated cached input tokens as an addition to input tokens rather than a discounted subset of them.</p>
+      <div class="article-head__meta">
+        <span class="status status--fixed">fixed</span>
+<span>cost</span><time datetime="2026-08-28">28 August 2026</time>        <span>2 min</span>
+      </div>
+    </header>
+
+    <section class="trace" id="trace" data-trace>
+  <div class="trace__head">
+    <h2 class="trace__legend">The investigation</h2>
+    <span class="trace__hint" aria-hidden="true">← → to step through</span>
+  </div>
+  <h3 class="visually-hidden">observation — Reported spend did not match the invoice.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="true" aria-controls="tp-1">
+    <span class="trace__stage">observation</span>
+    <span class="trace__track"><i style="width:33.3%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-1" >
+    <p><strong>Reported spend did not match the invoice.</strong></p>
+    <p>The internal dashboard and the provider’s bill told different stories, by a factor large enough that it could not be rounding or timing.</p>
+
+<div class="trace__evidence"><pre class="code"><code>reported   $6,712.00
+actual     $1,766.90
+window     Dec 2025 – Jul 2026
+ratio      3.80x
+</code></pre>
+</div>  </div>
+  <h3 class="visually-hidden">assumption — We assumed the rates were stale.</h3>
+  <button class="trace__step" type="button" data-wrong="true"
+          aria-expanded="false" aria-controls="tp-2">
+    <span class="trace__stage">assumption</span>
+    <span class="trace__track"><i style="width:33.3%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-2" hidden>
+    <p><strong>We assumed the rates were stale.</strong></p>
+    <p>The obvious cause of a wrong bill is a wrong price. Model prices change, and a hardcoded rate from six months ago would explain an error of roughly this size. The rates were current. The arithmetic was the problem.</p>
+
+  </div>
+  <h3 class="visually-hidden">probe — Test the field&#39;s relationship against every usage row we had.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="false" aria-controls="tp-3">
+    <span class="trace__stage">probe</span>
+    <span class="trace__track"><i style="width:100.0%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-3" hidden>
+    <p><strong>Test the field&#39;s relationship against every usage row we had.</strong></p>
+    <p>Rather than reading the API documentation and reasoning about what <code>cached_tokens</code> probably means, check it directly: if cached tokens are a subset of input tokens, then <code>cached &gt; input</code> should never occur. If they are an addition, it should occur constantly.</p>
+
+<div class="trace__evidence"><p>Across <strong>391,479</strong> production usage rows:</p>
+<pre class="code"><code>rows where cached_tokens &gt; input_tokens:  0
+share of input tokens that are cache reads:  96.2 %
+</code></pre>
+<p>Zero violations in 391,479 rows is not a coincidence. It is a subset.</p>
+</div>  </div>
+  <h3 class="visually-hidden">root cause — Cached input was being billed at the full input rate, and counted twice over.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="false" aria-controls="tp-4">
+    <span class="trace__stage">root cause</span>
+    <span class="trace__track"><i style="width:66.7%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-4" hidden>
+    <p><strong>Cached input was being billed at the full input rate, and counted twice over.</strong></p>
+    <p>Cached input bills at roughly a tenth of fresh input. With 96.2% of our input served from cache, pricing all input at the fresh rate inflates the total by almost exactly the factor we were seeing.</p>
+
+  </div>
+  <h3 class="visually-hidden">fix — Price the three token classes separately, and never store money.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="false" aria-controls="tp-5">
+    <span class="trace__stage">fix</span>
+    <span class="trace__track"><i style="width:66.7%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-5" hidden>
+    <p><strong>Price the three token classes separately, and never store money.</strong></p>
+    <p>Fresh input, cached input and output each get their own rate. Rates are stored per million tokens because that is how providers publish them, and are effective-dated so a price change applies to the right days. Only quantities are persisted — cost is computed on read, so correcting a rate reprices history instead of leaving stale totals behind.</p>
+
+<div class="trace__evidence"><p>Two further rules fell out of the same audit:</p>
+<ul>
+<li>Reasoning tokens bill as output, and are usually already inside the output
+count — except on one code path, where they are reported separately. That
+showed up as 614 rows where reasoning exceeded output.</li>
+<li>Cache <em>writes</em> bill at the fresh input rate and report zero cached tokens, so
+the subset rule handles them without a special case.</li>
+</ul>
+</div>  </div>
+  <h3 class="visually-hidden">verification — A command that recomputes the total from raw rows and fails if it disagrees.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="false" aria-controls="tp-6">
+    <span class="trace__stage">verification</span>
+    <span class="trace__track"><i style="width:66.7%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-6" hidden>
+    <p><strong>A command that recomputes the total from raw rows and fails if it disagrees.</strong></p>
+    <p>The dashboard is no longer trusted on its own account. A separate command recalculates cost independently from the usage rows, applying the pricing rules from scratch, and fails if it differs from the rollup by more than a cent — overall, per model, and per call type.</p>
+
+<div class="trace__evidence"><p>A second command checks the other direction: that every use case resolves to a
+model with an active rate, <strong>and</strong> that every model and call type present in
+production data is known to the code. Production had been running models that
+appeared nowhere in the source. It exits non-zero, so it breaks a build rather
+than waiting to be noticed.</p>
+</div>  </div>
+</section>
+
+
+    <div class="prose" data-prose><h2>The error</h2>
+<p>For eight months the internal dashboard reported roughly $6,700 of model spend. The
+actual figure was roughly $1,770.</p>
+<p>Being wrong by 3.8× in the direction of <em>overstating</em> cost sounds harmless. It is not.
+Every decision that spend informed was made against a number that was almost four
+times too large: which model to use, whether caching was worth its complexity, whether
+a feature could afford another call. A confidently wrong number is worse than an
+absent one, because an absent one gets questioned.</p>
+<h2>Why it was wrong</h2>
+<p>The usage response reports <code>input_tokens</code> and <code>cached_tokens</code>. There are two readings:</p>
+<ul>
+<li><strong>Addition</strong> — total input is <code>input + cached</code>, and cached tokens are extra.</li>
+<li><strong>Subset</strong> — <code>cached</code> is the portion of <code>input</code> that came from cache, billed cheaper.</li>
+</ul>
+<p>We had implemented the first. The truth is the second. And because cached input bills
+at about a tenth of fresh input, while 96.2% of our input was cache reads, the two
+readings diverge by almost exactly the factor we observed.</p>
+<p>The documentation is not especially explicit about this. But the data is.</p>
+<h2>The move that settled it</h2>
+<p>Rather than reading the documentation more carefully, I tested the relationship
+against every usage row in the database. The subset hypothesis makes a falsifiable
+prediction: <code>cached_tokens &gt; input_tokens</code> should be <strong>impossible</strong>. The addition
+hypothesis makes it commonplace.</p>
+<pre class="code"><code>rows examined                        391,479
+rows where cached &gt; input                  0
+</code></pre>
+<p>Zero in 391,479 is not ambiguous.</p>
+<aside class="callout callout--principle"><p>When two readings of an API field imply different invariants, find the invariant that
+one of them forbids and test it against your own data. You usually have far more
+evidence about a provider’s behaviour than the provider’s documentation contains.</p>
+</aside>
+<h2>Making the number falsifiable</h2>
+<p>The lasting change is not the pricing fix. It is that the number can now be checked
+by something other than itself.</p>
+<p>One command recomputes total cost directly from raw usage rows, applying the pricing
+rules independently, and asserts it matches the stored rollup to the cent — overall,
+per model, and per call type. Another checks the registry in both directions: that
+every declared use case resolves to a priced model, and that every model and call type
+actually present in production data is declared in the code. That second direction
+found models running in production that appeared nowhere in the source.</p>
+<p>Both exit non-zero. They break a build.</p>
+<h2>Storing quantities, not money</h2>
+<p>The other decision I would make again: the database stores token counts, never
+currency. Rates live separately, per million tokens, with effective dates.</p>
+<p>This means correcting a rate — or discovering, as we did, that the transcription
+service was priced 2.7× below list — reprices all of history correctly and
+immediately. If we had stored computed costs, every correction would have left a
+sediment of stale totals that nobody would ever go back and fix.</p>
+<aside class="callout callout--principle"><p>Store the quantities you measured, not the money you calculated. Prices are someone
+else’s variable and they will change, including retroactively in your understanding
+of them.</p>
+</aside>
+</div>
+
+    <aside class="callout callout--principle">
+      <p class="callout-title">The principle</p>
+      <p>Derive a billing model from the provider&#39;s own usage rows, not from the shape the API response suggests. A plausible reading of a field is not a measurement of it.</p>
+    </aside>
+
+      <section class="related">
+    <div class="rule-measured"><h2 class="rule-measured__label">Lessons</h2>
+      <span class="rule-measured__bar"></span></div>
+    <ul>
+      <li><a href="/ahmedamer/lessons/du-lies-about-sparse-files/">The 466 MB directory that reports as 296 KB</a><span class="meta">A container image was heavy because of a directory the usual size command says is tiny. Sparse files have an apparent size and an allocated size, and a build context archives the apparent one.</span></li>
+    </ul>
+  </section>
+  <section class="related">
+    <div class="rule-measured"><h2 class="rule-measured__label">Notes</h2>
+      <span class="rule-measured__bar"></span></div>
+    <ul>
+      <li><a href="/ahmedamer/notes/the-instrument-is-usually-the-bug/">The instrument is usually the bug</a><span class="meta">A collection of cases where the measurement was wrong and the system was fine. If a number surprises you, the first hypothesis should be that the number is wrong.</span></li>
+      <li><a href="/ahmedamer/notes/which-direction-does-your-guard-fail/">Which direction does your guard fail?</a><span class="meta">The single most consistent principle I have arrived at: things on the customer&#39;s path fail open, things that verify correctness fail closed. Nearly every serious incident I have worked on is that rule applied backwards.</span></li>
+    </ul>
+  </section>
+  <section class="related">
+    <div class="rule-measured"><h2 class="rule-measured__label">Projects</h2>
+      <span class="rule-measured__bar"></span></div>
+    <ul>
+      <li><a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><span class="meta">A multi-tenant system where customers order food by chatting on WhatsApp, an LLM agent builds the cart and takes payment, and the order lands in the restaurant&#39;s point-of-sale. Several established food and beverage brands run on it.</span></li>
+    </ul>
+  </section>
+
+
+    <section class="related">
+      <div class="rule-measured"><span class="rule-measured__label">See also</span>
+        <span class="rule-measured__bar"></span></div>
+      <ul>
+          <li><a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><span class="meta">Project</span></li>
+      </ul>
+    </section>
+  </div>
+
+  <aside class="article__margin">
+    <div class="mnote">
+  <b>Tagged</b>
+  <div class="chips">
+      <a href="/ahmedamer/map/#tech-gemini">Google Gemini</a>
+      <a href="/ahmedamer/map/#tech-python">Python</a>
+      <a href="/ahmedamer/map/#tech-mysql">MySQL</a>
+      <a href="/ahmedamer/map/#tech-django">Django</a>
+      <a href="/ahmedamer/map/#topic-cost">Cost</a>
+      <a href="/ahmedamer/map/#topic-instrument-error">The instrument lied</a>
+      <a href="/ahmedamer/map/#topic-measurement">Measurement</a>
+      <a href="/ahmedamer/map/#topic-observability">Observability</a>
+  </div>
+</div>
+
+    <div class="mnote"><b>Fails open at runtime</b><p>An unpriced model shows a banner on the dashboard. It never raises during a
+customer’s call. Verification fails closed; runtime fails open.</p>
+</div>
+  </aside>
+</article>
+</main>
+
+<footer class="shell foot">
+  <span>Ahmed Amer — AI Engineer, Cairo, Egypt</span>
+  <span class="foot__right">
+    <a href="https://github.com/ahmedAmer8">GitHub</a>
+    <a href="https://www.linkedin.com/in/Ahmad-Amer">LinkedIn</a>
+    <a href="mailto:ahmed.m.amer821@gmail.com">Email</a>
+    <a href="/ahmedamer/colophon/">Colophon</a>
+  </span>
+</footer>
+
+<div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search__panel">
+    <label class="visually-hidden" for="q">Search projects, lessons, notes and topics</label>
+    <input class="search__input" id="q" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Search lessons, projects, topics…">
+    <ul class="search__results" id="results" role="listbox" aria-label="Results"></ul>
+    <div class="search__foot">
+      <span>↑↓ move</span><span>↵ open</span><span>esc close</span>
+    </div>
+  </div>
+</div>
+
+<script src="/ahmedamer/static/js/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The security signal went to zero and both explanations are bad — Ahmed Amer</title>
+<meta name="description" content="A steady 3.4% prompt-injection deflection rate fell to zero over two days. No deploy, no model change, no errors. Either detection went dark, or we had been turning away real customers for weeks. I still do not know which.">
+<link rel="canonical" href="https://ahmedamer8.github.io/ahmedamer/lessons/injection-deflections-stopped-and-i-cannot-explain-it/">
+<meta property="og:site_name" content="Ahmed Amer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The security signal went to zero and both explanations are bad — Ahmed Amer">
+<meta property="og:description" content="A steady 3.4% prompt-injection deflection rate fell to zero over two days. No deploy, no model change, no errors. Either detection went dark, or we had been turning away real customers for weeks. I still do not know which.">
+<meta property="og:url" content="https://ahmedamer8.github.io/ahmedamer/lessons/injection-deflections-stopped-and-i-cannot-explain-it/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#e8ebe4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161c1b" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/ahmedamer/static/fonts/newsreader-normal-300_700-1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/ahmedamer/static/fonts/plexmono-normal-400-0.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/ahmedamer/static/css/site.css">
+<link rel="icon" href="/ahmedamer/static/img/mark.svg" type="image/svg+xml">
+<script>
+  document.documentElement.classList.remove('no-js');
+  try {
+    var t = localStorage.getItem('theme');
+    if (t) document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Person", "name": "Ahmed Amer"}, "datePublished": "2026-08-31", "description": "A steady 3.4% prompt-injection deflection rate fell to zero over two days. No deploy, no model change, no errors. Either detection went dark, or we had been turning away real customers for weeks. I still do not know which.", "headline": "The security signal went to zero and both explanations are bad", "url": "https://ahmedamer8.github.io/ahmedamer/lessons/injection-deflections-stopped-and-i-cannot-explain-it/"}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" id="progress" hidden></div>
+
+<header class="masthead">
+  <div class="shell masthead__in">
+    <a class="wordmark" href="/ahmedamer/">AHMED AMER</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/ahmedamer/work/"
+>Work</a>
+      <a href="/ahmedamer/lessons/"
+aria-current="page">Lessons</a>
+      <a href="/ahmedamer/notes/"
+>Notes</a>
+      <a href="/ahmedamer/map/"
+>Map</a>
+      <a href="/ahmedamer/experience/"
+>Experience</a>
+      <a href="/ahmedamer/about/"
+>About</a>
+    </nav>
+    <button class="searchbtn" id="searchbtn" aria-haspopup="dialog">Search <kbd>/</kbd></button>
+    <button class="themebtn" id="themebtn" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
+  </div>
+</header>
+
+<main id="main" class="shell page">
+<article class="article">
+  <div class="article__rail">
+    <nav class="rail-axis" aria-label="On this page" data-rail></nav>
+  </div>
+
+  <div class="article__body">
+    <header class="article-head">
+      <h1>The security signal went to zero and both explanations are bad</h1>
+      <p class="dek">A steady 3.4% prompt-injection deflection rate fell to zero over two days. No deploy, no model change, no errors. Either detection went dark, or we had been turning away real customers for weeks. I still do not know which.</p>
+      <div class="article-head__meta">
+        <span class="status status--unresolved">unresolved</span>
+<span>discovery</span><time datetime="2026-08-31">31 August 2026</time>        <span>3 min</span>
+      </div>
+    </header>
+
+    <section class="trace" id="trace" data-trace>
+  <div class="trace__head">
+    <h2 class="trace__legend">The investigation</h2>
+    <span class="trace__hint" aria-hidden="true">← → to step through</span>
+  </div>
+  <h3 class="visually-hidden">observation — A stable rate went to zero in two days and stayed there.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="true" aria-controls="tp-1">
+    <span class="trace__stage">observation</span>
+    <span class="trace__track"><i style="width:66.7%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-1" >
+    <p><strong>A stable rate went to zero in two days and stayed there.</strong></p>
+    <p>The prompt-injection classifier had deflected a consistent share of messages for as long as we had been measuring it. Then it did not.</p>
+
+<div class="trace__evidence"><p>Daily deflection rate:</p>
+<pre class="code"><code>3.8%  2.8  3.4  3.6  3.7  3.4  3.3  1.9   1 turn   0   0
+Aug 23                              Aug 30  Aug 31
+</code></pre>
+<p>Not a decay. A cliff with one day of transition.</p>
+</div>  </div>
+  <h3 class="visually-hidden">assumption — We assumed the guard had broken and was failing open.</h3>
+  <button class="trace__step" type="button" data-wrong="true"
+          aria-expanded="false" aria-controls="tp-2">
+    <span class="trace__stage">assumption</span>
+    <span class="trace__track"><i style="width:66.7%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-2" hidden>
+    <p><strong>We assumed the guard had broken and was failing open.</strong></p>
+    <p>This layer is deliberately fail-open: if the classifier errors, the message goes through. A retired model or a credentials problem would produce exactly this — silent, total, invisible. It is the explanation the design makes most likely, so it was the first thing to rule out.</p>
+
+  </div>
+  <h3 class="visually-hidden">probe — Rule out each mechanical cause by query rather than by reasoning.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="false" aria-controls="tp-3">
+    <span class="trace__stage">probe</span>
+    <span class="trace__track"><i style="width:100.0%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-3" hidden>
+    <p><strong>Rule out each mechanical cause by query rather than by reasoning.</strong></p>
+    <p>Five candidate causes, five queries. All five came back negative, which is the part that makes this entry unresolved rather than fixed.</p>
+
+<div class="trace__evidence"><table>
+<thead>
+<tr>
+<th>Hypothesis</th>
+<th>Test</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Failing open silently</td>
+<td>span still runs at ~1.00 calls/turn, status ok</td>
+<td>still running</td>
+</tr>
+<tr>
+<td>Errors being swallowed</td>
+<td>error count per day</td>
+<td>0–2, unchanged</td>
+</tr>
+<tr>
+<td>Model swapped</td>
+<td>resolved model id per call</td>
+<td>unchanged</td>
+</tr>
+<tr>
+<td>Deploy changed behaviour</td>
+<td>release history for the window</td>
+<td>no deploy</td>
+</tr>
+<tr>
+<td>One attacker stopped</td>
+<td>deflections were ~1/chat across ~90 customers/day</td>
+<td>not one source</td>
+</tr>
+</tbody>
+</table>
+<p>The classifier is running, on every turn, without errors, on the same model,
+and returning safe every single time.</p>
+</div>  </div>
+  <h3 class="visually-hidden">root cause — Unknown. Two candidates, and the data cannot separate them.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="false" aria-controls="tp-4">
+    <span class="trace__stage">root cause</span>
+    <span class="trace__track"><i style="width:100.0%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-4" hidden>
+    <p><strong>Unknown. Two candidates, and the data cannot separate them.</strong></p>
+    <p>Either the model drifted server-side behind a fixed identifier, and our injection detection is now dark without anything registering that — or the classifier had a 3.4% false-positive rate all along and was deflecting real customers for weeks, and something upstream changed to stop feeding it the inputs it mishandled. Both are serious. They imply opposite remediations.</p>
+
+  </div>
+  <h3 class="visually-hidden">verification — Not yet. The deciding test is a replay, and I have not run it.</h3>
+  <button class="trace__step" type="button" data-wrong="false"
+          aria-expanded="false" aria-controls="tp-5">
+    <span class="trace__stage">verification</span>
+    <span class="trace__track"><i style="width:33.3%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-5" hidden>
+    <p><strong>Not yet. The deciding test is a replay, and I have not run it.</strong></p>
+    <p>Take a labelled corpus of known injection attempts and known-safe messages, and run it against the classifier today. If it still catches the attacks, detection is fine and the earlier deflections were false positives. If it does not, the model drifted. Nothing in the stored data can answer this, because the stored data only contains what the classifier decided, not what it should have decided.</p>
+
+  </div>
+</section>
+
+
+    <div class="prose" data-prose><h2>What I know</h2>
+<p>A rate that had been stable for as long as it had been measured went to zero, over
+two days, and stayed there.</p>
+<p>The classifier is still running. It is invoked on essentially every turn, its spans
+record success, its error count is unchanged at zero to two a day, it resolves to the
+same model, and no deploy touched it in the window. The deflections it used to produce
+came from roughly ninety different customers a day, about one per conversation, so it
+was not one determined attacker who got bored.</p>
+<p>Everything mechanical I can test comes back normal. The guard is running and it is
+returning safe, always.</p>
+<h2>Why both explanations are bad</h2>
+<p><strong>If the model drifted</strong>, then our prompt-injection detection is now effectively
+disabled, and nothing in the system registered that. The model identifier is the same
+string; the behaviour behind it is not something we control or can pin. This is the
+worse operational outcome, and it is the one the fail-open design makes hardest to
+notice — a guard that is not catching anything and a guard that has nothing to catch
+produce identical telemetry.</p>
+<p><strong>If the classifier was false-positiving all along</strong>, then for weeks we were deflecting
+around 3.4% of real customers with a polite refusal to engage, and something upstream
+changed to stop feeding it the inputs it got wrong. This is the worse product outcome,
+and there is a candidate: a fix landed near this window that stopped a QR-code prefill
+from reaching the classifier at all. But “near” is not “because,” and I have not
+established the causal link.</p>
+<h2>Why the stored data cannot settle it</h2>
+<p>This is the part I find most useful, and the most annoying.</p>
+<p>We store what the classifier decided. We do not store what it <em>should</em> have decided,
+because there is no label — the whole point of the classifier is that nobody is
+labelling this traffic by hand. So the historical record contains the verdicts and not
+their correctness, and no amount of querying it will tell me which of the two stories
+is true.</p>
+<aside class="callout callout--principle"><p>Telemetry that records a judgement without recording any way to check the judgement can
+tell you that behaviour changed. It cannot tell you which direction was correct. If a
+model makes a call you cannot later audit, keep a labelled corpus alongside it.</p>
+</aside>
+<h2>The test I need to run</h2>
+<p>Take a fixed set of known injection attempts and known-safe messages, and run it
+against the classifier as it behaves today. That is the only thing that separates the
+two explanations, because it supplies the labels the production data lacks.</p>
+<p>I have not run it, which is the honest reason this entry says unresolved rather than
+fixed.</p>
+<h2>What I have changed regardless</h2>
+<p>The alerting. A monitored rate falling to zero now fires, in the same way a spike
+does. I had built alerts for this signal going up and none for it going flat, which
+in hindsight is the wrong way round: a spike is visible to anybody looking at a chart,
+and a quiet metric looks exactly like a healthy one.</p>
+<aside class="callout callout--principle"><p>Every alert on a rate needs a companion alert on that rate <em>stopping</em>. Absence of a
+signal is the failure mode nobody builds a dashboard for, because the dashboard looks
+fine.</p>
+</aside>
+</div>
+
+    <aside class="callout callout--principle">
+      <p class="callout-title">The principle</p>
+      <p>A monitored rate falling to zero is an event. Design the alert for &#34;this signal stopped&#34; as carefully as the one for &#34;this signal spiked.&#34;</p>
+    </aside>
+
+      <section class="related">
+    <div class="rule-measured"><h2 class="rule-measured__label">Lessons</h2>
+      <span class="rule-measured__bar"></span></div>
+    <ul>
+      <li><a href="/ahmedamer/lessons/classifier-that-deflected-paying-customers/">The security guard was turning away customers, nondeterministically</a><span class="meta">A printed QR code produced a prefilled message that asserted a role. The prompt-injection classifier read it as an attack and deflected 132 of 730 arrivals in a month — on byte-identical input, inconsistently.</span></li>
+    </ul>
+  </section>
+  <section class="related">
+    <div class="rule-measured"><h2 class="rule-measured__label">Notes</h2>
+      <span class="rule-measured__bar"></span></div>
+    <ul>
+      <li><a href="/ahmedamer/notes/which-direction-does-your-guard-fail/">Which direction does your guard fail?</a><span class="meta">The single most consistent principle I have arrived at: things on the customer&#39;s path fail open, things that verify correctness fail closed. Nearly every serious incident I have worked on is that rule applied backwards.</span></li>
+    </ul>
+  </section>
+
+
+    <section class="related">
+      <div class="rule-measured"><span class="rule-measured__label">See also</span>
+        <span class="rule-measured__bar"></span></div>
+      <ul>
+          <li><a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a><span class="meta">Project</span></li>
+          <li><a href="/ahmedamer/lessons/classifier-that-deflected-paying-customers/">The security guard was turning away customers, nondeterministically</a><span class="meta">Lesson</span></li>
+      </ul>
+    </section>
+  </div>
+
+  <aside class="article__margin">
+    <div class="mnote">
+  <b>Tagged</b>
+  <div class="chips">
+      <a href="/ahmedamer/map/#tech-gemini">Google Gemini</a>
+      <a href="/ahmedamer/map/#tech-python">Python</a>
+      <a href="/ahmedamer/map/#topic-prompt-injection">Prompt injection</a>
+      <a href="/ahmedamer/map/#topic-instrument-error">The instrument lied</a>
+      <a href="/ahmedamer/map/#topic-observability">Observability</a>
+      <a href="/ahmedamer/map/#topic-silent-failure">Silent failure</a>
+      <a href="/ahmedamer/map/#topic-llm-behaviour">LLM behaviour</a>
+  </div>
+</div>
+
+    <div class="mnote"><b>Why it stays open</b><p>Marking this fixed would require picking the explanation I prefer. Both remain
+consistent with everything measured.</p>
+</div>
+    <div class="mnote"><b>Related</b><p>The deflections that <em>were</em> false positives are documented separately — a QR code
+prefill that looked like an injection. That fix landed near this window, which is
+itself a candidate explanation and not a proven one.</p>
+</div>
+  </aside>
+</article>
+</main>
+
+<footer class="shell foot">
+  <span>Ahmed Amer — AI Engineer, Cairo, Egypt</span>
+  <span class="foot__right">
+    <a href="https://github.com/ahmedAmer8">GitHub</a>
+    <a href="https://www.linkedin.com/in/Ahmad-Amer">LinkedIn</a>
+    <a href="mailto:ahmed.m.amer821@gmail.com">Email</a>
+    <a href="/ahmedamer/colophon/">Colophon</a>
+  </span>
+</footer>
+
+<div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search__panel">
+    <label class="visually-hidden" for="q">Search projects, lessons, notes and topics</label>
+    <input class="search__input" id="q" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Search lessons, projects, topics…">
+    <ul class="search__results" id="results" role="listbox" aria-label="Results"></ul>
+    <div class="search__foot">
+      <span>↑↓ move</span><span>↵ open</span><span>esc close</span>
+    </div>
+  </div>
+</div>
+
+<script src="/ahmedamer/static/js/site.js" defer></script>
+</body>
+</html>
