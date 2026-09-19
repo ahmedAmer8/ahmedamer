@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% from "_macros.html" import entry_row %}
+{% block title %}Notes — {{ site.title }}{% endblock %}
+{% block description %}Longer pieces on building and measuring production AI systems.{% endblock %}
+{% block content %}
+<header class="page-head">
+  <h1>Notes</h1>
+  <p class="dek">Longer pieces — usually written because a problem turned out to be
+    more general than the incident that produced it.</p>
+</header>
+<div class="index">
+  {% for e in notes %}{{ entry_row(e, loop.index, level=2, total=notes|length) }}{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Map — {{ site.title }}{% endblock %}
+{% block description %}How the projects, lessons, technologies and topics on this site connect.{% endblock %}
+{% block content %}
+<header class="page-head">
+  <h1>Map</h1>
+  <p class="dek">Every entry declares what it relates to, so this graph is derived from
+    the content rather than drawn by hand. Drag to explore; click a node to open it.
+    The written index below carries the same relationships.</p>
+</header>
+
+<div class="map">
+  <canvas class="map__canvas" id="graph" data-graph
+          aria-label="Relationship graph. The same relationships are listed below in text."></canvas>
+  <p class="map__legend">
+    <span class="lg-project">project</span>
+    <span class="lg-lesson">lesson</span>
+    <span class="lg-note">note</span>
+    <span>technology / topic</span>
+  </p>
+  <p class="map__tip">Drag the background to pan, scroll to zoom, drag a node to pin it.</p>
+</div>
+
+<div class="map__fallback">
+  <div class="rule-measured"><h2 class="rule-measured__label">Index</h2>
+    <span class="rule-measured__bar"></span></div>
+
+  <h2>Topics</h2>
+  {% for name, users in idx.topic_use|dictsort %}
+  <div class="entry" id="topic-{{ name }}">
+    <div class="entry__n">{{ users|length }}</div>
+    <div>
+      <h3 class="entry__title">{{ taxonomy.topics.get(name, {}).get('label', name) }}</h3>
+      {% if taxonomy.topics.get(name, {}).get('note') %}
+      <p class="entry__sum">{{ taxonomy.topics[name]['note'] }}</p>
+      {% endif %}
+      <div class="chips" style="margin-top:.5rem">
+        {% for e in users %}<a href="{{ e.url }}">{{ e.title }}</a>{% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+  <h2>Technologies</h2>
+  {% for name, users in idx.tech_use|dictsort %}
+  <div class="entry" id="tech-{{ name }}">
+    <div class="entry__n">{{ users|length }}</div>
+    <div>
+      <h3 class="entry__title">{{ taxonomy.technologies.get(name, {}).get('label', name) }}</h3>
+      <div class="chips" style="margin-top:.5rem">
+        {% for e in users %}<a href="{{ e.url }}">{{ e.title }}</a>{% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ base }}/static/js/graph.js" defer></script>{% endblock %}

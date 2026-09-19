@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Experience — {{ site.title }}{% endblock %}
+{% block description %}Roles as chapters: what the environment was, what I owned, and how my thinking changed.{% endblock %}
+{% block content %}
+<header class="page-head">
+  <h1>Experience</h1>
+  <p class="dek">Not a list of responsibilities. Each role is the set of problems that
+    were in front of me and what solving them changed about how I work.</p>
+</header>
+<div class="index">
+  {% for e in experience %}
+  <article class="entry">
+    <div class="entry__n">{{ e.get('period', '') }}</div>
+    <div>
+      <h2 class="entry__title"><a href="{{ e.url }}">{{ e.title }}</a></h2>
+      <p class="entry__sum">{{ e.get('summary') }}</p>
+      <div class="entry__meta">
+        {% if e.get('org') %}<span>{{ e.get('org') }}</span>{% endif %}
+        <span>{{ (e.get('chapters') or [])|length }} chapters</span>
+      </div>
+    </div>
+  </article>
+  {% endfor %}
+</div>
+{% endblock %}

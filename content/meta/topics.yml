@@ -1,0 +1,24 @@
+silent-failure:    {label: Silent failure, note: Work that never happens and raises nothing.}
+instrument-error:  {label: The instrument lied, note: When the measurement is the bug.}
+fail-open:         {label: Failing open, note: Who a failure is open for.}
+guardrails:        {label: Guardrails, note: When the safety mechanism is the failure mode.}
+false-positives:   {label: False positives}
+measurement:       {label: Measurement}
+baselines:         {label: Baselines, note: Or you have measured nothing.}
+latency:           {label: Latency}
+cost:              {label: Cost}
+concurrency:       {label: Concurrency}
+idempotency:       {label: Idempotency}
+deployment-drift:  {label: Deployment drift, note: The deployed thing is not the thing you deployed.}
+two-sources:       {label: Two sources of truth}
+llm-behaviour:     {label: LLM behaviour}
+prompt-injection:  {label: Prompt injection}
+evaluation:        {label: Evaluation}
+multi-tenancy:     {label: Multi-tenancy}
+bilingual:         {label: Arabic and English}
+observability:     {label: Observability}
+api-contracts:     {label: API contracts, note: Not what the documentation says.}
+queueing:          {label: Queueing}
+caching:           {label: Caching}
+data-hygiene:      {label: Production data}
+data-integrity:    {label: Data integrity}

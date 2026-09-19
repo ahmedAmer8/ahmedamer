@@ -1,0 +1,88 @@
+{% macro status(e) %}
+  {% if e.get('status') %}<span class="status status--{{ e.get('status') }}">{{ e.get('status') }}</span>{% endif %}
+{% endmacro %}
+
+{% macro entry_row(e, n, total, level=3) %}
+<article class="entry" data-status="{{ e.get('status','') }}" data-category="{{ e.get('category','') }}"
+         data-tags="{{ ((e.get('technologies') or []) + (e.get('topics') or []))|join(' ') }}">
+  <div class="entry__n">
+    <span>{{ '%03d'|format(n) }}</span>
+    {% if e.get('magnitude') %}
+    <span class="spanbar {% if e.is_open %}spanbar--open{% endif %}" style="margin-top:.5rem"
+          role="img" aria-label="relative weight {{ e.get('magnitude') }} of 10"><i style="width:{{ e.get('magnitude') * 10 }}%"></i></span>
+    {% endif %}
+  </div>
+  <div>
+    <h{{ level }} class="entry__title"><a href="{{ e.url }}">{{ e.title }}</a></h{{ level }}>
+    <p class="entry__sum">{{ e.get('summary') }}</p>
+    {% if e.get('principle') %}
+    <p class="entry__principle">{{ e.get('principle') }}</p>
+    {% endif %}
+    <div class="entry__meta">
+      {{ status(e) }}
+      {% if e.get('category') %}<span>{{ e.get('category')|replace('-', ' ') }}</span>{% endif %}
+      {% if e.date %}<time datetime="{{ e.date|iso }}">{{ e.date|date('month') }}</time>{% endif %}
+      <span>{{ e.reading_minutes }} min</span>
+    </div>
+  </div>
+</article>
+{% endmacro %}
+
+{% macro trace(e) %}
+{% if e.get('trace') %}
+<section class="trace" id="trace" data-trace>
+  <div class="trace__head">
+    <h2 class="trace__legend">The investigation</h2>
+    <span class="trace__hint" aria-hidden="true">← → to step through</span>
+  </div>
+  {% set steps = e.get('trace') %}
+  {% set maxw = steps|map(attribute='weight')|map('default', 1)|max %}
+  {% for s in steps %}
+  <h3 class="visually-hidden">{{ s.stage|replace('-', ' ') }} — {{ s.label }}</h3>
+  <button class="trace__step" type="button" data-wrong="{{ 'true' if s.get('wrong') else 'false' }}"
+          aria-expanded="{{ 'true' if loop.first else 'false' }}" aria-controls="tp-{{ loop.index }}">
+    <span class="trace__stage">{{ s.stage|replace('-', ' ') }}</span>
+    <span class="trace__track"><i style="width:{{ (s.get('weight', 1) / maxw * 100)|round(1) }}%"></i></span>
+  </button>
+  <div class="trace__panel" id="tp-{{ loop.index }}" {% if not loop.first %}hidden{% endif %}>
+    <p><strong>{{ s.label }}</strong></p>
+    {{ s.body_html|safe }}
+    {% if s.evidence_html %}<div class="trace__evidence">{{ s.evidence_html|safe }}</div>{% endif %}
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
+{% endmacro %}
+
+{% macro related_block(related, idx) %}
+{% set groups = [('lessons', 'Lessons'), ('notes', 'Notes'), ('projects', 'Projects')] %}
+{% for key, label in groups %}
+  {% if related.get(key) %}
+  <section class="related">
+    <div class="rule-measured"><h2 class="rule-measured__label">{{ label }}</h2>
+      <span class="rule-measured__bar"></span></div>
+    <ul>
+      {% for r in related[key] %}
+      <li><a href="{{ r.url }}">{{ r.title }}</a><span class="meta">{{ r.get('summary') }}</span></li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+{% endfor %}
+{% endmacro %}
+
+{% macro taxo_links(e, taxonomy) %}
+{% if e.get('technologies') or e.get('topics') %}
+<div class="mnote">
+  <b>Tagged</b>
+  <div class="chips">
+    {% for t in e.get('technologies') or [] %}
+      <a href="{{ base }}/map/#tech-{{ t }}">{{ taxonomy.technologies.get(t, {}).get('label', t) }}</a>
+    {% endfor %}
+    {% for t in e.get('topics') or [] %}
+      <a href="{{ base }}/map/#topic-{{ t }}">{{ taxonomy.topics.get(t, {}).get('label', t) }}</a>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+{% endmacro %}

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% from "_macros.html" import entry_row, status %}
+{% block title %}{{ site.title }} — {{ site.author.role }}{% endblock %}
+{% block description %}{{ site.description }}{% endblock %}
+
+{% block content %}
+<section class="opening">
+  <p class="opening__stat">
+    <span><b>{{ site.author.name }}</b></span>
+    <span>{{ site.author.role }}</span>
+    <span>{{ site.author.location }}</span>
+    <span>{{ lessons|length }} entries, <b>{{ open_lessons|length }} still open</b></span>
+  </p>
+
+  <h1>I build systems, then find out <em>how they actually behave.</em></h1>
+
+  <p class="opening__lede">
+    Most of what I know came from being wrong in production and having to prove it.
+    This is the record: what broke, what I believed at the time, how I found out
+    otherwise, and what was left over that was worth keeping.
+  </p>
+
+  <figure class="waterfall">
+    {% set peak = site.hero.spans|map(attribute='ms')|max %}
+    {% for s in site.hero.spans %}
+    <div class="waterfall__row {% if s.get('peak') %}waterfall__row--peak{% endif %}">
+      <span class="waterfall__name">{{ s.name }}</span>
+      <span class="waterfall__track"><i style="width:{{ (s.ms / peak * 100)|round(1) }}%"></i></span>
+      <span class="waterfall__val">{{ '%.2f'|format(s.ms / 1000) }}s</span>
+    </div>
+    {% endfor %}
+    <figcaption class="waterfall__note">{{ site.hero.reading|markdown|safe }}</figcaption>
+  </figure>
+</section>
+
+{% if open_lessons %}
+<section>
+  <div class="rule-measured">
+    <h2 class="rule-measured__label">Still open</h2>
+    <span class="rule-measured__bar"></span>
+    <span class="rule-measured__label">{{ open_lessons|length }} unresolved</span>
+  </div>
+  <p class="meta" style="max-width:34rem;margin-bottom:1.2rem">
+    Entries I have not closed. Some are diagnosed and unfixed; at least one I still
+    cannot explain. They are here because leaving them out would misrepresent the work.
+  </p>
+  <div class="index">
+    {% for e in open_lessons[:4] %}{{ entry_row(e, loop.index, open_lessons|length) }}{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section>
+  <div class="rule-measured">
+    <h2 class="rule-measured__label">Work</h2>
+    <span class="rule-measured__bar"></span>
+    <a class="rule-measured__label" href="{{ base }}/work/">All work</a>
+  </div>
+  <div class="index">
+    {% for e in projects[:3] %}{{ entry_row(e, loop.index, projects|length) }}{% endfor %}
+  </div>
+</section>
+
+<section>
+  <div class="rule-measured">
+    <h2 class="rule-measured__label">Lessons</h2>
+    <span class="rule-measured__bar"></span>
+    <a class="rule-measured__label" href="{{ base }}/lessons/">All {{ lessons|length }}</a>
+  </div>
+  <div class="index">
+    {% for e in lessons[:6] %}{{ entry_row(e, loop.index, lessons|length) }}{% endfor %}
+  </div>
+</section>
+
+{% if notes %}
+<section>
+  <div class="rule-measured">
+    <h2 class="rule-measured__label">Notes</h2>
+    <span class="rule-measured__bar"></span>
+    <a class="rule-measured__label" href="{{ base }}/notes/">All {{ notes|length }}</a>
+  </div>
+  <div class="index">
+    {% for e in notes[:3] %}{{ entry_row(e, loop.index, notes|length) }}{% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

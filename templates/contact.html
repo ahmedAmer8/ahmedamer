@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Contact — {{ site.title }}{% endblock %}
+{% block description %}Email, GitHub and LinkedIn.{% endblock %}
+{% block content %}
+<header class="page-head">
+  <h1>Contact</h1>
+  <p class="dek">Email is best. I read everything and reply to most things.</p>
+</header>
+<div class="index">
+  <article class="entry"><div class="entry__n">01</div><div>
+    <h2 class="entry__title"><a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a></h2>
+    <p class="entry__sum">For work, questions about anything written here, or corrections.
+      If you think something on this site is wrong, I would genuinely like to know.</p>
+  </div></article>
+  <article class="entry"><div class="entry__n">02</div><div>
+    <h2 class="entry__title"><a href="https://github.com/{{ site.author.github }}">github.com/{{ site.author.github }}</a></h2>
+    <p class="entry__sum">Side projects and experiments. The production work described on
+      this site lives in a private repository.</p>
+  </div></article>
+  <article class="entry"><div class="entry__n">03</div><div>
+    <h2 class="entry__title"><a href="https://www.linkedin.com/in/{{ site.author.linkedin }}">linkedin.com/in/{{ site.author.linkedin }}</a></h2>
+    <p class="entry__sum">{{ site.author.location }}, {{ site.author.timezone }}.</p>
+  </div></article>
+</div>
+{% endblock %}

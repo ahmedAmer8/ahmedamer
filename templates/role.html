@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% from "_macros.html" import related_block, taxo_links %}
+{% block title %}{{ entry.title }} — {{ site.title }}{% endblock %}
+{% block description %}{{ entry.get('summary') }}{% endblock %}
+
+{% block content %}
+<article class="article">
+  <div class="article__rail"><nav class="rail-axis" aria-label="On this page" data-rail></nav></div>
+  <div class="article__body">
+    <header class="article-head">
+      <h1>{{ entry.title }}</h1>
+      <p class="dek">{{ entry.get('summary') }}</p>
+      <div class="article-head__meta">
+        {% if entry.get('org') %}<span>{{ entry.get('org') }}</span>{% endif %}
+        {% if entry.get('period') %}<span>{{ entry.get('period') }}</span>{% endif %}
+      </div>
+    </header>
+    <div class="prose" data-prose>{{ entry.html|safe }}</div>
+    {% if entry.get('chapters') %}
+    <div class="rule-measured">
+      <h2 class="rule-measured__label">Chapters</h2>
+      <span class="rule-measured__bar"></span>
+      <span class="rule-measured__label">{{ entry.get('chapters')|length }}</span>
+    </div>
+    {% endif %}
+    {% for c in entry.get('chapters') or [] %}
+    <div class="chapter">
+      <div class="chapter__n">{{ '%02d'|format(loop.index) }}</div>
+      <div>
+        <h3>{{ c.title }}</h3>
+        {{ c.body|markdown|safe }}
+        {% if c.get('lesson') %}
+        <p class="meta"><a href="{{ idx.by_slug[('lessons', c.lesson)].url }}">{{ idx.by_slug[('lessons', c.lesson)].title }}</a></p>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+    {{ related_block(related, idx) }}
+  </div>
+  <aside class="article__margin">{{ taxo_links(entry, taxonomy) }}</aside>
+</article>
+{% endblock %}

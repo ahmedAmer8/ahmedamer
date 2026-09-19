@@ -1,0 +1,35 @@
+title: Ahmed Amer
+tagline: Measurements, mistakes, and what they turned out to mean.
+description: >-
+  An AI engineer's record of production systems — what broke, what I believed,
+  how I proved otherwise, and what was left over worth reusing.
+origin: https://ahmedamer8.github.io
+base_path: /ahmedamer
+author:
+  name: Ahmed Amer
+  role: AI Engineer
+  org: Robusta Technology Group
+  location: Cairo, Egypt
+  timezone: Africa/Cairo
+  email: ahmed.m.amer821@gmail.com
+  github: ahmedAmer8
+  linkedin: Ahmad-Amer
+
+# Real spans from the production tracer, 2026-09-02 dump. Mean duration per
+# LLM call type across one window. These drive the homepage waterfall.
+hero:
+  caption: >-
+    Mean duration per LLM call in one production turn, read from the tracer I
+    instrumented. n = 50,708 spans.
+  spans:
+    - {name: prompt_injection, ms: 580, n: 20628}
+    - {name: main, ms: 4610, n: 20528}
+    - {name: tool_response, ms: 4520, n: 7021}
+    - {name: order_validation, ms: 10380, n: 519, peak: true}
+    - {name: retry_trigger, ms: 5050, n: 59}
+    - {name: menu_classification, ms: 2250, n: 107}
+    - {name: cache_create, ms: 700, n: 1805}
+  reading: >-
+    `order_validation` is the guard that checks an order before it is placed.
+    It was the slowest call in the product — 2.3× the agent turn it protects.
+    Not because of the model: 70% of that time was reasoning nobody had capped.
