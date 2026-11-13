@@ -1,401 +1,338 @@
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ahmed Amer — AI Engineer</title>
-<meta name="description" content="An AI engineer&#39;s record of production systems — what broke, what I believed, how I proved otherwise, and what was left over worth reusing.">
-<link rel="canonical" href="https://ahmedamer8.github.io/ahmedamer/">
-<meta property="og:site_name" content="Ahmed Amer">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ahmed Amer — AI Engineer">
-<meta property="og:description" content="An AI engineer&#39;s record of production systems — what broke, what I believed, how I proved otherwise, and what was left over worth reusing.">
-<meta property="og:url" content="https://ahmedamer8.github.io/ahmedamer/">
-<meta name="twitter:card" content="summary">
-<meta name="theme-color" content="#e8ebe4" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#161c1b" media="(prefers-color-scheme: dark)">
-<link rel="preload" href="/ahmedamer/static/fonts/newsreader-normal-300_700-1.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/ahmedamer/static/fonts/plexmono-normal-400-0.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/ahmedamer/static/css/site.css">
-<link rel="icon" href="/ahmedamer/static/img/mark.svg" type="image/svg+xml">
-<script>
-  document.documentElement.classList.remove('no-js');
-  try {
-    var t = localStorage.getItem('theme');
-    if (t) document.documentElement.dataset.theme = t;
-  } catch (e) {}
-</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ahmed Amer · AI Engineer</title>
+  <meta name="description" content="Ahmed Amer, AI Engineer. I build and run production LLM agent systems: agents, RAG, evaluation, guardrails, latency, cost and AWS infrastructure.">
+  <meta property="og:title" content="Ahmed Amer · AI Engineer">
+  <meta property="og:description" content="Production LLM agents, RAG, evaluation and AWS. p90 latency cut 69%, LLM spend cut by an estimated ~65%.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#0f1115">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232a78d6'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='26' fill='white' text-anchor='middle'%3EAA%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    try { var t = localStorage.getItem("theme"); if (t) document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+  </script>
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>
-<div class="progress" id="progress" hidden></div>
+  <a class="skip" href="#main">Skip to content</a>
 
-<header class="masthead">
-  <div class="shell masthead__in">
-    <a class="wordmark" href="/ahmedamer/">AHMED AMER</a>
-    <nav class="nav" aria-label="Primary">
-      <a href="/ahmedamer/work/"
->Work</a>
-      <a href="/ahmedamer/lessons/"
->Lessons</a>
-      <a href="/ahmedamer/notes/"
->Notes</a>
-      <a href="/ahmedamer/map/"
->Map</a>
-      <a href="/ahmedamer/experience/"
->Experience</a>
-      <a href="/ahmedamer/about/"
->About</a>
-    </nav>
-    <button class="searchbtn" id="searchbtn" aria-haspopup="dialog">Search <kbd>/</kbd></button>
-    <button class="themebtn" id="themebtn" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
-  </div>
-</header>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top" aria-label="Ahmed Amer, home"><span class="mark">AA</span><span>Ahmed Amer</span></a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="#impact">Impact</a>
+        <a href="#experience">Experience</a>
+        <a href="#approach">Approach</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8 6 18M18 6l1.8-1.8"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+      </button>
+    </div>
+  </header>
 
-<main id="main" class="shell page">
-<section class="opening">
-  <p class="opening__stat">
-    <span><b>Ahmed Amer</b></span>
-    <span>AI Engineer</span>
-    <span>Cairo, Egypt</span>
-    <span>16 entries, <b>3 still open</b></span>
-  </p>
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="dot"></span> AI Engineer · Cairo, Egypt</p>
+          <h1>I build LLM agents that work in production, and make them <span class="hl">faster</span>, <span class="hl">cheaper</span> and <span class="hl">more reliable</span>.</h1>
+          <p class="lede">I helped take a conversational AI product from its early stages to a revenue-generating platform used by major food and beverage brands. My work covers the whole agent: tool design, RAG, evaluation, guardrails, latency, LLM cost and the AWS infrastructure underneath.</p>
+          <div class="cta">
+            <a class="btn primary" href="assets/Ahmed-Amer-CV.pdf" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-4.5-4.5M12 15l4.5-4.5M4 19h16"/></svg>Download CV</a>
+            <a class="btn" href="mailto:ahmed.m.amer821@gmail.com">Get in touch</a>
+          </div>
+          <ul class="socials">
+            <li><a href="https://github.com/ahmedAmer8" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="https://www.linkedin.com/in/Ahmad-Amer" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="mailto:ahmed.m.amer821@gmail.com">Email</a></li>
+          </ul>
+        </div>
 
-  <h1>I build systems, then find out <em>how they actually behave.</em></h1>
+        <aside class="hero-card" aria-label="Agent turn trace illustration">
+          <div class="card-head">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="mono">agent_turn · trace</span>
+          </div>
+          <div class="trace">
+            <div class="row"><span class="mono">guardrails</span><span class="bar" style="--s:0%;--w:9%"></span></div>
+            <div class="row"><span class="mono">retrieve_context</span><span class="bar" style="--s:9%;--w:12%"></span></div>
+            <div class="row"><span class="mono">llm.plan</span><span class="bar accent" style="--s:21%;--w:30%"></span></div>
+            <div class="row"><span class="mono">tool.call</span><span class="bar" style="--s:51%;--w:14%"></span></div>
+            <div class="row"><span class="mono">validate_action</span><span class="bar" style="--s:65%;--w:16%"></span></div>
+            <div class="row"><span class="mono">llm.reply</span><span class="bar accent" style="--s:81%;--w:19%"></span></div>
+          </div>
+          <div class="card-foot">
+            <div><span class="k">p90 latency</span><span class="v">−69%</span></div>
+            <div><span class="k">LLM cost</span><span class="v">≈−65%</span></div>
+            <div><span class="k">task success</span><span class="v">86%</span></div>
+          </div>
+          <p class="card-note">Illustrative trace of one agent turn. Numbers are measured results from my work.</p>
+        </aside>
+      </div>
+    </section>
 
-  <p class="opening__lede">
-    Most of what I know came from being wrong in production and having to prove it.
-    This is the record: what broke, what I believed at the time, how I found out
-    otherwise, and what was left over that was worth keeping.
-  </p>
+    <!-- IMPACT -->
+    <section class="section" id="impact">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="kicker">Impact</p>
+          <h2>Measured results from production</h2>
+          <p class="sub">Every number here comes from production traces, replays of real traffic, or cost data. The one estimate is labelled as such.</p>
+        </header>
 
-  <figure class="waterfall">
-    <div class="waterfall__row ">
-      <span class="waterfall__name">prompt_injection</span>
-      <span class="waterfall__track"><i style="width:5.6%"></i></span>
-      <span class="waterfall__val">0.58s</span>
-    </div>
-    <div class="waterfall__row ">
-      <span class="waterfall__name">main</span>
-      <span class="waterfall__track"><i style="width:44.4%"></i></span>
-      <span class="waterfall__val">4.61s</span>
-    </div>
-    <div class="waterfall__row ">
-      <span class="waterfall__name">tool_response</span>
-      <span class="waterfall__track"><i style="width:43.5%"></i></span>
-      <span class="waterfall__val">4.52s</span>
-    </div>
-    <div class="waterfall__row waterfall__row--peak">
-      <span class="waterfall__name">order_validation</span>
-      <span class="waterfall__track"><i style="width:100.0%"></i></span>
-      <span class="waterfall__val">10.38s</span>
-    </div>
-    <div class="waterfall__row ">
-      <span class="waterfall__name">retry_trigger</span>
-      <span class="waterfall__track"><i style="width:48.7%"></i></span>
-      <span class="waterfall__val">5.05s</span>
-    </div>
-    <div class="waterfall__row ">
-      <span class="waterfall__name">menu_classification</span>
-      <span class="waterfall__track"><i style="width:21.7%"></i></span>
-      <span class="waterfall__val">2.25s</span>
-    </div>
-    <div class="waterfall__row ">
-      <span class="waterfall__name">cache_create</span>
-      <span class="waterfall__track"><i style="width:6.7%"></i></span>
-      <span class="waterfall__val">0.70s</span>
-    </div>
-    <figcaption class="waterfall__note"><p><code>order_validation</code> is the guard that checks an order before it is placed. It was the slowest call in the product — 2.3× the agent turn it protects. Not because of the model: 70% of that time was reasoning nobody had capped.</p>
-</figcaption>
-  </figure>
-</section>
+        <div class="stats">
+          <article class="stat">
+            <p class="num"><span data-count="69">69</span>%</p>
+            <p class="label">lower p90 response latency</p>
+            <p class="ctx">38.4s → 11.9s, measured with end-to-end tracing</p>
+          </article>
+          <article class="stat">
+            <p class="num">~<span data-count="65">65</span>%</p>
+            <p class="label">lower LLM spend <em>(estimate)</em></p>
+            <p class="ctx">context caching, prompt optimisation, per-tenant tool trimming</p>
+          </article>
+          <article class="stat">
+            <p class="num"><span data-count="86">86</span>%</p>
+            <p class="label">task completion</p>
+            <p class="ctx">up from 30% after rebuilding the AI validation layer</p>
+          </article>
+          <article class="stat">
+            <p class="num"><span data-count="0">0</span></p>
+            <p class="label">false positives</p>
+            <p class="ctx">from the prompt-injection defence on 54,000+ production messages</p>
+          </article>
+          <article class="stat">
+            <p class="num"><span data-count="98">98</span>%</p>
+            <p class="label">faster prompt build</p>
+            <p class="ctx">a hot path went from 19,369 database queries to 12</p>
+          </article>
+          <article class="stat">
+            <p class="num">&lt;<span data-count="80">80</span>ms</p>
+            <p class="label">core agent tool</p>
+            <p class="ctx">down from ~30s in production</p>
+          </article>
+          <article class="stat">
+            <p class="num"><span data-count="2500" data-format="comma">2,500</span>+</p>
+            <p class="label">conversations reviewed weekly</p>
+            <p class="ctx">by an LLM-driven quality audit I built</p>
+          </article>
+          <article class="stat">
+            <p class="num"><span data-count="7600" data-format="comma">7,600</span>+</p>
+            <p class="label">real calls in model A/B tests</p>
+            <p class="ctx">to choose models on accuracy, latency and cost</p>
+          </article>
+        </div>
 
-<section>
-  <div class="rule-measured">
-    <h2 class="rule-measured__label">Still open</h2>
-    <span class="rule-measured__bar"></span>
-    <span class="rule-measured__label">3 unresolved</span>
-  </div>
-  <p class="meta" style="max-width:34rem;margin-bottom:1.2rem">
-    Entries I have not closed. Some are diagnosed and unfixed; at least one I still
-    cannot explain. They are here because leaving them out would misrepresent the work.
-  </p>
-  <div class="index">
-<article class="entry" data-status="unfixed" data-category="infrastructure"
-         data-tags="ec2 django mysql concurrency idempotency deployment-drift two-sources">
-  <div class="entry__n">
-    <span>001</span>
-    <span class="spanbar spanbar--open" style="margin-top:.5rem"
-          role="img" aria-label="relative weight 6 of 10"><i style="width:60%"></i></span>
-  </div>
-  <div>
-    <h3 class="entry__title"><a href="/ahmedamer/lessons/two-schedulers-ran-the-same-job/">Two machines were running the same scheduler, and customers got everything twice</a></h3>
-    <p class="entry__sum">The scheduling tool writes per-host entries, so every instance that boots installs its own copy. Two boxes meant two of every sweep — including the ones that message customers.</p>
-    <p class="entry__principle">A scheduler that installs itself at boot has no concept of a fleet. Exactly-one has to be enforced by a lease, not by the number of machines you believe you have.</p>
-    <div class="entry__meta">
-      <span class="status status--unfixed">unfixed</span>
-<span>infrastructure</span><time datetime="2026-09-10">September 2026</time>      <span>2 min</span>
-    </div>
-  </div>
-</article>
-<article class="entry" data-status="unfixed" data-category="ai-agent-behavior"
-         data-tags="gemini mysql django llm-behaviour two-sources data-hygiene multi-tenancy">
-  <div class="entry__n">
-    <span>002</span>
-    <span class="spanbar spanbar--open" style="margin-top:.5rem"
-          role="img" aria-label="relative weight 8 of 10"><i style="width:80%"></i></span>
-  </div>
-  <div>
-    <h3 class="entry__title"><a href="/ahmedamer/lessons/told-the-agent-to-sell-something-that-did-not-exist/">We told the agent to sell something that did not exist</a></h3>
-    <p class="entry__sum">A cluster of conversations where the agent invented offers had a single, entirely non-AI cause: a configuration field instructing it to reference a promotion that only existed on a different tenant&#39;s menu.</p>
-    <p class="entry__principle">When a model hallucinates consistently in one domain, audit what its configuration promises against what its data contains. Instructing a model to cite a nonexistent thing while forbidding invention leaves it one option.</p>
-    <div class="entry__meta">
-      <span class="status status--unfixed">unfixed</span>
-<span>ai agent behavior</span><time datetime="2026-09-05">September 2026</time>      <span>3 min</span>
-    </div>
-  </div>
-</article>
-<article class="entry" data-status="unresolved" data-category="discovery"
-         data-tags="gemini python prompt-injection instrument-error observability silent-failure llm-behaviour">
-  <div class="entry__n">
-    <span>003</span>
-    <span class="spanbar spanbar--open" style="margin-top:.5rem"
-          role="img" aria-label="relative weight 8 of 10"><i style="width:80%"></i></span>
-  </div>
-  <div>
-    <h3 class="entry__title"><a href="/ahmedamer/lessons/injection-deflections-stopped-and-i-cannot-explain-it/">The security signal went to zero and both explanations are bad</a></h3>
-    <p class="entry__sum">A steady 3.4% prompt-injection deflection rate fell to zero over two days. No deploy, no model change, no errors. Either detection went dark, or we had been turning away real customers for weeks. I still do not know which.</p>
-    <p class="entry__principle">A monitored rate falling to zero is an event. Design the alert for &#34;this signal stopped&#34; as carefully as the one for &#34;this signal spiked.&#34;</p>
-    <div class="entry__meta">
-      <span class="status status--unresolved">unresolved</span>
-<span>discovery</span><time datetime="2026-08-31">August 2026</time>      <span>3 min</span>
-    </div>
-  </div>
-</article>
-  </div>
-</section>
+        <figure class="chart-card" id="before-after">
+          <figcaption>
+            <div>
+              <h3>Before → after</h3>
+              <p class="sub">Each row has its own scale. Lower is better, except task completion.</p>
+            </div>
+            <ul class="legend" aria-label="Legend">
+              <li><span class="sw before"></span>Before</li>
+              <li><span class="sw after"></span>After</li>
+            </ul>
+          </figcaption>
+          <div class="dumbbells" role="img" aria-label="Before and after comparison of five production metrics. Details in the table below."></div>
+          <div class="tooltip" role="status" aria-live="polite" hidden></div>
+          <details class="table-view">
+            <summary>View as table</summary>
+            <table>
+              <thead><tr><th scope="col">Metric</th><th scope="col">Before</th><th scope="col">After</th><th scope="col">Change</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </details>
+        </figure>
+      </div>
+    </section>
 
-<section>
-  <div class="rule-measured">
-    <h2 class="rule-measured__label">Work</h2>
-    <span class="rule-measured__bar"></span>
-    <a class="rule-measured__label" href="/ahmedamer/work/">All work</a>
-  </div>
-  <div class="index">
-<article class="entry" data-status="ongoing" data-category=""
-         data-tags="python django celery gemini langchain mysql sqs lambda batch dynamodb ec2 cdk docker qdrant whatsapp redis multi-tenancy latency cost guardrails observability queueing bilingual evaluation">
-  <div class="entry__n">
-    <span>001</span>
-    <span class="spanbar " style="margin-top:.5rem"
-          role="img" aria-label="relative weight 10 of 10"><i style="width:100%"></i></span>
-  </div>
-  <div>
-    <h3 class="entry__title"><a href="/ahmedamer/projects/conversational-commerce-platform/">A conversational ordering platform</a></h3>
-    <p class="entry__sum">A multi-tenant system where customers order food by chatting on WhatsApp, an LLM agent builds the cart and takes payment, and the order lands in the restaurant&#39;s point-of-sale. Several established food and beverage brands run on it.</p>
-    <div class="entry__meta">
-      <span class="status status--ongoing">ongoing</span>
-      <span>12 min</span>
-    </div>
-  </div>
-</article>
-<article class="entry" data-status="archived" data-category=""
-         data-tags="python streamlit gradio fastapi crewai faiss groq openai docker pytorch llm-behaviour evaluation">
-  <div class="entry__n">
-    <span>002</span>
-    <span class="spanbar " style="margin-top:.5rem"
-          role="img" aria-label="relative weight 3 of 10"><i style="width:30%"></i></span>
-  </div>
-  <div>
-    <h3 class="entry__title"><a href="/ahmedamer/projects/applied-ml-side-projects/">Side projects, honestly scoped</a></h3>
-    <p class="entry__sum">Five applied-ML builds from before and alongside the production work. They were good for learning the tools and they were not production systems. Both halves of that are worth saying.</p>
-    <div class="entry__meta">
-      <span class="status status--archived">archived</span>
-      <span>3 min</span>
-    </div>
-  </div>
-</article>
-  </div>
-</section>
+    <!-- EXPERIENCE -->
+    <section class="section alt" id="experience">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="kicker">Experience</p>
+          <h2>Robusta Technology Group</h2>
+          <p class="sub">AI Engineer · Cairo, Egypt · 07/2025 to present</p>
+        </header>
 
-<section>
-  <div class="rule-measured">
-    <h2 class="rule-measured__label">Lessons</h2>
-    <span class="rule-measured__bar"></span>
-    <a class="rule-measured__label" href="/ahmedamer/lessons/">All 16</a>
-  </div>
-  <div class="index">
-<article class="entry" data-status="unfixed" data-category="infrastructure"
-         data-tags="ec2 django mysql concurrency idempotency deployment-drift two-sources">
-  <div class="entry__n">
-    <span>001</span>
-    <span class="spanbar spanbar--open" style="margin-top:.5rem"
-          role="img" aria-label="relative weight 6 of 10"><i style="width:60%"></i></span>
-  </div>
-  <div>
-    <h3 class="entry__title"><a href="/ahmedamer/lessons/two-schedulers-ran-the-same-job/">Two machines were running the same scheduler, and customers got everything twice</a></h3>
-    <p class="entry__sum">The scheduling tool writes per-host entries, so every instance that boots installs its own copy. Two boxes meant two of every sweep — including the ones that message customers.</p>
-    <p class="entry__principle">A scheduler that installs itself at boot has no concept of a fleet. Exactly-one has to be enforced by a lease, not by the number of machines you believe you have.</p>
-    <div class="entry__meta">
-      <span class="status status--unfixed">unfixed</span>
-<span>infrastructure</span><time datetime="2026-09-10">September 2026</time>      <span>2 min</span>
-    </div>
-  </div>
-</article>
-<article class="entry" data-status="fixed" data-category="cost"
-         data-tags="python django gemini cost caching silent-failure">
-  <div class="entry__n">
-    <span>002</span>
-    <span class="spanbar " style="margin-top:.5rem"
-          role="img" aria-label="relative weight 5 of 10"><i style="width:50%"></i></span>
-  </div>
-  <div>
-    <h3 class="entry__title"><a href="/ahmedamer/lessons/a-cron-expression-that-meant-something-else/">The schedule fired twice an hour, not every fifty-five minutes</a></h3>
-    <p class="entry__sum">`*/55 * * * *` does not mean &#34;every 55 minutes.&#34; It means minute 0 and minute 55. The job it scheduled rewrote a 30,000-token cache each time, for months.</p>
-    <p class="entry__principle">A step value in a cron field steps within that field&#39;s range and resets at its boundary. Any interval that does not divide its unit evenly does not mean what it reads like.</p>
-    <div class="entry__meta">
-      <span class="status status--fixed">fixed</span>
-<span>cost</span><time datetime="2026-09-08">September 2026</time>      <span>2 min</span>
-    </div>
-  </div>
-</article>
-<article class="entry" data-status="unfixed" data-category="ai-agent-behavior"
-         data-tags="gemini mysql django llm-behaviour two-sources data-hygiene multi-tenancy">
-  <div class="entry__n">
-    <span>003</span>
-    <span class="spanbar spanbar--open" style="margin-top:.5rem"
-          role="img" aria-label="relative weight 8 of 10"><i style="width:80%"></i></span>
-  </div>
-  <div>
-    <h3 class="entry__title"><a href="/ahmedamer/lessons/told-the-agent-to-sell-something-that-did-not-exist/">We told the agent to sell something that did not exist</a></h3>
-    <p class="entry__sum">A cluster of conversations where the agent invented offers had a single, entirely non-AI cause: a configuration field instructing it to reference a promotion that only existed on a different tenant&#39;s menu.</p>
-    <p class="entry__principle">When a model hallucinates consistently in one domain, audit what its configuration promises against what its data contains. Instructing a model to cite a nonexistent thing while forbidding invention leaves it one option.</p>
-    <div class="entry__meta">
-      <span class="status status--unfixed">unfixed</span>
-<span>ai agent behavior</span><time datetime="2026-09-05">September 2026</time>      <span>3 min</span>
-    </div>
-  </div>
-</article>
-<article class="entry" data-status="fixed" data-category="methodology"
-         data-tags="gemini python django measurement baselines latency instrument-error observability">
-  <div class="entry__n">
-    <span>004</span>
-    <span class="spanbar " style="margin-top:.5rem"
-          role="img" aria-label="relative weight 9 of 10"><i style="width:90%"></i></span>
-  </div>
-  <div>
-    <h3 class="entry__title"><a href="/ahmedamer/lessons/measurement-inverted-my-own-conclusions/">I wrote a careful latency analysis, then measured it and two conclusions flipped</a></h3>
-    <p class="entry__sum">Six prioritised recommendations, reconstructed from log timestamps. When the tracing arrived, one was inverted, one was overstated by 3x, and the largest problem in the system was not in the document at all.</p>
-    <p class="entry__principle">An estimate reconstructed from adjacent data is a hypothesis. Label it as one, and keep it visible after the measurement so the correction is legible.</p>
-    <div class="entry__meta">
-      <span class="status status--fixed">fixed</span>
-<span>methodology</span><time datetime="2026-09-01">September 2026</time>      <span>2 min</span>
-    </div>
-  </div>
-</article>
-<article class="entry" data-status="unresolved" data-category="discovery"
-         data-tags="gemini python prompt-injection instrument-error observability silent-failure llm-behaviour">
-  <div class="entry__n">
-    <span>005</span>
-    <span class="spanbar spanbar--open" style="margin-top:.5rem"
-          role="img" aria-label="relative weight 8 of 10"><i style="width:80%"></i></span>
-  </div>
-  <div>
-    <h3 class="entry__title"><a href="/ahmedamer/lessons/injection-deflections-stopped-and-i-cannot-explain-it/">The security signal went to zero and both explanations are bad</a></h3>
-    <p class="entry__sum">A steady 3.4% prompt-injection deflection rate fell to zero over two days. No deploy, no model change, no errors. Either detection went dark, or we had been turning away real customers for weeks. I still do not know which.</p>
-    <p class="entry__principle">A monitored rate falling to zero is an event. Design the alert for &#34;this signal stopped&#34; as carefully as the one for &#34;this signal spiked.&#34;</p>
-    <div class="entry__meta">
-      <span class="status status--unresolved">unresolved</span>
-<span>discovery</span><time datetime="2026-08-31">August 2026</time>      <span>3 min</span>
-    </div>
-  </div>
-</article>
-<article class="entry" data-status="fixed" data-category="incident"
-         data-tags="gemini python prompt-injection false-positives guardrails llm-behaviour">
-  <div class="entry__n">
-    <span>006</span>
-    <span class="spanbar " style="margin-top:.5rem"
-          role="img" aria-label="relative weight 7 of 10"><i style="width:70%"></i></span>
-  </div>
-  <div>
-    <h3 class="entry__title"><a href="/ahmedamer/lessons/classifier-that-deflected-paying-customers/">The security guard was turning away customers, nondeterministically</a></h3>
-    <p class="entry__sum">A printed QR code produced a prefilled message that asserted a role. The prompt-injection classifier read it as an attack and deflected 132 of 730 arrivals in a month — on byte-identical input, inconsistently.</p>
-    <p class="entry__principle">Before a classifier can block anything, enumerate the legitimate inputs that structurally resemble an attack. Your own system generates some of them.</p>
-    <div class="entry__meta">
-      <span class="status status--fixed">fixed</span>
-<span>incident</span><time datetime="2026-08-30">August 2026</time>      <span>2 min</span>
-    </div>
-  </div>
-</article>
-  </div>
-</section>
+        <ol class="journey" aria-label="Career timeline">
+          <li><span class="when">Jul 2025</span><span class="what">Joined as AI Intern, working on generative AI use cases</span></li>
+          <li><span class="when">Sep 2025</span><span class="what">Promoted to AI Engineer on an early-stage conversational AI product</span></li>
+          <li><span class="when">2026</span><span class="what">Took on ownership of agent quality, performance, cost and releases</span></li>
+          <li class="now"><span class="when">Today</span><span class="what">A revenue-generating, multi-tenant platform used by major F&amp;B brands</span></li>
+        </ol>
 
-<section>
-  <div class="rule-measured">
-    <h2 class="rule-measured__label">Notes</h2>
-    <span class="rule-measured__bar"></span>
-    <a class="rule-measured__label" href="/ahmedamer/notes/">All 2</a>
-  </div>
-  <div class="index">
-<article class="entry" data-status="shipped" data-category="methodology"
-         data-tags="mysql django python sentry docker instrument-error measurement observability baselines">
-  <div class="entry__n">
-    <span>001</span>
-    <span class="spanbar " style="margin-top:.5rem"
-          role="img" aria-label="relative weight 8 of 10"><i style="width:80%"></i></span>
-  </div>
-  <div>
-    <h3 class="entry__title"><a href="/ahmedamer/notes/the-instrument-is-usually-the-bug/">The instrument is usually the bug</a></h3>
-    <p class="entry__sum">A collection of cases where the measurement was wrong and the system was fine. If a number surprises you, the first hypothesis should be that the number is wrong.</p>
-    <p class="entry__principle">When a metric is surprising, verify the metric before investigating the system. A number you cannot falsify is not a measurement.</p>
-    <div class="entry__meta">
-      <span class="status status--shipped">shipped</span>
-<span>methodology</span><time datetime="2026-09-14">September 2026</time>      <span>4 min</span>
-    </div>
-  </div>
-</article>
-<article class="entry" data-status="shipped" data-category="methodology"
-         data-tags="python django gemini fail-open guardrails silent-failure observability">
-  <div class="entry__n">
-    <span>002</span>
-    <span class="spanbar " style="margin-top:.5rem"
-          role="img" aria-label="relative weight 9 of 10"><i style="width:90%"></i></span>
-  </div>
-  <div>
-    <h3 class="entry__title"><a href="/ahmedamer/notes/which-direction-does-your-guard-fail/">Which direction does your guard fail?</a></h3>
-    <p class="entry__sum">The single most consistent principle I have arrived at: things on the customer&#39;s path fail open, things that verify correctness fail closed. Nearly every serious incident I have worked on is that rule applied backwards.</p>
-    <p class="entry__principle">Never block a customer; always break a build. Decide a guard&#39;s failure direction before you write it, and put the reason in the code.</p>
-    <div class="entry__meta">
-      <span class="status status--shipped">shipped</span>
-<span>methodology</span><time datetime="2026-09-12">September 2026</time>      <span>5 min</span>
-    </div>
-  </div>
-</article>
-  </div>
-</section>
-</main>
+        <div class="pillars">
+          <article class="pillar">
+            <div class="p-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v5c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V7l-8-4z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></div>
+            <h3>LLM agents, evaluation &amp; safety</h3>
+            <ul>
+              <li>Designed an <strong>AI validation layer</strong> that checks the agent's actions against the conversation before they run. False rejections fell from <strong>68.4% to 3.9%</strong> and task completion rose from <strong>30% to 86%</strong>.</li>
+              <li>Built an <strong>evaluation framework</strong>: conversation replay with an LLM judge, simulated-user testing, and model A/B tests over <strong>7,600+</strong> real calls.</li>
+              <li>Built a <strong>multi-layer prompt-injection defence</strong> with <strong>0 false positives</strong> on 54,000+ messages, plus hallucination checks on final replies.</li>
+              <li>Automated a weekly <strong>LLM-driven quality audit</strong> of every production conversation.</li>
+            </ul>
+          </article>
+          <article class="pillar">
+            <div class="p-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg></div>
+            <h3>Performance &amp; LLM cost</h3>
+            <ul>
+              <li>Built <strong>end-to-end tracing</strong> for every LLM call, tool and API call, then cut p90 latency by <strong>69%</strong>, p99 by <strong>68%</strong>, and responses slower than 30s from <strong>14.0% to 0.6%</strong>.</li>
+              <li>Removed database bottlenecks: <strong>19,369 → 12</strong> queries on a hot path, prompt build time down <strong>98%</strong>, and a core tool from <strong>~30s to under 80ms</strong>.</li>
+              <li>Built an <strong>LLM cost dashboard</strong> and cut spend by an estimated <strong>~65%</strong> with context caching and prompt optimisation.</li>
+            </ul>
+          </article>
+          <article class="pillar">
+            <div class="p-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 18a4 4 0 0 1-.6-8A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9H7z"/></svg></div>
+            <h3>Platform &amp; infrastructure</h3>
+            <ul>
+              <li>Led, with the team, the design of a <strong>scalable event-driven AWS architecture</strong> (Lambda, Batch, SQS, EventBridge, EC2 auto scaling).</li>
+              <li>Removed duplicate processing in concurrent conversations (<strong>16%</strong> of turns overlapped) with distributed locks and idempotency.</li>
+              <li>Migrated <strong>CI/CD to GitHub Actions and AWS CodePipeline</strong>, with automated config sync and safe, rehearsed database migrations.</li>
+              <li>Shipped <strong>speech-to-text</strong> for voice messages, with automatic fallback between providers.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
 
-<footer class="shell foot">
-  <span>Ahmed Amer — AI Engineer, Cairo, Egypt</span>
-  <span class="foot__right">
-    <a href="https://github.com/ahmedAmer8">GitHub</a>
-    <a href="https://www.linkedin.com/in/Ahmad-Amer">LinkedIn</a>
-    <a href="mailto:ahmed.m.amer821@gmail.com">Email</a>
-    <a href="/ahmedamer/colophon/">Colophon</a>
-  </span>
-</footer>
+    <!-- APPROACH -->
+    <section class="section" id="approach">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="kicker">Approach</p>
+          <h2>How I build production LLM agents</h2>
+          <p class="sub">A model call is only one step in a production agent. Most of the reliability comes from the steps around it.</p>
+        </header>
 
-<div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">
-  <div class="search__panel">
-    <label class="visually-hidden" for="q">Search projects, lessons, notes and topics</label>
-    <input class="search__input" id="q" type="search" autocomplete="off" spellcheck="false"
-           placeholder="Search lessons, projects, topics…">
-    <ul class="search__results" id="results" role="listbox" aria-label="Results"></ul>
-    <div class="search__foot">
-      <span>↑↓ move</span><span>↵ open</span><span>esc close</span>
-    </div>
-  </div>
-</div>
+        <div class="flow" role="list">
+          <div class="node" role="listitem"><span class="n">01</span><h4>Ingest</h4><p>Thin, fast entry point. Acknowledge quickly and queue the work.</p></div>
+          <div class="node" role="listitem"><span class="n">02</span><h4>Guardrails</h4><p>Layered prompt-injection and abuse checks, tuned for zero false positives.</p></div>
+          <div class="node" role="listitem"><span class="n">03</span><h4>Context &amp; RAG</h4><p>Retrieve the right knowledge per tenant, cache what does not change.</p></div>
+          <div class="node core" role="listitem"><span class="n">04</span><h4>Agent + tools</h4><p>LLM plans and calls typed tools. Deterministic code owns the numbers.</p></div>
+          <div class="node" role="listitem"><span class="n">05</span><h4>Validate</h4><p>A second model checks actions against the conversation and self-corrects.</p></div>
+          <div class="node" role="listitem"><span class="n">06</span><h4>Respond</h4><p>Hallucination checks on the final reply, then deliver.</p></div>
+        </div>
+        <div class="flow-base">
+          <span>Observability: per-step tracing</span>
+          <span>Cost tracking per model and tenant</span>
+          <span>Offline evaluation and A/B tests</span>
+        </div>
 
-<script src="/ahmedamer/static/js/site.js" defer></script>
+        <div class="principles">
+          <div><h4>Measure before optimising</h4><p>Instrument first. The bottleneck is rarely where you assume it is.</p></div>
+          <div><h4>Make every number checkable</h4><p>Interleaved A/B arms, noise floors and real baselines, so the results hold up.</p></div>
+          <div><h4>Make failures visible</h4><p>A silent fallback looks healthy until it isn't. Errors should surface and alert.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="section alt" id="skills">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="kicker">Skills</p>
+          <h2>Toolbox</h2>
+        </header>
+        <div class="skills">
+          <div class="skill-group"><h4>LLMs &amp; Agents</h4><ul class="chips"><li>Google Gemini</li><li>OpenAI</li><li>LLaMA</li><li>LangChain</li><li>CrewAI</li><li>Tool / function calling</li><li>Multi-agent systems</li><li>Prompt engineering</li><li>Prompt caching</li><li>Structured outputs</li><li>Vision-language models</li><li>Speech-to-text</li></ul></div>
+          <div class="skill-group"><h4>RAG &amp; Retrieval</h4><ul class="chips"><li>RAG</li><li>Embeddings</li><li>Semantic search</li><li>Qdrant</li><li>FAISS</li><li>Multi-tenant vector filtering</li></ul></div>
+          <div class="skill-group"><h4>Evaluation &amp; Safety</h4><ul class="chips"><li>LLM-as-judge</li><li>Conversation replay</li><li>Simulated-user testing</li><li>Model A/B testing</li><li>Guardrails</li><li>Prompt-injection defence</li><li>Hallucination checks</li></ul></div>
+          <div class="skill-group"><h4>ML &amp; Data</h4><ul class="chips"><li>PyTorch</li><li>Keras</li><li>scikit-learn</li><li>Deep learning</li><li>NLP</li><li>pandas</li><li>SQL</li></ul></div>
+          <div class="skill-group"><h4>Backend</h4><ul class="chips"><li>Python</li><li>Django</li><li>Django REST Framework</li><li>FastAPI</li><li>Celery</li><li>Redis</li><li>MySQL</li><li>DynamoDB</li><li>REST APIs</li></ul></div>
+          <div class="skill-group"><h4>Cloud &amp; MLOps</h4><ul class="chips"><li>AWS Lambda</li><li>AWS Batch</li><li>SQS</li><li>EventBridge</li><li>EC2 Auto Scaling</li><li>S3</li><li>RDS</li><li>AWS CDK</li><li>Terraform</li><li>Docker</li><li>GitHub Actions</li><li>CI/CD</li><li>Sentry</li><li>Tracing</li></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section" id="projects">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="kicker">Projects</p>
+          <h2>Selected side projects</h2>
+        </header>
+        <div class="projects">
+          <a class="project" href="https://github.com/ahmedAmer8/Multi-Agent-Content-Generation-System" target="_blank" rel="noopener">
+            <div class="p-top"><span class="tag">Multi-agent</span><svg class="ext" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></div>
+            <h3>Multi-Agent Content Generation</h3>
+            <p>Researcher and writer agents, orchestrated with CrewAI and web search, turn a topic into a publication-ready article with live progress tracking.</p>
+            <ul class="tech"><li>CrewAI</li><li>Gemini</li><li>Streamlit</li></ul>
+          </a>
+          <a class="project" href="https://github.com/ahmedAmer8/AI-medical-chatbot" target="_blank" rel="noopener">
+            <div class="p-top"><span class="tag">Multimodal</span><svg class="ext" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></div>
+            <h3>AI Doctor: Medical Image Assistant</h3>
+            <p>A chatbot that analyses medical images with vision-language models through fast Groq inference, with session history and downloadable reports.</p>
+            <ul class="tech"><li>LLaMA Vision</li><li>Groq</li><li>Gradio</li></ul>
+          </a>
+          <a class="project" href="https://github.com/ahmedAmer8/chat_with_your_pdf" target="_blank" rel="noopener">
+            <div class="p-top"><span class="tag">RAG</span><svg class="ext" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></div>
+            <h3>Chat with Your PDFs</h3>
+            <p>Retrieval-augmented question answering over large document collections, with semantic search over a vector index.</p>
+            <ul class="tech"><li>LangChain</li><li>FAISS</li><li>Gemini</li></ul>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREDENTIALS -->
+    <section class="section alt" id="credentials">
+      <div class="wrap creds">
+        <div>
+          <p class="kicker">Certifications</p>
+          <ul class="cert-list">
+            <li class="featured"><span class="badge">AWS</span><div><strong>Certified Machine Learning Engineer – Associate</strong><span>Amazon Web Services</span></div></li>
+            <li><span class="badge">AWS</span><div><strong>Certified AI Practitioner</strong><span>Amazon Web Services</span></div></li>
+            <li><span class="badge">AWS</span><div><strong>Certified Cloud Practitioner</strong><span>Amazon Web Services</span></div></li>
+            <li><span class="badge">DL</span><div><strong>Deep Learning Specialization</strong><span>DeepLearning.AI / Stanford</span></div></li>
+            <li><span class="badge">DS</span><div><strong>Professional Data Scientist</strong><span>DataCamp</span></div></li>
+          </ul>
+        </div>
+        <div>
+          <p class="kicker">Education</p>
+          <div class="edu">
+            <strong>B.Sc. in Computer Science</strong>
+            <span>Cairo University · 2021 to 2025</span>
+          </div>
+          <p class="kicker" style="margin-top:2rem">Beyond work</p>
+          <ul class="extras">
+            <li><strong>Top 10% worldwide</strong> in LeetCode contests</li>
+            <li><strong>Machine Learning Instructor</strong> (volunteer), IEEE Cairo University, 2023 to 2024</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section contact" id="contact">
+      <div class="wrap">
+        <h2>Let's build something that works in production.</h2>
+        <p class="sub">I'm open to AI engineering roles and conversations about LLM systems.</p>
+        <div class="cta center">
+          <a class="btn primary" href="mailto:ahmed.m.amer821@gmail.com">ahmed.m.amer821@gmail.com</a>
+          <a class="btn" href="https://www.linkedin.com/in/Ahmad-Amer" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn" href="https://github.com/ahmedAmer8" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">© <span id="year">2026</span> Ahmed Amer · Cairo, Egypt</div>
+  </footer>
+
+  <script src="assets/js/main.js" defer></script>
 </body>
 </html>

@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://ahmedamer8.github.io/ahmedamer/sitemap.xml
